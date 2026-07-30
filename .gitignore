@@ -1,0 +1,29 @@
+# =========================
+# Visual Studio
+# =========================
+.vs/
+*.user
+*.suo
+
+# Build output
+**/bin/
+**/obj/
+
+# =========================
+# Angular
+# =========================
+Front-End/node_modules/
+Front-End/dist/
+.angular/cache/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment
+.env
+.env.*
+
+# OS files
+.DS_Store
+Thumbs.db
