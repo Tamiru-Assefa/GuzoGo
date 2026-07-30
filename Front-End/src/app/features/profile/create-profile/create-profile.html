@@ -1,0 +1,220 @@
+<div class="min-h-screen bg-[#070a11] text-slate-100 flex items-center justify-center px-4 py-12 relative overflow-hidden">
+  <!-- Subtle Ambient Glow Backgrounds -->
+  <div class="absolute -top-40 -left-40 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="absolute -bottom-40 -right-40 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+  <div class="w-full max-w-2xl bg-slate-900/40 backdrop-blur-xl border border-white/10 shadow-2xl rounded-3xl p-6 sm:p-10 relative z-10">
+    
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <h1 class="text-3xl sm:text-4xl font-bold text-white tracking-tight mb-2">
+        Set Up Your Profile
+      </h1>
+      <p class="text-slate-400 text-sm sm:text-base">
+        Let the GuzoGo community know who you are and what you build.
+      </p>
+    </div>
+
+    <!-- Error Banner -->
+    @if(errorMessage) {
+      <div class="mb-6 rounded-2xl bg-red-500/10 border border-red-500/30 p-4 text-red-400 text-sm flex items-center gap-3">
+        <span>{{ errorMessage }}</span>
+      </div>
+    }
+
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      
+      <!-- Profile Picture Upload & Preview -->
+    <div>
+        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+            Profile Picture
+        </label>
+        <div class="flex items-center gap-4">
+            <!-- Circular Avatar Preview / Default Avatar -->
+            <div class="relative w-20 h-20 rounded-full bg-slate-950/80 border-2 border-dashed border-white/20 flex items-center justify-center overflow-hidden shrink-0 group">
+            @if(previewUrl || profileForm.get('profilePictureUrl')?.value) {
+                <img 
+                [src]="previewUrl || profileForm.get('profilePictureUrl')?.value" 
+                alt="Profile Preview" 
+                class="w-full h-full object-cover" 
+                />
+            } @else {
+                <!-- Sleek Default SVG User Avatar -->
+                <svg class="w-10 h-10 text-slate-600" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+            }
+            </div>
+
+            <!-- Upload Controls -->
+            <div class="flex-1 space-y-2">
+            <!-- File Picker Button -->
+            <label class="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-medium cursor-pointer border border-white/10 transition">
+                <span>Choose Image File</span>
+                <input 
+                type="file" 
+                accept="image/*" 
+                (change)="onFileSelected($event)" 
+                class="hidden" 
+                />
+            </label>
+
+            <span class="block text-xs text-slate-500">Or paste an image URL directly:</span>
+
+            <!-- URL Input Fallback -->
+            <input
+                type="url"
+                placeholder="https://example.com/avatar.jpg"
+                formControlName="profilePictureUrl"
+                (input)="onUrlChange($any($event.target).value)"
+                class="w-full rounded-xl bg-slate-950/60 border border-white/10 px-4 py-2 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-cyan-400 transition"
+            />
+            </div>
+        </div>
+        </div>
+
+      <!-- First & Last Name -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">First Name</label>
+          <input
+            type="text"
+            placeholder="John"
+            formControlName="firstName"
+            class="w-full rounded-xl bg-slate-950/60 border border-white/10 px-4 py-3 text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-400 transition"
+          />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Last Name</label>
+          <input
+            type="text"
+            placeholder="Doe"
+            formControlName="lastName"
+            class="w-full rounded-xl bg-slate-950/60 border border-white/10 px-4 py-3 text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-400 transition"
+          />
+        </div>
+      </div>
+
+      <!-- Profession & Company -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+                Profession Title
+            </label>
+            <select
+                formControlName="professionTitleId"
+                class="w-full rounded-xl bg-slate-950/60 border border-white/10 px-4 py-3 text-white focus:outline-none focus:border-cyan-400 transition cursor-pointer"
+            >
+                <option [ngValue]="null" disabled selected>Select Profession Title</option>
+                @for (title of professionTitles; track title.id) {
+                <option [value]="title.id" class="bg-slate-900 text-white">
+                    {{ title.name }}
+                </option>
+                }
+            </select>
+            </div>
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Company / Organization</label>
+          <input
+            type="text"
+            placeholder="e.g. GuzoGo Tech"
+            formControlName="company"
+            class="w-full rounded-xl bg-slate-950/60 border border-white/10 px-4 py-3 text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-400 transition"
+          />
+        </div>
+      </div>
+
+      <!-- Experience Level Selector -->
+      <div>
+        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Experience Level</label>
+        <div class="grid grid-cols-3 gap-3">
+          @for (level of experienceLevels; track level.value) {
+            <button
+              type="button"
+              (click)="selectExperienceLevel(level.value)"
+              [class]="profileForm.get('experienceLevel')?.value === level.value 
+                ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white border-cyan-400 font-semibold shadow-lg shadow-cyan-500/20' 
+                : 'bg-slate-950/60 text-slate-400 border-white/10 hover:border-white/30'"
+              class="py-2.5 px-3 rounded-xl border text-sm transition flex flex-col items-center justify-center"
+            >
+              <span>{{ level.label }}</span>
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Country & City -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Country</label>
+          <input
+            type="text"
+            placeholder="Ethiopia"
+            formControlName="country"
+            class="w-full rounded-xl bg-slate-950/60 border border-white/10 px-4 py-3 text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-400 transition"
+          />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">City</label>
+          <input
+            type="text"
+            placeholder="Addis Ababa"
+            formControlName="city"
+            class="w-full rounded-xl bg-slate-950/60 border border-white/10 px-4 py-3 text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-400 transition"
+          />
+        </div>
+      </div>
+
+      <!-- Bio -->
+      <div>
+        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Short Bio</label>
+        <textarea
+          rows="3"
+          placeholder="Tell us about your technical background and what you're working on..."
+          formControlName="bio"
+          class="w-full rounded-xl bg-slate-950/60 border border-white/10 px-4 py-3 text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-400 transition resize-none"
+        ></textarea>
+      </div>
+
+      <!-- Social Links -->
+      <div class="space-y-3 pt-2">
+        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">Social Links</label>
+        
+        <input
+          type="url"
+          placeholder="LinkedIn Profile URL"
+          formControlName="linkedInUrl"
+          class="w-full rounded-xl bg-slate-950/60 border border-white/10 px-4 py-3 text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-400 transition"
+        />
+        
+        <input
+          type="url"
+          placeholder="GitHub Profile URL"
+          formControlName="gitHubUrl"
+          class="w-full rounded-xl bg-slate-950/60 border border-white/10 px-4 py-3 text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-400 transition"
+        />
+
+        <input
+          type="url"
+          placeholder="Portfolio Website URL"
+          formControlName="portfolioUrl"
+          class="w-full rounded-xl bg-slate-950/60 border border-white/10 px-4 py-3 text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-400 transition"
+        />
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        [disabled]="isLoading"
+        class="w-full mt-4 rounded-xl py-3.5 font-semibold text-white bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-400 hover:opacity-90 transition disabled:opacity-50 flex items-center justify-center shadow-lg shadow-indigo-500/25"
+      >
+        @if(isLoading) {
+          <span>Saving Profile...</span>
+        } @else {
+          <span>Complete Profile</span>
+        }
+      </button>
+
+    </form>
+  </div>
+</div>

@@ -1,0 +1,203 @@
+<app-header></app-header>
+
+<main class="min-h-screen bg-[#070a11] text-slate-100 p-4 sm:p-8 space-y-10 relative overflow-hidden">
+  <!-- Ambient background glow -->
+  <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-cyan-500/10 blur-[120px] pointer-events-none rounded-full"></div>
+
+  <!-- SignalR Peer Matchmaker Card -->
+  <div class="max-w-4xl mx-auto bg-slate-900/50 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl relative z-10 space-y-6">
+    
+    <div class="flex items-center justify-between border-b border-white/10 pb-4">
+      <h1 class="text-xl font-bold text-white tracking-wide flex items-center gap-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse"></span>
+        SignalR Peer Matchmaker
+      </h1>
+      <span class="text-xs text-slate-400 font-mono">GuzoGo Engine</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      
+      <!-- Single-Select: Profession Title -->
+      <div class="space-y-2">
+        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">
+          Profession Title
+        </label>
+        
+        <div class="bg-slate-950/60 border border-white/10 rounded-xl p-2.5 min-h-[52px] flex items-center focus-within:border-cyan-400 transition">
+          <select
+            [(ngModel)]="selectedProfessionId"
+            class="bg-transparent text-xs text-slate-300 focus:outline-none w-full cursor-pointer py-1"
+          >
+            <option [ngValue]="null" disabled selected>Select a profession title...</option>
+            @for (title of allProfessionTitles; track title.id) {
+              <option [ngValue]="title.id" class="bg-slate-900 text-white">
+                {{ title.name }}
+              </option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <!-- Multi-Select Combobox: Skills -->
+  <div class="space-y-2">
+    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">
+      Skills
+    </label>
+    
+    <div class="bg-slate-950/60 border border-white/10 rounded-xl p-2.5 min-h-[52px] flex flex-wrap gap-2 items-center focus-within:border-cyan-400 transition">
+      @for (skill of selectedSkills; track skill.id) {
+        <span class="bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 text-xs px-2.5 py-1 rounded-lg flex items-center gap-1.5 font-medium">
+          {{ skill.name }}
+          <button type="button" (click)="removeSkill(skill.id)" class="text-slate-400 hover:text-white font-bold ml-1">×</button>
+        </span>
+      }
+
+      <select
+        (change)="onSelectSkill($event)"
+        class="bg-transparent text-xs text-slate-300 focus:outline-none flex-1 min-w-[120px] cursor-pointer py-1"
+      >
+        <option value="" disabled selected>+ Add skill...</option>
+        @for (skill of allSkills; track skill.id) {
+          <option value="{{ skill.id }}" class="bg-slate-900 text-white">
+            {{ skill.name }}
+          </option>
+        }
+      </select>
+    </div>
+  </div>
+      
+    </div>
+
+    <!-- Goal Radio Group -->
+    <div class="space-y-2">
+      <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">Goal</label>
+      <div class="grid grid-cols-3 gap-3">
+        <button
+          type="button"
+          (click)="selectedGoal = 'Networking'"
+          [class]="selectedGoal === 'Networking'
+            ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white border-cyan-400 font-semibold shadow-lg shadow-cyan-500/20'
+            : 'bg-slate-950/60 text-slate-400 border-white/10 hover:border-white/30'"
+          class="py-2.5 px-3 rounded-xl border text-xs sm:text-sm transition flex items-center justify-center"
+        >
+          Networking
+        </button>
+        <button
+          type="button"
+          (click)="selectedGoal = 'Hiring'"
+          [class]="selectedGoal === 'Hiring'
+            ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white border-cyan-400 font-semibold shadow-lg shadow-cyan-500/20'
+            : 'bg-slate-950/60 text-slate-400 border-white/10 hover:border-white/30'"
+          class="py-2.5 px-3 rounded-xl border text-xs sm:text-sm transition flex items-center justify-center"
+        >
+          Hiring
+        </button>
+        <button
+          type="button"
+          (click)="selectedGoal = 'Jobseeker'"
+          [class]="selectedGoal === 'Jobseeker'
+            ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white border-cyan-400 font-semibold shadow-lg shadow-cyan-500/20'
+            : 'bg-slate-950/60 text-slate-400 border-white/10 hover:border-white/30'"
+          class="py-2.5 px-3 rounded-xl border text-xs sm:text-sm transition flex items-center justify-center"
+        >
+          Jobseeker
+        </button>
+      </div>
+    </div>
+
+    <!-- Searching State Overlay / Button -->
+@if (isSearchingMatch) {
+  <div class="flex flex-col items-center gap-3 p-4 bg-slate-900 border border-indigo-500/30 rounded-xl">
+    <div class="flex items-center gap-3">
+      <span class="relative flex h-3 w-3">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-3 w-3 bg-indigo-500"></span>
+      </span>
+      <p class="text-sm font-medium text-slate-200">
+        Looking for a match... ({{ searchTimeRemaining }}s)
+      </p>
+    </div>
+    <button (click)="cancelSearch()" type="button" class="text-xs text-red-400 hover:underline">
+      Cancel Search
+    </button>
+  </div>
+} @else {
+  <button 
+    (click)="findMatch()" 
+    type="button" 
+    class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition">
+    Find Match
+  </button>
+}
+  </div>
+
+  <!-- Recent 6 Matches Grid Section -->
+  <div class="max-w-6xl mx-auto space-y-4">
+    <h2 class="text-xs uppercase tracking-wider text-slate-400 font-semibold">
+      Recent Matches ({{ recentMatches.length }}/6)
+    </h2>
+
+    @if (recentMatches.length === 0) {
+      <div class="bg-slate-900/30 border border-white/5 rounded-2xl p-8 text-center text-slate-500 text-sm">
+        No recent matches yet. Click "Find Match" above to start connecting with peers!
+      </div>
+    } @else {
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @for (match of recentMatches; track match.id) {
+          <div class="bg-slate-900/40 backdrop-blur-xl border border-white/10 rounded-2xl p-5 flex flex-col justify-between shadow-xl relative group hover:border-cyan-400/40 transition">
+            
+            <div class="space-y-3">
+              <!-- Avatar & Basic Details -->
+              <div class="flex items-start gap-3">
+                <div class="relative shrink-0">
+                  <div class="w-12 h-12 rounded-2xl bg-slate-950 border border-white/10 overflow-hidden flex items-center justify-center">
+                    @if (match.profilePictureUrl) {
+                      <img [src]="match.profilePictureUrl" [alt]="match.firstName" class="w-full h-full object-cover" />
+                    } @else {
+                      <svg class="w-6 h-6 text-slate-500" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                      </svg>
+                    }
+                  </div>
+                  <span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-emerald-500 border-2 border-[#070a11] rounded-full"></span>
+                </div>
+
+                <div class="min-w-0 flex-1">
+                  <h3 class="font-bold text-white text-base truncate">
+                    {{ match.firstName }} {{ match.lastName }}
+                  </h3>
+                  <p class="text-xs text-cyan-400 font-medium truncate">{{ match.professionTitle }}</p>
+                  <p class="text-[11px] text-slate-400">{{ match.city }}, {{ match.country }}</p>
+                </div>
+              </div>
+
+              <!-- Dynamic Badge from professionCategory -->
+              <div>
+                <span class="inline-block bg-indigo-500/10 border border-indigo-400/30 text-indigo-300 text-[10px] font-semibold uppercase px-2 py-0.5 rounded-md">
+                  {{ match.professionCategory }}
+                </span>
+              </div>
+
+              <!-- Bio -->
+              <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed">
+                {{ match.bio }}
+              </p>
+            </div>
+
+            <!-- Bottom Actions: Only View Profile Button -->
+            <div class="mt-5 pt-3 border-t border-white/5">
+              <button
+                (click)="viewProfile(match.userId)"
+                class="w-full py-2.5 rounded-xl bg-slate-950/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-white/10 transition"
+              >
+                View Profile
+              </button>
+            </div>
+
+          </div>
+        }
+      </div>
+    }
+  </div>
+  
+</main>

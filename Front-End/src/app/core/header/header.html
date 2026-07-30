@@ -1,0 +1,26 @@
+<header [class.scrolled]="isScrolled" class="header">
+  <div class="header-container">
+    <div class="logo">
+      <span class="logo-mark">G</span>
+      <span class="logo-text">Guzo<span class="gradient-text">Go</span></span>
+    </div>
+
+    <button class="menu-toggle" type="button" (click)="toggleMenu()" aria-label="Toggle navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <div class="header-actions">
+      <nav class="nav-links" [class.open]="isMenuOpen">
+        <a href="#home" (click)="closeMenu()">Home</a>
+        <a href="#features" (click)="closeMenu()">Features</a>
+      </nav>
+
+      <div class="actions" [class.open]="isMenuOpen">
+        <button class="btn-secondary">Sign In</button>
+        <button class="btn-primary">Get Started</button>
+      </div>
+    </div>
+  </div>
+</header>

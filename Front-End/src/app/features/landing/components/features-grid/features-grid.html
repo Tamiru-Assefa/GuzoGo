@@ -1,0 +1,115 @@
+<section class="features-section" id="features">
+  <div class="features-container">
+    <div class="features-header">
+      <div class="glow-accent">Powerful Synergy</div>
+      <h2 class="features-title">Engineered for Modern Networking</h2>
+      <p class="features-subtitle">A voice-first professional ecosystem that replaces superficial feed scrolling with actual relationships.</p>
+    </div>
+
+    <div class="features-grid">
+      <!-- Feature Card 1: Live Voice & Video -->
+      <div class="feature-card">
+        <div class="feature-content">
+          <div class="icon-wrapper">
+            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+            </svg>
+          </div>
+          <h3 class="feature-card-title">Live Voice & Video</h3>
+          <p class="feature-card-desc">Meet and converse instantly with peers over high-fidelity audio. Camera is optional.</p>
+        </div>
+
+        <div class="animation-container anim-voice" (click)="toggleMic()">
+          <div class="mic-status-badge" [class.mic-on]="isMicActive">
+            <span class="status-dot"></span>
+            <span>{{ isMicActive ? 'AUDIO STREAM LIVE' : 'MIC MUTED' }}</span>
+          </div>
+          <div class="waveform" [class.waveform-paused]="!isMicActive">
+            <div *ngFor="let barHeight of soundBars" class="wave-bar" [style.height.%]="barHeight"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature Card 2: Smart Matching -->
+      <div class="feature-card">
+        <div class="feature-content">
+          <div class="icon-wrapper">
+            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </div>
+          <h3 class="feature-card-title">Smart Matching</h3>
+          <p class="feature-card-desc">Algorithmic pair-connecting based on complementary skill sets and active goals.</p>
+        </div>
+
+        <div class="animation-container anim-matching">
+          <div class="radar-circle">
+            <div class="radar-sweep"></div>
+            <div class="match-ping" [class.active]="isMatchFound"></div>
+          </div>
+          <div class="matching-status">
+            <span>{{ isMatchFound ? 'MATCH FOUND!' : 'SCANNING PEERS...' }}</span>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" [style.width.%]="matchingProgress"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature Card 3: Temporary Rooms -->
+      <div class="feature-card">
+        <div class="feature-content">
+          <div class="icon-wrapper">
+            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+          </div>
+          <h3 class="feature-card-title">Temporary Rooms</h3>
+          <p class="feature-card-desc">Focused sprint spaces created dynamically that automatically dissolve when done.</p>
+        </div>
+
+        <div class="animation-container anim-community">
+          <div class="avatar-canvas">
+            <div *ngFor="let avatar of activeAvatars" 
+                 class="user-avatar" 
+                 [style.background-color]="avatar.color"
+                 [style.left.%]="avatar.position.x" 
+                 [style.top.%]="avatar.position.y">
+              {{ avatar.initial }}
+            </div>
+          </div>
+          <div class="room-counter">
+            <span class="live-dot"></span>
+            <span>SPRINT LOBBY: {{ memberCount }}/{{ maxMembers }} ONLINE</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature Card 4: Professional Reputation -->
+      <div class="feature-card">
+        <div class="feature-content">
+          <div class="icon-wrapper">
+            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+          </div>
+          <h3 class="feature-card-title">Professional Reputation</h3>
+          <p class="feature-card-desc">Earn authentic peer trust ratings after every meaningful interaction.</p>
+        </div>
+
+        <div class="animation-container anim-reputation">
+          <div class="rating-badge" [class.glow]="reputationBadgeGlow">
+            <span class="rating-score">{{ starRating }}</span>
+            <div class="stars">★★★★★</div>
+          </div>
+          <div class="rep-label">VERIFIED TRUST INDEX</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
