@@ -1,0 +1,67 @@
+﻿//using guzogo.Data;
+//using guzogo.DTOs.Auth;
+//using guzogo.Entities;
+//using guzogo.Services.Interface;
+using guzogo.Data;
+using guzogo.DTOs.Auth;
+using guzogo.Entities;
+using guzogo.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+
+namespace guzogo.Services.Implementation
+{
+    public class AuthService : IAuthService
+    {
+        private readonly ApplicationDbContext _context;
+        private readonly PasswordHasher<User> _passwordHasher;
+
+
+        public AuthService(ApplicationDbContext context)
+        {
+            _context = context;
+            _passwordHasher = new PasswordHasher<User>();
+        }
+
+
+        public async Task<bool> RegisterAsync(RegisterDto registerDto)
+        {
+            // Check if email already exists
+            var existingUser = await _context.Users
+                .AnyAsync(u => u.Email == registerDto.Email);
+
+
+            if (existingUser)
+            {
+                return false;
+            }
+
+
+            // Create new user
+            var user = new User
+            {
+                Email = registerDto.Email,
+                UserName = registerDto.UserName,
+
+                // Temporary password storage
+                // We will replace this with hashing next
+                
+                PasswordHash = _passwordHasher.HashPassword(
+                    user,
+                    registerDto.Password
+                ),
+
+                CreatedAt = DateTime.UtcNow
+            };
+
+
+            _context.Users.Add(user);
+
+
+            await _context.SaveChangesAsync();
+
+
+            return true;
+        }
+    }
+}

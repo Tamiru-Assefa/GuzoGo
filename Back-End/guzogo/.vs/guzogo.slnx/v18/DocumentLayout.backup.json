@@ -1,0 +1,998 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\services\\implementation\\matchingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\services\\implementation\\matchingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\services\\implementation\\matchsessionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\services\\implementation\\matchsessionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\controllers\\matchsessioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\controllers\\matchsessioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\enums\\matchsessionstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\enums\\matchsessionstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\dtos\\matching\\matchresultdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\dtos\\matching\\matchresultdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\services\\implementation\\matchpreferenceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\services\\implementation\\matchpreferenceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\controllers\\matchpreferencecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\controllers\\matchpreferencecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\dtos\\matchpreference\\creatematchpreferencedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\dtos\\matchpreference\\creatematchpreferencedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\dtos\\matchpreference\\matchpreferenceresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\dtos\\matchpreference\\matchpreferenceresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\hubs\\guzohub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\hubs\\guzohub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\entities\\preferenceskill.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\entities\\preferenceskill.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\entities\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\entities\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\entities\\matchpreference.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\entities\\matchpreference.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\controllers\\matchingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\controllers\\matchingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\controllers\\profilecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\controllers\\profilecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\services\\implementation\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\services\\implementation\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\dtos\\auth\\registerdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\dtos\\auth\\registerdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\dtos\\auth\\loginresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\dtos\\auth\\loginresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\dtos\\auth\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\dtos\\auth\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\entities\\matchsession.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\entities\\matchsession.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\helpers\\jwttokengenerator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\helpers\\jwttokengenerator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\enums\\experiencelevel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\enums\\experiencelevel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\services\\interfaces\\imatchsessionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\services\\interfaces\\imatchsessionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\entities\\userstatistic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\entities\\userstatistic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\services\\matching\\matchscorecalculator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\services\\matching\\matchscorecalculator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\dtos\\matching\\matcheduserdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\dtos\\matching\\matcheduserdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\entities\\skill.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\entities\\skill.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\entities\\profile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\entities\\profile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\services\\interfaces\\iuserpresenceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\services\\interfaces\\iuserpresenceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\entities\\professiontitle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\entities\\professiontitle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\services\\interfaces\\imatchingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\services\\interfaces\\imatchingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\services\\interfaces\\imatchpreferenceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\services\\interfaces\\imatchpreferenceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\controllers\\presencecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\controllers\\presencecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\services\\implementation\\userpresenceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\services\\implementation\\userpresenceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\dtos\\presence\\presenceresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\dtos\\presence\\presenceresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\dtos\\presence\\updatepresencedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\dtos\\presence\\updatepresencedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\entities\\userpresence.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\entities\\userpresence.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\controllers\\experiencecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\controllers\\experiencecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\services\\implementation\\experienceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\services\\implementation\\experienceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\services\\interfaces\\iexperienceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\services\\interfaces\\iexperienceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\dtos\\experience\\experiencedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\dtos\\experience\\experiencedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\dtos\\experience\\createexperiencedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\dtos\\experience\\createexperiencedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\entities\\experience.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\entities\\experience.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\controllers\\skillcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\controllers\\skillcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\services\\implementation\\skillservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\services\\implementation\\skillservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\services\\interfaces\\iskillservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\services\\interfaces\\iskillservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\entities\\profileskill.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\entities\\profileskill.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\dtos\\skill\\assignskillsdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\dtos\\skill\\assignskillsdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\dtos\\skill\\skilldto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\dtos\\skill\\skilldto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\services\\interfaces\\iauthservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\services\\interfaces\\iauthservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\dtos\\profile\\profilelistresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\dtos\\profile\\profilelistresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\dtos\\profile\\profileresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\dtos\\profile\\profileresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\dtos\\profile\\profilecarddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\dtos\\profile\\profilecarddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\dtos\\profile\\publicprofiledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\dtos\\profile\\publicprofiledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\dtos\\profile\\updateprofiledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\dtos\\profile\\updateprofiledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\dtos\\profile\\createprofiledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\dtos\\profile\\createprofiledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\entities\\professioncategory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\entities\\professioncategory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "MatchSessionStatus.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Enums\\MatchSessionStatus.cs",
+              "RelativeDocumentMoniker": "guzogo\\Enums\\MatchSessionStatus.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Enums\\MatchSessionStatus.cs",
+              "RelativeToolTip": "guzogo\\Enums\\MatchSessionStatus.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-24T13:44:44.527Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MatchSessionController.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Controllers\\MatchSessionController.cs",
+              "RelativeDocumentMoniker": "guzogo\\Controllers\\MatchSessionController.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Controllers\\MatchSessionController.cs",
+              "RelativeToolTip": "guzogo\\Controllers\\MatchSessionController.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAAwCAAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-24T13:12:46.895Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MatchingService.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Implementation\\MatchingService.cs",
+              "RelativeDocumentMoniker": "guzogo\\Services\\Implementation\\MatchingService.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Implementation\\MatchingService.cs",
+              "RelativeToolTip": "guzogo\\Services\\Implementation\\MatchingService.cs",
+              "ViewState": "AgIAALUAAAAAAAAAAAAowMEAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-28T14:02:08.85Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "guzogo\\Properties\\launchSettings.json",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Properties\\launchSettings.json",
+              "RelativeToolTip": "guzogo\\Properties\\launchSettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-07-25T17:24:40.837Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MatchSessionService.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Implementation\\MatchSessionService.cs",
+              "RelativeDocumentMoniker": "guzogo\\Services\\Implementation\\MatchSessionService.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Implementation\\MatchSessionService.cs",
+              "RelativeToolTip": "guzogo\\Services\\Implementation\\MatchSessionService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAF0AAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-24T12:59:10.666Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "MatchResultDto.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Matching\\MatchResultDto.cs",
+              "RelativeDocumentMoniker": "guzogo\\DTOs\\Matching\\MatchResultDto.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Matching\\MatchResultDto.cs",
+              "RelativeToolTip": "guzogo\\DTOs\\Matching\\MatchResultDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-24T07:05:45.785Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "MatchPreferenceService.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Implementation\\MatchPreferenceService.cs",
+              "RelativeDocumentMoniker": "guzogo\\Services\\Implementation\\MatchPreferenceService.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Implementation\\MatchPreferenceService.cs",
+              "RelativeToolTip": "guzogo\\Services\\Implementation\\MatchPreferenceService.cs",
+              "ViewState": "AgIAADkAAAAAAAAAAAAvwEMAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T17:08:30.741Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "MatchPreferenceController.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Controllers\\MatchPreferenceController.cs",
+              "RelativeDocumentMoniker": "guzogo\\Controllers\\MatchPreferenceController.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Controllers\\MatchPreferenceController.cs",
+              "RelativeToolTip": "guzogo\\Controllers\\MatchPreferenceController.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T17:11:23.116Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "CreateMatchPreferenceDto.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\MatchPreference\\CreateMatchPreferenceDto.cs",
+              "RelativeDocumentMoniker": "guzogo\\DTOs\\MatchPreference\\CreateMatchPreferenceDto.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\MatchPreference\\CreateMatchPreferenceDto.cs",
+              "RelativeToolTip": "guzogo\\DTOs\\MatchPreference\\CreateMatchPreferenceDto.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAzwBAAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-28T12:43:30.02Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "MatchPreferenceResponseDto.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\MatchPreference\\MatchPreferenceResponseDto.cs",
+              "RelativeDocumentMoniker": "guzogo\\DTOs\\MatchPreference\\MatchPreferenceResponseDto.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\MatchPreference\\MatchPreferenceResponseDto.cs",
+              "RelativeToolTip": "guzogo\\DTOs\\MatchPreference\\MatchPreferenceResponseDto.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAQwBEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T17:06:58.192Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Program.cs",
+              "RelativeDocumentMoniker": "guzogo\\Program.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Program.cs",
+              "RelativeToolTip": "guzogo\\Program.cs",
+              "ViewState": "AgIAAE4AAAAAAAAAAAAYwFwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-22T08:07:22.998Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "GuzoHub.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Hubs\\GuzoHub.cs",
+              "RelativeDocumentMoniker": "guzogo\\Hubs\\GuzoHub.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Hubs\\GuzoHub.cs",
+              "RelativeToolTip": "guzogo\\Hubs\\GuzoHub.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAmwA8AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-24T16:35:33.822Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Entities\\User.cs",
+              "RelativeDocumentMoniker": "guzogo\\Entities\\User.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Entities\\User.cs",
+              "RelativeToolTip": "guzogo\\Entities\\User.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAwwCIAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-22T08:05:05.249Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "PreferenceSkill.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Entities\\PreferenceSkill.cs",
+              "RelativeDocumentMoniker": "guzogo\\Entities\\PreferenceSkill.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Entities\\PreferenceSkill.cs",
+              "RelativeToolTip": "guzogo\\Entities\\PreferenceSkill.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAzwAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-24T09:19:09.301Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "MatchPreference.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Entities\\MatchPreference.cs",
+              "RelativeDocumentMoniker": "guzogo\\Entities\\MatchPreference.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Entities\\MatchPreference.cs",
+              "RelativeToolTip": "guzogo\\Entities\\MatchPreference.cs",
+              "ViewState": "AgIAACMAAAAAAAAAAAAswDAAAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T16:13:02.409Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "MatchingController.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Controllers\\MatchingController.cs",
+              "RelativeDocumentMoniker": "guzogo\\Controllers\\MatchingController.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Controllers\\MatchingController.cs",
+              "RelativeToolTip": "guzogo\\Controllers\\MatchingController.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAowCAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-24T07:41:12.071Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "ProfileController.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Controllers\\ProfileController.cs",
+              "RelativeDocumentMoniker": "guzogo\\Controllers\\ProfileController.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Controllers\\ProfileController.cs",
+              "RelativeToolTip": "guzogo\\Controllers\\ProfileController.cs",
+              "ViewState": "AgIAAFoAAAAAAAAAAAAnwFkAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T08:07:37.722Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\appsettings.json",
+              "RelativeDocumentMoniker": "guzogo\\appsettings.json",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\appsettings.json",
+              "RelativeToolTip": "guzogo\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-07-22T11:44:00.906Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "guzogo\\Controllers\\AuthController.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "guzogo\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAYwCgAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-22T08:23:57.962Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "RegisterDto.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Auth\\RegisterDto.cs",
+              "RelativeDocumentMoniker": "guzogo\\DTOs\\Auth\\RegisterDto.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Auth\\RegisterDto.cs",
+              "RelativeToolTip": "guzogo\\DTOs\\Auth\\RegisterDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-22T08:14:07.347Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "AuthService.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Implementation\\AuthService.cs",
+              "RelativeDocumentMoniker": "guzogo\\Services\\Implementation\\AuthService.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Implementation\\AuthService.cs",
+              "RelativeToolTip": "guzogo\\Services\\Implementation\\AuthService.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAMwFwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-22T08:19:15.636Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "MatchSession.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Entities\\MatchSession.cs",
+              "RelativeDocumentMoniker": "guzogo\\Entities\\MatchSession.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Entities\\MatchSession.cs",
+              "RelativeToolTip": "guzogo\\Entities\\MatchSession.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAAwwCIAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T16:13:15.737Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "LoginResponseDto.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Auth\\LoginResponseDto.cs",
+              "RelativeDocumentMoniker": "guzogo\\DTOs\\Auth\\LoginResponseDto.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Auth\\LoginResponseDto.cs",
+              "RelativeToolTip": "guzogo\\DTOs\\Auth\\LoginResponseDto.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAqwAwAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-22T11:54:20.124Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "LoginDto.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Auth\\LoginDto.cs",
+              "RelativeDocumentMoniker": "guzogo\\DTOs\\Auth\\LoginDto.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Auth\\LoginDto.cs",
+              "RelativeToolTip": "guzogo\\DTOs\\Auth\\LoginDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-22T11:41:42.675Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "JwtTokenGenerator.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Helpers\\JwtTokenGenerator.cs",
+              "RelativeDocumentMoniker": "guzogo\\Helpers\\JwtTokenGenerator.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Helpers\\JwtTokenGenerator.cs",
+              "RelativeToolTip": "guzogo\\Helpers\\JwtTokenGenerator.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAiwCIAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-22T11:46:08.574Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "IMatchSessionService.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Interfaces\\IMatchSessionService.cs",
+              "RelativeDocumentMoniker": "guzogo\\Services\\Interfaces\\IMatchSessionService.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Interfaces\\IMatchSessionService.cs",
+              "RelativeToolTip": "guzogo\\Services\\Interfaces\\IMatchSessionService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-24T12:58:34.929Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "ExperienceLevel.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Enums\\ExperienceLevel.cs",
+              "RelativeDocumentMoniker": "guzogo\\Enums\\ExperienceLevel.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Enums\\ExperienceLevel.cs",
+              "RelativeToolTip": "guzogo\\Enums\\ExperienceLevel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T07:08:39.387Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "UserStatistic.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Entities\\UserStatistic.cs",
+              "RelativeDocumentMoniker": "guzogo\\Entities\\UserStatistic.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Entities\\UserStatistic.cs",
+              "RelativeToolTip": "guzogo\\Entities\\UserStatistic.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAA1wB8AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T16:13:31.5Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "MatchScoreCalculator.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Matching\\MatchScoreCalculator.cs",
+              "RelativeDocumentMoniker": "guzogo\\Services\\Matching\\MatchScoreCalculator.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Matching\\MatchScoreCalculator.cs",
+              "RelativeToolTip": "guzogo\\Services\\Matching\\MatchScoreCalculator.cs",
+              "ViewState": "AgIAACIAAAAAAAAAAAAQwDEAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-24T07:10:29.664Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "MatchedUserDto.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Matching\\MatchedUserDto.cs",
+              "RelativeDocumentMoniker": "guzogo\\DTOs\\Matching\\MatchedUserDto.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Matching\\MatchedUserDto.cs",
+              "RelativeToolTip": "guzogo\\DTOs\\Matching\\MatchedUserDto.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAAwAwAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-24T07:05:19.047Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "Skill.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Entities\\Skill.cs",
+              "RelativeDocumentMoniker": "guzogo\\Entities\\Skill.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Entities\\Skill.cs",
+              "RelativeToolTip": "guzogo\\Entities\\Skill.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T12:00:52.691Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "IUserPresenceService.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Interfaces\\IUserPresenceService.cs",
+              "RelativeDocumentMoniker": "guzogo\\Services\\Interfaces\\IUserPresenceService.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Interfaces\\IUserPresenceService.cs",
+              "RelativeToolTip": "guzogo\\Services\\Interfaces\\IUserPresenceService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T16:34:16.036Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "Profile.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Entities\\Profile.cs",
+              "RelativeDocumentMoniker": "guzogo\\Entities\\Profile.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Entities\\Profile.cs",
+              "RelativeToolTip": "guzogo\\Entities\\Profile.cs",
+              "ViewState": "AgIAAD4AAAAAAAAAAAAwwEkAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T07:14:28.142Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "ProfessionTitle.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Entities\\ProfessionTitle.cs",
+              "RelativeDocumentMoniker": "guzogo\\Entities\\ProfessionTitle.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Entities\\ProfessionTitle.cs",
+              "RelativeToolTip": "guzogo\\Entities\\ProfessionTitle.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAIBQwBwAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T07:10:11.193Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "IMatchingService.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Interfaces\\IMatchingService.cs",
+              "RelativeDocumentMoniker": "guzogo\\Services\\Interfaces\\IMatchingService.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Interfaces\\IMatchingService.cs",
+              "RelativeToolTip": "guzogo\\Services\\Interfaces\\IMatchingService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-24T07:06:37.991Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "IMatchPreferenceService.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Interfaces\\IMatchPreferenceService.cs",
+              "RelativeDocumentMoniker": "guzogo\\Services\\Interfaces\\IMatchPreferenceService.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Interfaces\\IMatchPreferenceService.cs",
+              "RelativeToolTip": "guzogo\\Services\\Interfaces\\IMatchPreferenceService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T17:07:50.077Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "PresenceController.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Controllers\\PresenceController.cs",
+              "RelativeDocumentMoniker": "guzogo\\Controllers\\PresenceController.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Controllers\\PresenceController.cs",
+              "RelativeToolTip": "guzogo\\Controllers\\PresenceController.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAmwDQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T16:39:10.943Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "UserPresenceService.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Implementation\\UserPresenceService.cs",
+              "RelativeDocumentMoniker": "guzogo\\Services\\Implementation\\UserPresenceService.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Implementation\\UserPresenceService.cs",
+              "RelativeToolTip": "guzogo\\Services\\Implementation\\UserPresenceService.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAIBJwA0AAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T16:35:04.674Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "PresenceResponseDto.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Presence\\PresenceResponseDto.cs",
+              "RelativeDocumentMoniker": "guzogo\\DTOs\\Presence\\PresenceResponseDto.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Presence\\PresenceResponseDto.cs",
+              "RelativeToolTip": "guzogo\\DTOs\\Presence\\PresenceResponseDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T16:33:27.513Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "UpdatePresenceDto.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Presence\\UpdatePresenceDto.cs",
+              "RelativeDocumentMoniker": "guzogo\\DTOs\\Presence\\UpdatePresenceDto.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Presence\\UpdatePresenceDto.cs",
+              "RelativeToolTip": "guzogo\\DTOs\\Presence\\UpdatePresenceDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T16:32:51.695Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
+              "Title": "UserPresence.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Entities\\UserPresence.cs",
+              "RelativeDocumentMoniker": "guzogo\\Entities\\UserPresence.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Entities\\UserPresence.cs",
+              "RelativeToolTip": "guzogo\\Entities\\UserPresence.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T16:12:40.978Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 41,
+              "Title": "ExperienceController.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Controllers\\ExperienceController.cs",
+              "RelativeDocumentMoniker": "guzogo\\Controllers\\ExperienceController.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Controllers\\ExperienceController.cs",
+              "RelativeToolTip": "guzogo\\Controllers\\ExperienceController.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAAYwCUAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T14:12:26.164Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 42,
+              "Title": "ExperienceService.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Implementation\\ExperienceService.cs",
+              "RelativeDocumentMoniker": "guzogo\\Services\\Implementation\\ExperienceService.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Implementation\\ExperienceService.cs",
+              "RelativeToolTip": "guzogo\\Services\\Implementation\\ExperienceService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T14:04:14.731Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 43,
+              "Title": "IExperienceService.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Interfaces\\IExperienceService.cs",
+              "RelativeDocumentMoniker": "guzogo\\Services\\Interfaces\\IExperienceService.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Interfaces\\IExperienceService.cs",
+              "RelativeToolTip": "guzogo\\Services\\Interfaces\\IExperienceService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T14:03:15.046Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 44,
+              "Title": "ExperienceDto.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Experience\\ExperienceDto.cs",
+              "RelativeDocumentMoniker": "guzogo\\DTOs\\Experience\\ExperienceDto.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Experience\\ExperienceDto.cs",
+              "RelativeToolTip": "guzogo\\DTOs\\Experience\\ExperienceDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T14:01:04.353Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 45,
+              "Title": "CreateExperienceDto.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Experience\\CreateExperienceDto.cs",
+              "RelativeDocumentMoniker": "guzogo\\DTOs\\Experience\\CreateExperienceDto.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Experience\\CreateExperienceDto.cs",
+              "RelativeToolTip": "guzogo\\DTOs\\Experience\\CreateExperienceDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T13:58:46.929Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 46,
+              "Title": "Experience.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Entities\\Experience.cs",
+              "RelativeDocumentMoniker": "guzogo\\Entities\\Experience.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Entities\\Experience.cs",
+              "RelativeToolTip": "guzogo\\Entities\\Experience.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAowBEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T13:52:27.705Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 49,
+              "Title": "ISkillService.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Interfaces\\ISkillService.cs",
+              "RelativeDocumentMoniker": "guzogo\\Services\\Interfaces\\ISkillService.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Interfaces\\ISkillService.cs",
+              "RelativeToolTip": "guzogo\\Services\\Interfaces\\ISkillService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAABPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T12:19:32.113Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 48,
+              "Title": "SkillService.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Implementation\\SkillService.cs",
+              "RelativeDocumentMoniker": "guzogo\\Services\\Implementation\\SkillService.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Implementation\\SkillService.cs",
+              "RelativeToolTip": "guzogo\\Services\\Implementation\\SkillService.cs",
+              "ViewState": "AgIAAE0AAAAAAAAAAAAowGgAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T12:20:21.77Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 47,
+              "Title": "SkillController.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Controllers\\SkillController.cs",
+              "RelativeDocumentMoniker": "guzogo\\Controllers\\SkillController.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Controllers\\SkillController.cs",
+              "RelativeToolTip": "guzogo\\Controllers\\SkillController.cs",
+              "ViewState": "AgIAADYAAAAAAAAAAAAowEYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T12:24:42.068Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 50,
+              "Title": "ProfileSkill.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Entities\\ProfileSkill.cs",
+              "RelativeDocumentMoniker": "guzogo\\Entities\\ProfileSkill.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Entities\\ProfileSkill.cs",
+              "RelativeToolTip": "guzogo\\Entities\\ProfileSkill.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T12:01:22.26Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 52,
+              "Title": "SkillDto.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Skill\\SkillDto.cs",
+              "RelativeDocumentMoniker": "guzogo\\DTOs\\Skill\\SkillDto.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Skill\\SkillDto.cs",
+              "RelativeToolTip": "guzogo\\DTOs\\Skill\\SkillDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T12:18:15.081Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 51,
+              "Title": "AssignSkillsDto.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Skill\\AssignSkillsDto.cs",
+              "RelativeDocumentMoniker": "guzogo\\DTOs\\Skill\\AssignSkillsDto.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Skill\\AssignSkillsDto.cs",
+              "RelativeToolTip": "guzogo\\DTOs\\Skill\\AssignSkillsDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T12:56:29.192Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 53,
+              "Title": "IAuthService.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Interfaces\\IAuthService.cs",
+              "RelativeDocumentMoniker": "guzogo\\Services\\Interfaces\\IAuthService.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Interfaces\\IAuthService.cs",
+              "RelativeToolTip": "guzogo\\Services\\Interfaces\\IAuthService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-22T08:17:44.926Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 54,
+              "Title": "ProfileListResponseDto.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Profile\\ProfileListResponseDto.cs",
+              "RelativeDocumentMoniker": "guzogo\\DTOs\\Profile\\ProfileListResponseDto.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Profile\\ProfileListResponseDto.cs",
+              "RelativeToolTip": "guzogo\\DTOs\\Profile\\ProfileListResponseDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAABTAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T11:49:57.123Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 57,
+              "Title": "PublicProfileDto.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Profile\\PublicProfileDto.cs",
+              "RelativeDocumentMoniker": "guzogo\\DTOs\\Profile\\PublicProfileDto.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Profile\\PublicProfileDto.cs",
+              "RelativeToolTip": "guzogo\\DTOs\\Profile\\PublicProfileDto.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAmwCcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T08:54:29.344Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 55,
+              "Title": "ProfileResponseDto.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Profile\\ProfileResponseDto.cs",
+              "RelativeDocumentMoniker": "guzogo\\DTOs\\Profile\\ProfileResponseDto.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Profile\\ProfileResponseDto.cs",
+              "RelativeToolTip": "guzogo\\DTOs\\Profile\\ProfileResponseDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T08:22:55.209Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 56,
+              "Title": "ProfileCardDto.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Profile\\ProfileCardDto.cs",
+              "RelativeDocumentMoniker": "guzogo\\DTOs\\Profile\\ProfileCardDto.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Profile\\ProfileCardDto.cs",
+              "RelativeToolTip": "guzogo\\DTOs\\Profile\\ProfileCardDto.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAmwA0AAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T09:01:49.818Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 58,
+              "Title": "UpdateProfileDto.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Profile\\UpdateProfileDto.cs",
+              "RelativeDocumentMoniker": "guzogo\\DTOs\\Profile\\UpdateProfileDto.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Profile\\UpdateProfileDto.cs",
+              "RelativeToolTip": "guzogo\\DTOs\\Profile\\UpdateProfileDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T08:04:45.015Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 59,
+              "Title": "CreateProfileDto.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Profile\\CreateProfileDto.cs",
+              "RelativeDocumentMoniker": "guzogo\\DTOs\\Profile\\CreateProfileDto.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Profile\\CreateProfileDto.cs",
+              "RelativeToolTip": "guzogo\\DTOs\\Profile\\CreateProfileDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T08:04:13.212Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 60,
+              "Title": "ProfessionCategory.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Entities\\ProfessionCategory.cs",
+              "RelativeDocumentMoniker": "guzogo\\Entities\\ProfessionCategory.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Entities\\ProfessionCategory.cs",
+              "RelativeToolTip": "guzogo\\Entities\\ProfessionCategory.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAqwBQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-23T07:09:14.774Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
