@@ -1,4 +1,5 @@
 ﻿using guzogo.Entities;
+using guzogo.Entities.Spaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace guzogo.Data
@@ -31,6 +32,13 @@ namespace guzogo.Data
         public DbSet<UserStatistic> UserStatistics { get; set; }
 
         public DbSet<PreferenceSkill> PreferenceSkills { get; set; }
+
+        //SPACES ROOM FEATURE ENTITIES
+        public DbSet<RoomCategory> RoomCategories { get; set; }
+        public DbSet<Room> Rooms { get; set; }
+        public DbSet<RoomParticipant> RoomParticipants { get; set; }
+        public DbSet<RoomBannedUser> RoomBannedUsers { get; set; }
+        public DbSet<RoomMessage> RoomMessages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -126,6 +134,35 @@ namespace guzogo.Data
                 .HasOne(x => x.Skill)
                 .WithMany(x => x.PreferenceSkills)
                 .HasForeignKey(x => x.SkillId);
+
+            //SPACES ROOM FEATURE ENTITIES
+
+            modelBuilder.Entity<Room>()
+        .HasOne(r => r.HostUser)
+        .WithMany(u => u.HostedRooms)
+        .HasForeignKey(r => r.HostUserId)
+        .OnDelete(DeleteBehavior.Restrict); // Prevent deleting a User from wiping all their rooms aggressively
+
+            // 2. Room Participant Relationship
+            modelBuilder.Entity<RoomParticipant>()
+                .HasOne(rp => rp.User)
+                .WithMany(u => u.RoomParticipants)
+                .HasForeignKey(rp => rp.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // 3. Room Banned User Relationship
+            modelBuilder.Entity<RoomBannedUser>()
+                .HasOne(rb => rb.User)
+                .WithMany(u => u.BannedFromRooms)
+                .HasForeignKey(rb => rb.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // 4. Room Messages Relationship
+            modelBuilder.Entity<RoomMessage>()
+                .HasOne(rm => rm.SenderUser)
+                .WithMany(u => u.RoomMessages)
+                .HasForeignKey(rm => rm.SenderUserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
 
         }

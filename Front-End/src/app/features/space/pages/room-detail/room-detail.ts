@@ -1,0 +1,628 @@
+// features/space/pages/room-detail/room-detail.component.ts
+
+import { Component, OnInit, OnDestroy, NgZone, ChangeDetectorRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SpacesService } from '../../services/spaces';
+import { SignalRService, SpaceStateUpdate } from '../../../../core/services/signalr';
+import { RtcService } from '../../../../core/services/rtc';
+import { Subscription } from 'rxjs';
+import { ViewChildren, QueryList, ElementRef, AfterViewInit } from '@angular/core';
+
+interface Participant {
+  userId: number;
+  fullName: string;
+  profilePictureUrl?: string;
+  isVideoOn: boolean;
+  isMuted: boolean;
+  isScreenSharing: boolean;
+  isHandRaised: boolean;
+  isSpeaking?: boolean;
+  stream?: MediaStream;
+}
+
+interface ChatMessage {
+  id?: number;
+  senderFullName?: string;
+  senderUserId?: string | number;
+  content: string;
+  sentAt: string | Date;
+  isSystem?: boolean;
+}
+
+
+@Component({
+  selector: 'app-room-detail',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: './room-detail.html',
+  styleUrls: ['./room-detail.scss']
+})
+export class RoomDetailComponent implements OnInit, OnDestroy {
+  @ViewChildren('videoPlayer') videoPlayers!: QueryList<ElementRef<HTMLVideoElement>>;
+  private subscriptions: Subscription[] = [];
+
+  public roomId!: number;
+  public room: any = null;
+  public participants: Participant[] = [];
+  public messages: ChatMessage[] = [];
+  public newMessageText = '';
+
+  public currentUserId = Number(localStorage.getItem('userId') || '0');
+  public isMuted = false;
+  public isVideoOn = false;
+  public isScreenSharing = false;
+  public isHandRaised = false;
+  public isChatOpen = true;
+  public isMediaReady = false;
+  public isHost = false;
+  public isMutedByHost = false; 
+  public isKicked = false;
+  public kickedMessage = '';
+
+  constructor(
+    private route: ActivatedRoute,
+    public router: Router,
+    private spacesService: SpacesService,
+    private signalRService: SignalRService,
+    public rtcService: RtcService,
+    private cdr: ChangeDetectorRef,   
+    private ngZone: NgZone   
+  ) {}
+
+  async ngOnInit(): Promise<void> {
+  this.roomId = Number(this.route.snapshot.paramMap.get('id'));
+  if (!this.roomId) return;
+
+  // Always get fresh userId from localStorage
+  this.currentUserId = Number(localStorage.getItem('userId') || '0');
+  console.log('🆔 Current User ID:', this.currentUserId);
+
+  await this.initRoom();
+}
+
+  private async initRoom(): Promise<void> {
+  try {
+    console.log('🚀 initRoom STARTED for room:', this.roomId);
+    
+    // Reset state for fresh entry
+    this.participants = [];
+    this.messages = [];
+    this.isMediaReady = false;
+    this.isVideoOn = false;
+    this.isMuted = true;
+    this.isScreenSharing = false;
+    this.isHandRaised = false;
+    
+    // 1. Load room data from API
+    console.log('📡 Loading room data...');
+    await this.loadRoomData();
+    console.log('✅ Room data loaded, participants:', this.participants.length);
+
+    // 2. Connect SignalR & join group
+    console.log('🔌 Connecting SignalR...');
+    await this.initSignalR();
+    console.log('✅ SignalR connected');
+
+    // 3. Start local media AFTER room and SignalR are ready
+    console.log('🎥 Starting local media...');
+    await this.startLocalMedia();
+    console.log('✅ Local media started');
+
+    // 4. Setup WebRTC signaling listeners
+    console.log('🔗 Setting up WebRTC...');
+    this.initWebRTC();
+
+    // 5. Load chat history
+    this.loadChatMessages();
+
+    // 6. Create peer connections for existing participants
+    const others = this.participants.filter(p => p.userId !== this.currentUserId);
+    console.log(`👥 Creating peer connections for ${others.length} other participants`);
+    others.forEach(p => {
+      this.rtcService.createOffer(
+        this.roomId,
+        p.userId.toString(),
+        (userId, stream) => this.onRemoteStream(userId, stream)
+      );
+    });
+
+  } catch (error) {
+    console.error('❌ FAILED to initialize room:', error);
+  }
+}
+
+  /** Start camera & microphone */
+  private async startLocalMedia(): Promise<void> {
+  try {
+    console.log('📹 Requesting getUserMedia...');
+    const stream = await this.rtcService.getLocalStream();
+    console.log('✅ Got local stream, tracks:', stream.getTracks().length);
+    
+    this.isVideoOn = true;
+    this.isMuted = false;
+    this.isMediaReady = true;
+
+    // Find or wait for current user in participants
+    let me = this.participants.find(p => p.userId === this.currentUserId);
+    
+    if (!me) {
+      // Participant not loaded yet - add self manually
+      console.warn('⚠️ Current user not in participants, adding manually');
+      me = {
+        userId: this.currentUserId,
+        fullName: 'You',
+        profilePictureUrl: undefined,
+        isVideoOn: true,
+        isMuted: false,
+        isScreenSharing: false,
+        isHandRaised: false,
+        isSpeaking: false,
+        stream: stream
+      };
+      this.participants.unshift(me); // Add to beginning
+    } else {
+      console.log('👤 Setting stream on participant:', me.fullName);
+      me.stream = stream;
+      me.isVideoOn = true;
+      me.isMuted = false;
+    }
+
+    // Force Angular change detection
+    this.participants = [...this.participants];
+
+    this.syncMediaStateToBackend();
+    console.log('✅ Camera and microphone ready');
+
+  } catch (error) {
+    console.error('❌ Camera/mic error:', error);
+    this.isVideoOn = false;
+    this.isMuted = true;
+    this.isMediaReady = false;
+  }
+}
+
+  ngAfterViewInit(): void {
+  // Watch for video element changes
+  this.videoPlayers.changes.subscribe((elements) => {
+    elements.forEach((el: ElementRef<HTMLVideoElement>) => {
+      const participant = this.participants.find(p => p.stream);
+      if (participant?.stream && el.nativeElement.srcObject !== participant.stream) {
+        el.nativeElement.srcObject = participant.stream;
+        console.log('📹 Manually bound stream to video element');
+      }
+    });
+  });
+}
+
+  /** Connect SignalR */
+  private async initSignalR(): Promise<void> {
+  if (!this.signalRService.isConnected()) {
+    await this.signalRService.startConnection();
+  }
+  await this.signalRService.joinRoom(this.roomId);
+
+  // User joined
+  this.subscriptions.push(
+    this.signalRService.remoteUserJoined$.subscribe(userId => {
+      this.ngZone.run(() => {
+        this.onUserJoined(Number(userId));
+        this.cdr.detectChanges();
+      });
+    })
+  );
+
+  // User left
+  this.subscriptions.push(
+    this.signalRService.remoteUserLeft$.subscribe(userId => {
+      this.ngZone.run(() => {
+        this.onUserLeft(Number(userId));
+        this.cdr.detectChanges();
+      });
+    })
+  );
+
+  // Messages
+  this.subscriptions.push(
+    this.signalRService.receiveMessage$.subscribe(msg => {
+      this.ngZone.run(() => {
+        this.handleIncomingMessage(msg);
+        this.cdr.detectChanges();
+      });
+    })
+  );
+
+  // State updates
+  this.subscriptions.push(
+    this.signalRService.spaceStateUpdated$.subscribe(update => {
+      this.ngZone.run(() => {
+        this.onRemoteStateUpdate(update.userId, update.mediaState);
+        this.cdr.detectChanges();
+      });
+    })
+  );
+}
+
+private handleIncomingMessage(msg: any): void {
+  const content = msg.content || '';
+  
+  if (typeof content === 'string' && content.startsWith('{') && content.includes('"action"')) {
+    try {
+      const cmd = JSON.parse(content);
+      
+      if (cmd.action === 'hostForceMute' && Number(cmd.targetUserId) === this.currentUserId) {
+        this.isMutedByHost = cmd.muted;
+        this.isMuted = cmd.muted;
+        this.rtcService.toggleAudioTrack(!cmd.muted);
+        const me = this.participants.find(p => p.userId === this.currentUserId);
+        if (me) me.isMuted = cmd.muted;
+        this.participants = [...this.participants];
+        this.syncMediaStateToBackend();
+        return;
+      }
+      
+      if (cmd.action === 'hostForceMute') {
+        const p = this.participants.find(p => p.userId === Number(cmd.targetUserId));
+        if (p) p.isMuted = cmd.muted;
+        this.participants = [...this.participants];
+        return;
+      }
+      
+      if (cmd.action === 'kick' && Number(cmd.userId) === this.currentUserId) {
+        this.isKicked = true;
+        this.kickedMessage = 'You have been removed from the room.';
+        this.rtcService.closeAllConnections();
+        this.signalRService.leaveRoom(this.roomId);
+        return;
+      }
+      
+      if (cmd.action === 'kick') {
+        this.participants = this.participants.filter(p => p.userId !== Number(cmd.userId));
+        this.rtcService.closeConnection(String(cmd.userId));
+        return;
+      }
+      
+    } catch (e) {}
+  }
+  
+  // Regular message
+  this.messages = [...this.messages, msg];
+}
+
+  /** Setup WebRTC listeners */
+  private initWebRTC(): void {
+    this.rtcService.initSignalListeners(
+      this.roomId,
+      (userId, stream) => this.onRemoteStream(userId, stream)
+    );
+  }
+
+  /** Handle remote stream from WebRTC */
+  private onRemoteStream(userId: string, stream: MediaStream): void {
+    const participant = this.participants.find(p => p.userId === Number(userId));
+    if (participant) {
+      participant.stream = stream;
+    }
+  }
+
+  /** User joined the room */
+  private async onUserJoined(userId: number): Promise<void> {
+  this.messages = [...this.messages, {
+    content: `User joined the room`,
+    sentAt: new Date(),
+    isSystem: true
+  }];
+  
+  await this.loadRoomData();
+  
+  if (userId !== this.currentUserId) {
+    this.rtcService.createOffer(
+      this.roomId,
+      userId.toString(),
+      (uid, stream) => this.ngZone.run(() => this.onRemoteStream(uid, stream))
+    );
+  }
+  
+  this.cdr.detectChanges();
+}
+
+  /** User left the room */
+ private onUserLeft(userId: number): void {
+  this.participants = this.participants.filter(p => p.userId !== userId);
+  this.rtcService.closeConnection(userId.toString());
+  
+  this.messages = [...this.messages, {
+    content: `User left the room`,
+    sentAt: new Date(),
+    isSystem: true
+  }];
+}
+
+  public get localStream(): MediaStream | null {
+  return this.rtcService.localStream;
+}
+
+  /** Remote user changed media state */
+private onRemoteStateUpdate(userId: number, mediaState: any): void {
+  console.log('🔄 onRemoteStateUpdate - userId:', userId, 'mediaState:', mediaState);
+  
+  const p = this.participants.find(part => part.userId === userId);
+  if (p) {
+    console.log('👤 Found participant:', p.fullName);
+    console.log('  Before:', { muted: p.isMuted, video: p.isVideoOn, hand: p.isHandRaised });
+    
+    if (mediaState.isMuted !== undefined) p.isMuted = mediaState.isMuted;
+    if (mediaState.isVideoOn !== undefined) p.isVideoOn = mediaState.isVideoOn;
+    if (mediaState.isScreenSharing !== undefined) p.isScreenSharing = mediaState.isScreenSharing;
+    if (mediaState.isHandRaised !== undefined) p.isHandRaised = mediaState.isHandRaised;
+    
+    console.log('  After:', { muted: p.isMuted, video: p.isVideoOn, hand: p.isHandRaised });
+    
+    // Force Angular to update
+    this.participants = [...this.participants];
+    this.cdr.detectChanges();
+  } else {
+    console.warn('⚠️ Participant not found for userId:', userId);
+  }
+}
+
+  public onVideoPlaying(userId: number): void {
+  console.log(`✅ Video playing for user ${userId}`);
+}
+
+  /** Load room from API */
+  private async loadRoomData(): Promise<void> {
+  return new Promise((resolve, reject) => {
+    this.spacesService.getRoomById(this.roomId).subscribe({
+      next: (data) => {
+        this.ngZone.run(() => {
+          this.room = data;
+          this.participants = (data.participants || []).map((p: any) => ({
+            ...p,
+            stream: this.participants.find(existing => existing.userId === p.userId)?.stream || null
+          }));
+          
+          this.isHost = data.hostUserId === this.currentUserId;
+          
+          const me = this.participants.find(p => p.userId === this.currentUserId);
+          if (me) {
+            this.isMuted = me.isMuted;
+            this.isVideoOn = me.isVideoOn;
+            this.isScreenSharing = me.isScreenSharing;
+            this.isHandRaised = me.isHandRaised;
+          }
+          this.cdr.detectChanges();
+          resolve();
+        });
+      },
+      error: (err) => reject(err)
+    });
+  });
+}
+
+  /** Load chat messages */
+  public loadChatMessages(): void {
+    this.spacesService.getRoomMessages(this.roomId).subscribe({
+      next: (msgs) => (this.messages = msgs),
+      error: (err) => console.error('Error fetching messages', err)
+    });
+  }
+
+  // ==========================================
+  // MEDIA CONTROLS (using RtcService)
+  // ==========================================
+
+  // In room-detail.component.ts
+
+public toggleMute(): void {
+  if (this.isMutedByHost) {
+    console.warn('🔒 Cannot unmute - muted by host');
+    return;
+  }
+  
+  this.isMuted = !this.isMuted;
+  this.rtcService.toggleAudioTrack(!this.isMuted);
+  this.updateLocalParticipantState();
+  this.syncMediaStateToBackend(); // This now broadcasts via SignalR
+}
+
+
+  public toggleVideo(): void {
+  this.isVideoOn = !this.isVideoOn;
+  this.rtcService.toggleVideoTrack(this.isVideoOn);
+  this.updateLocalParticipantState();
+  this.syncMediaStateToBackend(); // This now broadcasts via SignalR
+}
+
+  public async toggleScreenShare(): Promise<void> {
+  if (this.isScreenSharing) {
+    this.rtcService.stopScreenShare();
+    this.isScreenSharing = false;
+  } else {
+    try {
+      await this.rtcService.startScreenShare();
+      this.isScreenSharing = true;
+    } catch (error) {
+      console.error('Screen share failed:', error);
+      return;
+    }
+  }
+  this.updateLocalParticipantState();
+  this.syncMediaStateToBackend(); // This now broadcasts via SignalR
+}
+
+  public toggleHandRaise(): void {
+  this.isHandRaised = !this.isHandRaised;
+  this.updateLocalParticipantState();
+  this.syncMediaStateToBackend(); // This now broadcasts via SignalR
+}
+
+  // ==========================================
+  // HELPERS
+  // ==========================================
+
+  private updateLocalParticipantState(): void {
+    const me = this.participants.find(p => p.userId === this.currentUserId);
+    if (me) {
+      me.isMuted = this.isMuted;
+      me.isVideoOn = this.isVideoOn;
+      me.isScreenSharing = this.isScreenSharing;
+      me.isHandRaised = this.isHandRaised;
+    }
+  }
+
+  private syncMediaStateToBackend(): void {
+  const payload = {
+    isMuted: this.isMuted,
+    isVideoOn: this.isVideoOn,
+    isScreenSharing: this.isScreenSharing,
+    isHandRaised: this.isHandRaised
+  };
+
+  // 1. Persist to DB via REST API
+  this.spacesService.toggleMedia(this.roomId, payload).subscribe({
+    next: () => {
+      // 2. Broadcast to all participants via SignalR
+      this.signalRService.toggleMediaState(this.roomId, payload);
+      console.log('📤 Media state broadcasted:', payload);
+    },
+    error: (err) => console.error('Error syncing media state:', err)
+  });
+}
+
+  public sendMessage(): void {
+  if (!this.newMessageText.trim()) return;
+  
+  const text = this.newMessageText.trim();
+  this.newMessageText = '';
+
+  this.spacesService.sendMessage(this.roomId, text).subscribe({
+    next: () => {
+      this.signalRService.sendMessage(this.roomId, text);
+    },
+    error: (err) => console.error('Error sending message:', err)
+  });
+}
+  public leaveRoom(): void {
+  console.log('🚪 Leaving room...');
+  
+  // 1. Leave SignalR group
+  this.signalRService.leaveRoom(this.roomId);
+  
+  // 2. Close all WebRTC connections
+  this.rtcService.closeAllConnections();
+  
+  // 3. Leave via REST API
+  this.spacesService.leaveRoom(this.roomId).subscribe({
+    next: () => {
+      console.log('✅ Left room successfully');
+      // 4. Navigate away
+      this.router.navigate(['/spaces']);
+    },
+    error: (err) => {
+      console.error('Error leaving room:', err);
+      // Still navigate even if API fails
+      this.router.navigate(['/spaces']);
+    }
+  });
+}
+
+  public getUserLabel(p: Participant): string {
+    return p.userId === this.currentUserId ? `${p.fullName} (You)` : p.fullName;
+  }
+
+  public hasVideoTrack(stream: MediaStream): boolean {
+  // Just check if stream exists and is active
+  return stream?.active === true;
+}
+
+  public trackByUserId(index: number, p: Participant): number {
+    return p.userId;
+  }
+
+  public trackByMessageId(index: number, m: ChatMessage): number {
+    return m.id || index;
+  }
+
+ public kickUser(targetUserId: number): void {
+  if (!this.isHost) return;
+  
+  if (confirm('Kick this user?')) {
+    this.spacesService.kickParticipant(this.roomId, targetUserId).subscribe({
+      next: () => {
+        this.participants = this.participants.filter(p => p.userId !== targetUserId);
+        this.rtcService.closeConnection(targetUserId.toString());
+        
+        // Notify everyone
+        this.signalRService.sendMessage(
+          this.roomId, 
+          JSON.stringify({ action: 'kick', userId: targetUserId })
+        );
+      },
+      error: (err) => console.error('Failed to kick:', err)
+    });
+  }
+}
+
+// In room-detail.component.ts
+
+public muteUser(targetUserId: number, mute: boolean): void {
+  if (!this.isHost) return;
+  
+  console.log(`🔇 Host ${mute ? 'muting' : 'unmuting'} user:`, targetUserId);
+  
+  // 1. Call the REST API to persist to DB
+  this.spacesService.muteParticipant(this.roomId, targetUserId, mute).subscribe({
+    next: () => {
+      console.log('✅ Mute API success');
+      
+      // 2. Update local participant state immediately
+      const p = this.participants.find(p => p.userId === targetUserId);
+      if (p) {
+        p.isMuted = mute;
+        this.participants = [...this.participants]; // Trigger change detection
+      }
+      
+      // 3. Send SignalR message to force mute on target user's client
+      const muteCommand = JSON.stringify({
+        action: 'hostForceMute',
+        targetUserId: targetUserId,
+        muted: mute
+      });
+      
+      this.signalRService.sendMessage(this.roomId, muteCommand);
+      console.log('📤 Force mute command sent via SignalR');
+    },
+    error: (err) => console.error('❌ Mute API failed:', err)
+  });
+}
+
+  ngOnDestroy(): void {
+  console.log('🧹 Cleaning up room...');
+  
+  this.subscriptions.forEach(s => s.unsubscribe());
+  this.subscriptions = [];
+  
+  this.rtcService.closeAllConnections();
+  this.signalRService.leaveRoom(this.roomId);
+  
+  this.participants = [];
+  this.messages = [];
+  this.isMediaReady = false;
+}
+
+public isAnyoneScreenSharing(): boolean {
+  return this.participants.some(p => p.isScreenSharing);
+}
+// In room-detail.component.ts
+
+public get sortedParticipants(): Participant[] {
+  return [...this.participants].sort((a, b) => {
+    // Screen sharer first
+    if (a.isScreenSharing && !b.isScreenSharing) return -1;
+    if (!a.isScreenSharing && b.isScreenSharing) return 1;
+    return 0;
+  });
+}
+}

@@ -29,13 +29,13 @@ export class AuthService {
       loginData
     ).pipe(
       tap((response: any) => {
-        // Assuming login response contains userId or user object
-        // Adjust 'response.userId' or 'response.user.id' according to your API response schema
         if (response?.userId) {
           localStorage.setItem('userId', response.userId.toString());
         }
-        if (response?.token) {
-          localStorage.setItem('token', response.token);
+
+        const token = response?.token || response?.accessToken || response?.access_token || response?.jwt;
+        if (token) {
+          localStorage.setItem('token', token);
         }
       })
     );

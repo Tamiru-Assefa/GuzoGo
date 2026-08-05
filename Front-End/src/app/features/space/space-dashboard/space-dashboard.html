@@ -1,0 +1,111 @@
+<div class="min-h-screen bg-slate-950 text-white pb-12">
+
+  <!-- Header -->
+  <header class="border-b border-slate-800/80 bg-slate-900/50 backdrop-blur sticky top-0 z-10">
+    <div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-5">
+      <div>
+        <h1 class="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+          GuzoSpaces
+        </h1>
+        <p class="text-slate-400 text-sm mt-0.5">
+          Live Voice & Video Communities
+        </p>
+      </div>
+
+      <!-- Trigger Modal Button -->
+      <button 
+        (click)="openCreateModal()"
+        class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2.5 rounded-xl font-medium transition-all shadow-lg shadow-indigo-600/20 active:scale-95">
+        + Create Space
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="max-w-7xl mx-auto px-6 py-8">
+
+    <!-- Search & Room Privacy Filters -->
+    <div class="flex flex-col lg:flex-row gap-4 mb-6">
+      
+      <!-- Search Field -->
+      <div class="relative flex-1">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-slate-500">
+          🔍
+        </span>
+        <input
+          type="text"
+          [(ngModel)]="searchQuery"
+          placeholder="Search group topics, skills (e.g., C#, English, Figma)..."
+          class="w-full rounded-2xl bg-[#0b0e24] border border-[#1b2040] pl-11 pr-4 py-3.5 text-white placeholder-slate-500 focus:outline-none focus:border-[#4f46e5] transition"
+        />
+      </div>
+
+      <!-- Room Privacy & Ownership Toggle Pills -->
+<div class="flex items-center gap-1 bg-[#0b0e24] p-1.5 rounded-2xl border border-[#1b2040] self-start lg:self-auto">
+  
+  <!-- All Rooms -->
+  <button 
+    (click)="filterOwnership('all')"
+    [class]="activeFilter === 'all' ? 'bg-[#4f46e5] text-white' : 'text-slate-400 hover:text-white'"
+    class="px-5 py-2 rounded-xl text-sm font-semibold transition">
+    All Rooms
+  </button>
+
+  <!-- My Created Spaces -->
+  <button 
+    (click)="filterOwnership('my-spaces')"
+    [class]="activeFilter === 'my-spaces' ? 'bg-[#4f46e5] text-white' : 'text-slate-400 hover:text-white'"
+    class="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium transition">
+    <span>👑</span> My Spaces
+  </button>
+
+  <!-- Public -->
+  <button 
+    (click)="filterOwnership('public')"
+    [class]="activeFilter === 'public' ? 'bg-[#4f46e5] text-white' : 'text-slate-400 hover:text-white'"
+    class="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium transition">
+    <span>🌐</span> Public
+  </button>
+
+  <!-- Password Protected -->
+  <button 
+    (click)="filterOwnership('private')"
+    [class]="activeFilter === 'private' ? 'bg-[#4f46e5] text-white' : 'text-slate-400 hover:text-white'"
+    class="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium transition">
+    <span>🔒</span> Password
+  </button>
+
+</div>
+
+    </div>
+
+    <!-- Categories Filter Component -->
+    <app-category-filter 
+      [selectedCategory]="selectedCategory" 
+      (categorySelected)="onCategorySelect($event)">
+    </app-category-filter>
+
+    <!-- Rooms Cards Grid (2 Columns) -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <app-space-card 
+        *ngFor="let room of filteredSpaces" 
+        [room]="room" 
+        (onJoin)="joinSpace($event)">
+      </app-space-card>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="filteredSpaces.length === 0" class="text-center py-16 text-slate-500">
+      <p class="text-lg">No active spaces found matching your search.</p>
+    </div>
+
+  </main>
+
+  <!-- Create Space Modal Overlay -->
+  <app-create-space-modal 
+    *ngIf="isCreateModalOpen" 
+    (close)="closeCreateModal()" 
+    (spaceCreated)="onSpaceCreated($event)">
+  </app-create-space-modal>
+
+</div>

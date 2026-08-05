@@ -450,10 +450,11 @@ export class RoomComponent implements OnInit, OnDestroy {
 
     this.peerConnection.onicecandidate = (event) => {
       if (event.candidate) {
+        const targetId = this.remoteProfile?.userId?.toString() || '';
         this.signalRService.sendSignal(
           this.roomId,
-          'ice-candidate',
-          JSON.stringify({ candidate: event.candidate, senderId: this.currentUserId })
+          targetId,
+          { type: 'ice-candidate', candidate: event.candidate, senderId: this.currentUserId }
         );
       }
     };
@@ -477,46 +478,43 @@ export class RoomComponent implements OnInit, OnDestroy {
         await this.peerConnection.setLocalDescription(offer);
 
         const signalPayload = {
+          type: 'offer',
           sdp: offer,
           senderId: this.currentUserId,
         };
-        await this.signalRService.sendSignal(this.roomId, 'offer', JSON.stringify(signalPayload));
+        await this.signalRService.sendSignal(this.roomId, userId.toString(), signalPayload);
       }
     })
   );
 
   // Event 2: Receiving WebRTC signals
-  this.signalRSubscriptions.add(
-    this.signalRService.receiveSignal$.subscribe(async (signal) => {
-      if (!signal?.data) return;
+    this.signalRSubscriptions.add(
+    this.signalRService.receiveSignal$.subscribe(async (signal: any) => {
+      if (!signal?.signalData) return;
 
       let parsedData: any;
       try {
-        parsedData = JSON.parse(signal.data);
+        parsedData = typeof signal.signalData === 'string' ? JSON.parse(signal.signalData) : signal.signalData;
       } catch {
-        parsedData = signal.data;
+        parsedData = signal.signalData;
       }
 
-      // FIX: Access senderId safely without TS compilation errors
-      const senderId = parsedData?.senderId || (signal as any).senderId;
+      const senderId = parsedData?.senderId || signal.fromUserId;
       if (senderId && Number(senderId) !== Number(this.currentUserId)) {
         this.fetchRemoteUserProfile(Number(senderId));
       }
 
       const sdp = parsedData?.sdp || parsedData;
 
-      switch (signal.signalType) {
+      switch (parsedData?.type) {
         case 'offer':
           this.createPeerConnection();
           await this.peerConnection.setRemoteDescription(new RTCSessionDescription(sdp));
           const answer = await this.peerConnection.createAnswer();
           await this.peerConnection.setLocalDescription(answer);
 
-          const answerPayload = {
-            sdp: answer,
-            senderId: this.currentUserId,
-          };
-          await this.signalRService.sendSignal(this.roomId, 'answer', JSON.stringify(answerPayload));
+          const answerPayload = { type: 'answer', sdp: answer, senderId: this.currentUserId };
+          await this.signalRService.sendSignal(this.roomId, senderId.toString(), answerPayload);
           break;
 
         case 'answer':

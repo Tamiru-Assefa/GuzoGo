@@ -1,8 +1,9 @@
 import { Routes } from '@angular/router';
 import { profileCheckGuard } from './core/guards/profile-check-guard';
+import { SpaceDashboardComponent } from './features/space/space-dashboard/space-dashboard';
 
 export const routes: Routes = [
-  // Redirect root path to register (or landing)
+  // Redirect root path to register
   { path: '', redirectTo: 'register', pathMatch: 'full' },
 
   {
@@ -35,18 +36,34 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
-    canActivate: [profileCheckGuard], // Checks profile status before loading
+    canActivate: [profileCheckGuard],
     loadComponent: () =>
       import('./features/dashboard/dashboard/dashboard').then(
         (m) => m.DashboardComponent
       ),
   },
+
+  // Spaces Routes
+  {
+    path: 'spaces',
+    component: SpaceDashboardComponent,
+    canActivate: [profileCheckGuard]
+  },
+  {
+    path: 'spaces/:id',
+    canActivate: [profileCheckGuard],
+    loadComponent: () =>
+      import('./features/space/pages/room-detail/room-detail').then(
+        (m) => m.RoomDetailComponent
+      )
+  },
+
   {
     path: 'room',
     loadComponent: () =>
       import('./features/room/room/room').then((m) => m.RoomComponent),
   },
 
-  // Wildcard fallback
+  // Wildcard fallback (keep at the bottom)
   { path: '**', redirectTo: 'register' },
 ];

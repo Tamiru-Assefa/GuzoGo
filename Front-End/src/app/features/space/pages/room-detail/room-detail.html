@@ -1,0 +1,342 @@
+<!-- DEBUG: Show participants count and streams -->
+<div class="fixed top-20 right-4 bg-black/80 text-green-400 text-xs p-2 rounded z-50">
+  Participants: {{ participants.length }} | 
+  CurrentUserId: {{ currentUserId }} |
+  MediaReady: {{ isMediaReady }} |
+  isHost: {{ isHost }}
+  <div *ngFor="let p of sortedParticipants">
+    User{{ p.userId }}: stream={{ !!p.stream }}, video={{ p.isVideoOn }}, muted={{ p.isMuted }}
+  </div>
+</div>
+
+<div class="min-h-screen bg-[#070913] text-slate-100 flex flex-col justify-between font-sans overflow-hidden">
+
+  <!-- TOP BAR / HEADER -->
+  <header class="bg-[#0f132a] border-b border-[#1b2040] px-6 py-4 flex items-center justify-between shadow-md">
+    <div class="flex items-center gap-3">
+      <div class="bg-indigo-600/20 text-indigo-400 p-2 rounded-xl border border-indigo-500/30">
+        💻
+      </div>
+      <div>
+        <h1 class="text-lg font-bold text-white tracking-wide">
+          {{ room?.title || 'Loading Room...' }}
+        </h1>
+        <p class="text-xs text-slate-400">
+          Hosted by <span class="text-slate-200 font-medium">{{ room?.hostFullName || 'Unknown' }}</span> • 
+          <span class="text-emerald-400 font-semibold">{{ participants.length }} Active Member(s)</span>
+        </p>
+      </div>
+    </div>
+
+    <button 
+      (click)="leaveRoom()" 
+      class="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 transition active:scale-95 cursor-pointer">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+      Leave Room
+    </button>
+  </header>
+
+  <!-- MAIN BODY -->
+  <div class="flex-1 flex overflow-hidden p-4 gap-4">
+
+    <main class="flex-1 grid gap-4 transition-all duration-300"
+  [ngClass]="{
+    'grid-cols-1 max-w-3xl mx-auto': participants.length === 1 && !isAnyoneScreenSharing(),
+    'grid-cols-1 md:grid-cols-2': participants.length >= 2 && !isAnyoneScreenSharing(),
+    'grid-cols-1': isAnyoneScreenSharing()
+  }">
+
+      <div 
+  *ngFor="let p of sortedParticipants; trackBy: trackByUserId" 
+  class="relative bg-[#0c1024] border rounded-2xl overflow-hidden flex flex-col justify-between shadow-xl transition-all duration-200"
+  [ngClass]="{
+    'min-h-[260px]': !p.isScreenSharing,
+    'min-h-[500px] md:col-span-full': p.isScreenSharing,
+    'border-amber-500 ring-2 ring-amber-500/30': p.isHandRaised,
+    'border-emerald-500 ring-2 ring-emerald-500/20': p.isScreenSharing && !p.isHandRaised,
+    'border-[#1c234b] hover:border-indigo-500/40': !p.isScreenSharing && !p.isHandRaised
+  }">
+
+        <!-- ==================== HOST CONTROLS ==================== -->
+        <!-- Only show if current user is host AND this is not self -->
+        <div *ngIf="isHost && p.userId !== currentUserId" class="absolute top-2 left-2 z-30 flex gap-1">
+          
+          <!-- Mute/Unmute Button -->
+          <button 
+  (click)="muteUser(p.userId, !p.isMuted)"
+  class="p-1.5 rounded-lg text-xs transition backdrop-blur"
+  [ngClass]="p.isMuted ? 'bg-rose-500/80 text-white hover:bg-rose-600' : 'bg-slate-800/80 text-slate-300 hover:bg-slate-700'"
+  [title]="p.isMuted ? 'Unmute' : 'Mute'">
+  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <!-- When muted: show muted icon (microphone with X) -->
+    <ng-container *ngIf="p.isMuted">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>
+    </ng-container>
+    <!-- When unmuted: show normal microphone icon -->
+    <ng-container *ngIf="!p.isMuted">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+    </ng-container>
+  </svg>
+</button>
+          
+          <!-- Kick Button -->
+          <button 
+            (click)="kickUser(p.userId)"
+            class="p-1.5 rounded-lg bg-red-500/80 text-white hover:bg-red-600 text-xs transition backdrop-blur"
+            title="Kick user">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Host Badge -->
+        <span *ngIf="p.userId === room?.hostUserId" class="absolute top-2 right-3 z-30 bg-amber-500/90 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-lg">
+          👑 Host
+        </span>
+
+        <!-- Hand Raised Badge -->
+        <span *ngIf="p.isHandRaised" class="absolute top-3 right-3 z-20 bg-amber-500/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg shadow-lg flex items-center gap-1 animate-bounce">
+          ✋ Hand Raised
+        </span>
+
+        <!-- SCREEN SHARE -->
+        <!-- SCREEN SHARE -->
+<ng-container *ngIf="p.isScreenSharing">
+  <div class="flex-1 flex items-center justify-center bg-black relative min-h-[400px]">
+    
+    <!-- YOUR OWN screen share: use rtcService.screenStream -->
+    <video 
+      *ngIf="p.userId === currentUserId && rtcService.screenStream; else remoteScreenShare"
+      [srcObject]="rtcService.screenStream"
+      autoplay playsinline muted
+      class="w-full h-full object-contain"
+    ></video>
+    
+    <!-- REMOTE user's screen share: use p.stream (WebRTC) -->
+    <ng-template #remoteScreenShare>
+      <video 
+        *ngIf="p.stream && p.stream.active && hasVideoTrack(p.stream); else screenShareLoading"
+        [srcObject]="p.stream"
+        autoplay playsinline
+        class="w-full h-full object-contain"
+      ></video>
+    </ng-template>
+    
+    <!-- Loading placeholder -->
+    <ng-template #screenShareLoading>
+      <div class="flex flex-col items-center justify-center p-8 bg-gradient-to-b from-[#0e1431] to-[#080b1a]">
+        <svg class="w-16 h-16 text-indigo-400 mb-3 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+        </svg>
+        <h4 class="text-base font-semibold text-indigo-200">{{ p.fullName }}'s Screen Share</h4>
+        <span class="text-xs text-slate-500 mt-1">Loading...</span>
+      </div>
+    </ng-template>
+    
+    <!-- Screen share badge -->
+    <span class="absolute top-3 right-3 z-20 bg-emerald-500/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg shadow-lg">
+      📺 Screen Share
+    </span>
+  </div>
+</ng-container>
+
+        <!-- CAMERA ACTIVE -->
+        <ng-container *ngIf="p.isVideoOn && !p.isScreenSharing">
+          <div class="relative flex-1 bg-black">
+            <span class="absolute top-3 left-3 z-10 bg-emerald-950/80 border border-emerald-500/40 text-emerald-400 text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded">
+              ● CAMERA ON
+            </span>
+            
+            <video 
+              *ngIf="p.userId === currentUserId && localStream; else remoteVideo"
+              [srcObject]="localStream"
+              autoplay playsinline muted
+              class="w-full h-full object-cover min-h-[200px]"
+            ></video>
+            
+            <ng-template #remoteVideo>
+              <video 
+                *ngIf="p.stream; else avatarFallback"
+                [srcObject]="p.stream"
+                autoplay playsinline
+                class="w-full h-full object-cover min-h-[200px]"
+              ></video>
+            </ng-template>
+            
+            <ng-template #avatarFallback>
+              <img 
+                [src]="p.profilePictureUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80'" 
+                alt="Video placeholder" 
+                class="w-full h-full object-cover min-h-[200px]"
+              />
+            </ng-template>
+          </div>
+        </ng-container>
+
+        <!-- AUDIO ONLY / AVATAR -->
+        <ng-container *ngIf="!p.isVideoOn && !p.isScreenSharing">
+          <div class="flex-1 flex flex-col items-center justify-center py-10 bg-[#0d122b]">
+            <div class="relative">
+              <img 
+                [src]="p.profilePictureUrl || 'https://ui-avatars.com/api/?name=' + (p.fullName || 'User') + '&background=4f46e5&color=fff'" 
+                alt="Avatar" 
+                class="w-20 h-20 rounded-full ring-4 object-cover mb-3 shadow-lg"
+                [ngClass]="{
+                  'ring-emerald-500 animate-pulse': p.isSpeaking && !p.isMuted,
+                  'ring-[#1b2246]': !p.isSpeaking || p.isMuted
+                }"
+              />
+              <span *ngIf="p.isSpeaking && !p.isMuted" class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-[#0d122b] animate-ping"></span>
+            </div>
+            <span class="text-sm font-semibold text-slate-200">{{ p.fullName }}</span>
+            <span *ngIf="p.isMuted" class="text-xs text-rose-400 mt-1">Muted</span>
+          </div>
+        </ng-container>
+
+        <!-- BOTTOM BAR -->
+        <div class="bg-[#090d20]/90 backdrop-blur border-t border-[#1a2042] px-4 py-2.5 flex items-center justify-between z-10">
+          <span class="text-xs font-medium text-slate-300">
+            {{ getUserLabel(p) }}
+          </span>
+          <div class="flex items-center">
+            <span *ngIf="p.isMuted" class="text-rose-400 bg-rose-500/10 p-1 rounded-md" title="Muted">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path></svg>
+            </span>
+            <span *ngIf="!p.isMuted && p.isSpeaking" class="flex items-end gap-0.5 h-4 px-1" title="Speaking">
+              <span class="w-1 h-3 bg-emerald-400 rounded-full animate-bounce"></span>
+              <span class="w-1 h-4 bg-emerald-400 rounded-full animate-bounce [animation-delay:0.2s]"></span>
+              <span class="w-1 h-2 bg-emerald-400 rounded-full animate-bounce [animation-delay:0.4s]"></span>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+
+    <!-- CHAT PANEL -->
+    <aside 
+      *ngIf="isChatOpen" 
+      class="w-80 bg-[#0c1024] border border-[#1b2040] rounded-2xl flex flex-col shadow-2xl transition-all duration-300">
+      
+      <div class="p-4 border-b border-[#1b2040] flex items-center justify-between">
+        <h3 class="text-sm font-bold text-white flex items-center gap-2">💬 Group Live Chat</h3>
+        <button (click)="isChatOpen = false" class="text-slate-400 hover:text-white text-xs cursor-pointer">✕</button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto p-4 space-y-3 scrollbar-thin scrollbar-thumb-slate-800">
+        <div *ngFor="let msg of messages; trackBy: trackByMessageId">
+          <div *ngIf="msg.isSystem" class="text-center my-2">
+            <span class="text-[11px] italic text-slate-500 bg-slate-900/60 px-3 py-1 rounded-full border border-slate-800">
+              {{ msg.content }}
+            </span>
+          </div>
+          <div *ngIf="!msg.isSystem" class="bg-[#131936] border border-[#1f2852] rounded-xl p-3">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-xs font-bold text-indigo-300">{{ msg.senderFullName || 'Member' }}</span>
+              <span class="text-[10px] text-slate-500">{{ msg.sentAt | date:'shortTime' }}</span>
+            </div>
+            <p class="text-xs text-slate-200 leading-relaxed">{{ msg.content }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-3 border-t border-[#1b2040] bg-[#090d20]">
+        <form (ngSubmit)="sendMessage()" class="flex items-center gap-2">
+          <input 
+            type="text" 
+            [(ngModel)]="newMessageText" 
+            name="newMessageText"
+            placeholder="Type a message..." 
+            class="flex-1 bg-[#131833] border border-[#222a54] text-xs text-white px-3 py-2.5 rounded-xl focus:outline-none focus:border-indigo-500 placeholder-slate-500"
+          />
+          <button 
+            type="submit" 
+            class="bg-indigo-600 hover:bg-indigo-500 text-white p-2.5 rounded-xl transition active:scale-95 flex items-center justify-center cursor-pointer">
+            <svg class="w-4 h-4 transform rotate-90" fill="currentColor" viewBox="0 0 20 20"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path></svg>
+          </button>
+        </form>
+      </div>
+
+    </aside>
+
+  </div>
+
+  <!-- BOTTOM CONTROL DOCK -->
+  <footer class="py-4 flex justify-center z-20">
+    <div class="bg-[#0f132e]/90 backdrop-blur border border-[#202752] rounded-2xl px-6 py-2.5 flex items-center gap-3 shadow-2xl">
+      
+      <!-- Microphone Toggle -->
+      <button 
+        (click)="toggleMute()" 
+        [ngClass]="isMuted || isMutedByHost ? 'bg-rose-600/20 border-rose-500/40 text-rose-400' : 'bg-[#181f42] border-[#2b356b] text-slate-200 hover:text-white'"
+        class="p-3 rounded-xl border transition active:scale-95 cursor-pointer relative" 
+        [title]="isMutedByHost ? 'Muted by host' : (isMuted ? 'Unmute' : 'Mute')">
+        <span>🎙️</span>
+        <span *ngIf="isMuted || isMutedByHost" class="absolute top-0 right-0 text-[10px]">🚫</span>
+        <span *ngIf="isMutedByHost" class="absolute -top-1 -right-1 text-[10px]">🔒</span>
+      </button>
+
+      <!-- Video Toggle -->
+      <button 
+        (click)="toggleVideo()" 
+        [ngClass]="isVideoOn ? 'bg-indigo-600 border-indigo-500 text-white' : 'bg-[#181f42] border-[#2b356b] text-slate-200 hover:text-white'"
+        class="p-3 rounded-xl border transition active:scale-95 cursor-pointer" 
+        title="{{ isVideoOn ? 'Turn Off Camera' : 'Turn On Camera' }}">
+        <span>📹</span>
+      </button>
+
+      <!-- Screen Share -->
+      <button 
+        (click)="toggleScreenShare()" 
+        [ngClass]="isScreenSharing ? 'bg-emerald-600 border-emerald-500 text-white' : 'bg-[#181f42] border-[#2b356b] text-slate-200 hover:text-white'"
+        class="p-3 rounded-xl border transition active:scale-95 cursor-pointer" 
+        title="{{ isScreenSharing ? 'Stop Sharing' : 'Share Screen' }}">
+        <span>💻</span>
+      </button>
+
+      <!-- Raise Hand -->
+      <button 
+        (click)="toggleHandRaise()" 
+        [ngClass]="isHandRaised ? 'bg-amber-600 border-amber-500 text-white animate-pulse' : 'bg-[#181f42] border-[#2b356b] text-slate-200 hover:text-white'"
+        class="p-3 rounded-xl border transition active:scale-95 cursor-pointer" 
+        title="{{ isHandRaised ? 'Lower Hand' : 'Raise Hand' }}">
+        ✋
+      </button>
+
+      <div class="h-6 w-px bg-slate-800 mx-1"></div>
+
+      <!-- Chat -->
+      <button 
+        (click)="isChatOpen = !isChatOpen" 
+        [ngClass]="isChatOpen ? 'bg-indigo-600 text-white' : 'bg-[#181f42] text-slate-300'"
+        class="px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 border border-[#2b356b] transition active:scale-95 cursor-pointer">
+        💬 Chat
+      </button>
+
+      <!-- Members -->
+      <div class="px-4 py-2.5 bg-[#181f42] border border-[#2b356b] rounded-xl text-xs font-semibold text-slate-300 flex items-center gap-1.5">
+        👥 Members ({{ participants.length }})
+      </div>
+
+    </div>
+  </footer>
+
+</div>
+
+
+<!-- KICKED OVERLAY -->
+<div *ngIf="isKicked" class="fixed inset-0 bg-black/90 z-50 flex items-center justify-center">
+  <div class="bg-[#0f132a] border border-rose-500/30 rounded-2xl p-8 text-center max-w-md mx-4 shadow-2xl">
+    <div class="text-6xl mb-4">🚫</div>
+    <h2 class="text-xl font-bold text-white mb-2">You've been removed</h2>
+    <p class="text-slate-400 mb-6">{{ kickedMessage }}</p>
+    <button 
+      (click)="router.navigate(['/spaces'])"
+      class="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-2.5 rounded-xl font-semibold transition cursor-pointer">
+      Back to Spaces
+    </button>
+  </div>
+</div>

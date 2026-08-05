@@ -1,0 +1,66 @@
+<div class="space-container">
+  <div class="video-grid">
+    
+    <!-- Local User Video -->
+    <div class="video-card local-user">
+      <video 
+        #localVideo 
+        autoplay 
+        playsinline 
+        muted 
+        [class.hidden]="isVideoOff">
+      </video>
+
+      <!-- Show Avatar fallback ONLY when video is actually OFF -->
+      <div *ngIf="isVideoOff" class="avatar-placeholder">
+        <img [src]="localAvatarUrl || 'assets/default-avatar.png'" alt="You" />
+        <span>You</span>
+      </div>
+
+      <div class="user-label">
+        You {{ isMuted ? '(Muted)' : '' }}
+      </div>
+    </div>
+
+    <!-- Remote Participants (WebRTC Video + Avatar Fallback) -->
+    <div *ngFor="let participant of remoteParticipants | keyvalue" class="video-card">
+      <video 
+        [srcObject]="participant.value.stream" 
+        autoplay 
+        playsinline
+        [class.hidden]="participant.value.isVideoOff">
+      </video>
+
+      <!-- Show Avatar fallback when remote video is toggled OFF -->
+      <div *ngIf="participant.value.isVideoOff" class="avatar-placeholder">
+        <img [src]="participant.value.avatarUrl || 'assets/default-avatar.png'" alt="User Avatar" />
+        <span>User {{ participant.value.userId }}</span>
+      </div>
+
+      <div class="user-label">
+        User {{ participant.value.userId }} 
+        <span *ngIf="participant.value.isMuted">🔇</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Control Bar -->
+  <div class="control-bar">
+    <button (click)="toggleMicrophone()" [class.active]="isMuted">
+      {{ isMuted ? 'Unmute Mic' : 'Mute Mic' }}
+    </button>
+    
+    <button (click)="toggleCamera()" [class.active]="isVideoOff">
+      {{ isVideoOff ? 'Turn Cam On' : 'Turn Cam Off' }}
+    </button>
+
+    <button (click)="toggleScreenShare()" [class.active]="isScreenSharing">
+      {{ isScreenSharing ? 'Stop Share' : 'Share Screen' }}
+    </button>
+    
+    <button class="btn-leave" (click)="leaveSpace()">
+      Leave Space
+    </button>
+  </div>
+</div>

@@ -86,17 +86,12 @@ namespace guzogo.Migrations
                     b.Property<int?>("PreferredProfessionId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PreferredSkillId")
-                        .HasColumnType("int");
-
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PreferredProfessionId");
-
-                    b.HasIndex("PreferredSkillId");
 
                     b.HasIndex("UserId")
                         .IsUnique();
@@ -321,6 +316,185 @@ namespace guzogo.Migrations
                     b.ToTable("Skills");
                 });
 
+            modelBuilder.Entity("guzogo.Entities.Spaces.Room", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("AllowScreenShare")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AllowVideo")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("EndedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("HostUserId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("MaxParticipants")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("HostUserId");
+
+                    b.ToTable("Rooms");
+                });
+
+            modelBuilder.Entity("guzogo.Entities.Spaces.RoomBannedUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("BannedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("RoomId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoomId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RoomBannedUsers");
+                });
+
+            modelBuilder.Entity("guzogo.Entities.Spaces.RoomCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Icon")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RoomCategories");
+                });
+
+            modelBuilder.Entity("guzogo.Entities.Spaces.RoomMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsSystemMessage")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("RoomId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SenderUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SentAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoomId");
+
+                    b.HasIndex("SenderUserId");
+
+                    b.ToTable("RoomMessages");
+                });
+
+            modelBuilder.Entity("guzogo.Entities.Spaces.RoomParticipant", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsHandRaised")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsMuted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsMutedByHost")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsScreenSharing")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsVideoOn")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("JoinedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("LeftAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("RoomId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoomId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RoomParticipants");
+                });
+
             modelBuilder.Entity("guzogo.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -438,10 +612,6 @@ namespace guzogo.Migrations
                         .WithMany()
                         .HasForeignKey("PreferredProfessionId");
 
-                    b.HasOne("guzogo.Entities.Skill", "PreferredSkill")
-                        .WithMany()
-                        .HasForeignKey("PreferredSkillId");
-
                     b.HasOne("guzogo.Entities.User", "User")
                         .WithOne("MatchPreference")
                         .HasForeignKey("guzogo.Entities.MatchPreference", "UserId")
@@ -449,8 +619,6 @@ namespace guzogo.Migrations
                         .IsRequired();
 
                     b.Navigation("PreferredProfession");
-
-                    b.Navigation("PreferredSkill");
 
                     b.Navigation("User");
                 });
@@ -542,6 +710,82 @@ namespace guzogo.Migrations
                     b.Navigation("Skill");
                 });
 
+            modelBuilder.Entity("guzogo.Entities.Spaces.Room", b =>
+                {
+                    b.HasOne("guzogo.Entities.Spaces.RoomCategory", "Category")
+                        .WithMany("Rooms")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("guzogo.Entities.User", "HostUser")
+                        .WithMany("HostedRooms")
+                        .HasForeignKey("HostUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("HostUser");
+                });
+
+            modelBuilder.Entity("guzogo.Entities.Spaces.RoomBannedUser", b =>
+                {
+                    b.HasOne("guzogo.Entities.Spaces.Room", "Room")
+                        .WithMany("BannedUsers")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("guzogo.Entities.User", "User")
+                        .WithMany("BannedFromRooms")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Room");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("guzogo.Entities.Spaces.RoomMessage", b =>
+                {
+                    b.HasOne("guzogo.Entities.Spaces.Room", "Room")
+                        .WithMany("Messages")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("guzogo.Entities.User", "SenderUser")
+                        .WithMany("RoomMessages")
+                        .HasForeignKey("SenderUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Room");
+
+                    b.Navigation("SenderUser");
+                });
+
+            modelBuilder.Entity("guzogo.Entities.Spaces.RoomParticipant", b =>
+                {
+                    b.HasOne("guzogo.Entities.Spaces.Room", "Room")
+                        .WithMany("Participants")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("guzogo.Entities.User", "User")
+                        .WithMany("RoomParticipants")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Room");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("guzogo.Entities.UserPresence", b =>
                 {
                     b.HasOne("guzogo.Entities.User", "User")
@@ -593,8 +837,26 @@ namespace guzogo.Migrations
                     b.Navigation("ProfileSkills");
                 });
 
+            modelBuilder.Entity("guzogo.Entities.Spaces.Room", b =>
+                {
+                    b.Navigation("BannedUsers");
+
+                    b.Navigation("Messages");
+
+                    b.Navigation("Participants");
+                });
+
+            modelBuilder.Entity("guzogo.Entities.Spaces.RoomCategory", b =>
+                {
+                    b.Navigation("Rooms");
+                });
+
             modelBuilder.Entity("guzogo.Entities.User", b =>
                 {
+                    b.Navigation("BannedFromRooms");
+
+                    b.Navigation("HostedRooms");
+
                     b.Navigation("MatchPreference");
 
                     b.Navigation("MatchSessionsAsUser1");
@@ -602,6 +864,10 @@ namespace guzogo.Migrations
                     b.Navigation("MatchSessionsAsUser2");
 
                     b.Navigation("Profile");
+
+                    b.Navigation("RoomMessages");
+
+                    b.Navigation("RoomParticipants");
 
                     b.Navigation("UserPresence");
 

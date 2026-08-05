@@ -1,0 +1,22 @@
+<!-- <div class="flex flex-wrap gap-2.5 mb-8">
+  <button 
+    *ngFor="let cat of categories"
+    (click)="selectCategory(cat)"
+    [class]="cat === selectedCategory 
+      ? 'px-5 py-2 rounded-full font-medium text-sm bg-indigo-600 text-white shadow-md shadow-indigo-600/30 transition-all' 
+      : 'px-5 py-2 rounded-full font-medium text-sm bg-slate-900 text-slate-400 hover:text-white border border-slate-800 hover:border-slate-700 transition-all'">
+    {{ cat }}
+  </button>
+</div> -->
+<!-- Category Chips Row -->
+<div class="flex flex-wrap gap-3 mb-8">
+  <button 
+    *ngFor="let cat of categories"
+    (click)="selectCategory(cat.name)"
+    [class]="cat.name === selectedCategory 
+      ? 'flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-medium bg-[#2a2d54] text-white border border-[#43477e] shadow-lg shadow-indigo-900/20 transition-all' 
+      : 'flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-medium bg-[#0e1126] text-slate-400 hover:text-white border border-[#1b2042] hover:border-[#2a305e] transition-all'">
+    <span>{{ cat.icon }}</span>
+    <span>{{ cat.name }}</span>
+  </button>
+</div>

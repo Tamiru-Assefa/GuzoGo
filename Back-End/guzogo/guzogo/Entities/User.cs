@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using guzogo.Entities.Spaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace guzogo.Entities
 {
@@ -42,5 +43,17 @@ namespace guzogo.Entities
 
         public ICollection<MatchSession> MatchSessionsAsUser2 { get; set; }
             = new List<MatchSession>();
+
+        public ICollection<Room> HostedRooms { get; set; }
+        = new List<Room>();
+
+        public ICollection<RoomParticipant> RoomParticipants { get; set; }
+            = new List<RoomParticipant>();
+
+        public ICollection<RoomBannedUser> BannedFromRooms { get; set; }
+            = new List<RoomBannedUser>();
+
+        public ICollection<RoomMessage> RoomMessages { get; set; }
+            = new List<RoomMessage>();
     }
 }

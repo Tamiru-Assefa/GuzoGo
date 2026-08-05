@@ -1,0 +1,191 @@
+<!-- Modal Backdrop -->
+<div 
+  class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4 overflow-y-auto animate-fade-in"
+  (click)="onCancel()">
+
+  <!-- Modal Container -->
+  <div 
+    class="relative w-full max-w-lg bg-[#0d1127] border border-[#1e264d] rounded-3xl p-6 md:p-8 shadow-2xl shadow-indigo-950/50 text-white transition-all transform animate-scale-up"
+    (click)="$event.stopPropagation()">
+
+    <!-- Modal Header -->
+    <div class="flex items-center justify-between mb-6 pb-4 border-b border-[#1b2246]">
+      <div>
+        <h2 class="text-2xl font-bold tracking-tight text-white">Create a Space</h2>
+        <p class="text-xs text-slate-400 mt-1">Host live voice, video, and screen sharing sessions</p>
+      </div>
+
+      <button 
+        (click)="onCancel()"
+        class="text-slate-400 hover:text-white p-2 rounded-xl bg-[#141937] border border-[#21295c] hover:border-[#35428a] transition-all">
+        ✕
+      </button>
+    </div>
+
+    <!-- Error Alert -->
+    <div *ngIf="errorMessage" class="mb-4 p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Reactive Form -->
+    <form [formGroup]="createForm" (ngSubmit)="onSubmit()" class="space-y-5">
+
+      <!-- Title Input -->
+      <div>
+        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+          Space Title <span class="text-indigo-400">*</span>
+        </label>
+        <input 
+          type="text" 
+          formControlName="title"
+          placeholder="e.g., C# Async/Await Practice & Code Review"
+          class="w-full bg-[#131836] border border-[#222b5e] focus:border-[#6366f1] rounded-2xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none transition-colors"
+          [class.border-red-500]="f['title'].invalid && f['title'].touched"
+        />
+        <div *ngIf="f['title'].invalid && f['title'].touched" class="text-xs text-red-400 mt-1.5">
+          <span *ngIf="f['title'].errors?.['required']">Title is required.</span>
+          <span *ngIf="f['title'].errors?.['minlength']">Title must be at least 3 characters long.</span>
+        </div>
+      </div>
+
+      <!-- Category Select -->
+      <div>
+        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+          Category <span class="text-indigo-400">*</span>
+        </label>
+        <div class="relative">
+          <select 
+            formControlName="categoryId"
+            class="w-full appearance-none bg-[#131836] border border-[#222b5e] focus:border-[#6366f1] rounded-2xl px-4 py-3 text-sm text-white focus:outline-none transition-colors cursor-pointer"
+            [class.border-red-500]="f['categoryId'].invalid && f['categoryId'].touched">
+            <option *ngIf="isLoadingCategories" value="" disabled selected>Loading categories...</option>
+            <option *ngFor="let cat of categories" [value]="cat.id" class="bg-[#0d1127] text-white">
+              {{ cat.name }}
+            </option>
+          </select>
+          <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-slate-400 text-xs">
+            ▼
+          </div>
+        </div>
+      </div>
+
+      <!-- Visibility Options -->
+      <div>
+        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+          Visibility
+        </label>
+        <div class="grid grid-cols-2 gap-3">
+          <!-- Public Option -->
+          <label 
+            class="flex items-center gap-3 p-3.5 rounded-2xl border cursor-pointer transition-all"
+            [class]="f['isPublic'].value === true 
+              ? 'bg-[#18204d] border-[#4f46e5] text-white shadow-md' 
+              : 'bg-[#131836] border-[#222b5e] text-slate-400 hover:text-slate-200'">
+            <input type="radio" [value]="true" formControlName="isPublic" class="hidden" />
+            <span class="text-base">🔓</span>
+            <div>
+              <div class="text-xs font-bold">Public</div>
+              <div class="text-[10px] text-slate-400">Anyone can join</div>
+            </div>
+          </label>
+
+          <!-- Password Protected Option -->
+          <label 
+            class="flex items-center gap-3 p-3.5 rounded-2xl border cursor-pointer transition-all"
+            [class]="f['isPublic'].value === false 
+              ? 'bg-[#332205] border-[#d97706] text-amber-200 shadow-md' 
+              : 'bg-[#131836] border-[#222b5e] text-slate-400 hover:text-slate-200'">
+            <input type="radio" [value]="false" formControlName="isPublic" class="hidden" />
+            <span class="text-base">🔑</span>
+            <div>
+              <div class="text-xs font-bold">Protected</div>
+              <div class="text-[10px] text-slate-400">Password required</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Conditional Password Field -->
+      <div *ngIf="f['isPublic'].value === false" class="animate-fade-in">
+        <label class="block text-xs font-semibold text-amber-300 uppercase tracking-wider mb-2">
+          Space Password <span class="text-amber-400">*</span>
+        </label>
+        <input 
+          type="password" 
+          formControlName="password"
+          placeholder="Enter room access password"
+          class="w-full bg-[#1e1708] border border-[#543b0d] focus:border-[#d97706] rounded-2xl px-4 py-3 text-sm text-white placeholder-amber-700 focus:outline-none transition-colors"
+          [class.border-red-500]="f['password']?.invalid && f['password']?.touched"
+        />
+        <div *ngIf="f['password']?.invalid && f['password']?.touched" class="text-xs text-red-400 mt-1.5">
+          Password is required (min 4 characters).
+        </div>
+      </div>
+
+      <!-- Max Participants Select -->
+      <div>
+        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+          Maximum Participants
+        </label>
+        <div class="relative">
+          <select 
+            formControlName="maxParticipants"
+            class="w-full appearance-none bg-[#131836] border border-[#222b5e] focus:border-[#6366f1] rounded-2xl px-4 py-3 text-sm text-white focus:outline-none transition-colors cursor-pointer">
+            <option *ngFor="let count of participantOptions" [value]="count" class="bg-[#0d1127] text-white">
+              {{ count }} Participants
+            </option>
+          </select>
+          <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-slate-400 text-xs">
+            ▼
+          </div>
+        </div>
+      </div>
+
+      <!-- Permissions Checkboxes -->
+      <div>
+        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+          Room Permissions
+        </label>
+        <div class="space-y-2.5">
+          <label class="flex items-center gap-3 p-3 bg-[#131836] border border-[#222b5e] rounded-xl cursor-pointer hover:border-[#333e85] transition-colors">
+            <input 
+              type="checkbox" 
+              formControlName="allowVideo"
+              class="w-4 h-4 rounded bg-[#0d1127] border-[#2b3675] text-[#6366f1] focus:ring-0 focus:ring-offset-0 cursor-pointer"
+            />
+            <span class="text-xs font-medium text-slate-300">📹 Allow Participant Video Cameras</span>
+          </label>
+
+          <label class="flex items-center gap-3 p-3 bg-[#131836] border border-[#222b5e] rounded-xl cursor-pointer hover:border-[#333e85] transition-colors">
+            <input 
+              type="checkbox" 
+              formControlName="allowScreenShare"
+              class="w-4 h-4 rounded bg-[#0d1127] border-[#2b3675] text-[#6366f1] focus:ring-0 focus:ring-offset-0 cursor-pointer"
+            />
+            <span class="text-xs font-medium text-slate-300">🖥️ Allow Screen Sharing</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Modal Footer Action Buttons -->
+      <div class="flex items-center justify-end gap-3 pt-4 border-t border-[#1b2246] mt-6">
+        <button 
+          type="button" 
+          (click)="onCancel()"
+          [disabled]="isSubmitting"
+          class="px-5 py-2.5 rounded-2xl text-xs font-semibold text-slate-400 hover:text-white bg-[#141937] hover:bg-[#1f2756] border border-[#21295c] transition-all disabled:opacity-50">
+          Cancel
+        </button>
+
+        <button 
+          type="submit" 
+          [disabled]="createForm.invalid || isSubmitting"
+          class="px-6 py-2.5 rounded-2xl text-xs font-semibold text-white bg-[#4f46e5] hover:bg-[#4338ca] border border-[#6366f1]/50 shadow-lg shadow-indigo-600/30 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+          <span *ngIf="isSubmitting" class="animate-spin text-sm">⏳</span>
+          <span>{{ isSubmitting ? 'Creating...' : 'Create Space' }}</span>
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
