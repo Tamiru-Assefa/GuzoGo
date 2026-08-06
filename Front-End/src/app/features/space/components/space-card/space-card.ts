@@ -22,13 +22,26 @@ export class SpaceCardComponent {
   ) {}
 
   // Category mapping dictionary
-  private categoryMap: { [key: number]: string } = {
-    1: '💻 Software Development',
-    2: '🗣️ Language Exchange',
-    3: '💼 Career & Interviews',
-    4: '🎨 UI/UX & Design',
-    5: '🎮 Gaming & Chill'
-  };
+  // In SpaceCardComponent:
+
+private categoryMap: { [key: number]: string } = {
+  1: 'AI & Data Science',
+  2: 'Business & Growth',
+  3: 'Career & Interview',
+  4: 'Creative & Design',
+  5: 'Customer Experience',
+  6: 'Cybersecurity & IT Ops',
+  7: 'Finance & Strategy',
+  8: 'Language Exchange',
+  9: 'Legal & Regulatory',
+  10: 'Mentorship & Leadership',
+  11: 'Product Management',
+  12: 'Productivity & Workflow',
+  13: 'Quality Assurance',
+  14: 'Research & Academic',
+  15: 'Software Development',
+  16: 'Startup & Co-Founding'
+};
 
   /**
    * Returns category name from categoryId or category string

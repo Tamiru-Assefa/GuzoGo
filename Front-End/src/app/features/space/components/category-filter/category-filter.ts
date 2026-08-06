@@ -1,3 +1,5 @@
+// features/space/components/category-filter/category-filter.component.ts
+
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
@@ -9,18 +11,17 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrls: ['./category-filter.scss'],
 })
 export class CategoryFilterComponent {
-  @Input() selectedCategory: string = 'All';
-  // @Input() categories: string[] = ['All', 'Software', 'Language', 'Design', 'Business'];
+  @Input() selectedCategory: string = 'All Topics';
   @Output() categorySelected = new EventEmitter<string>();
 
-  public categories = [
-  { name: 'All Topics', icon: '🌐' },
-  { name: 'Software Development', icon: '💻' },
-  { name: 'Language Exchange', icon: '🗣️' },
-  { name: 'Career & Interviews', icon: '💼' },
-  { name: 'UI/UX & Design', icon: '🎨' },
-  { name: 'Gaming & Chill', icon: '🎮' }
-];
+   public categories = [
+    { name: 'All Topics', icon: '🌐' },
+    { name: 'Software Development', icon: '💻' },
+    { name: 'Language Exchange', icon: '🗣️' },
+    { name: 'Career & Interview', icon: '💼' },
+    { name: 'Creative & Design', icon: '🎨' },
+    { name: 'Business & Growth', icon: '📈' }
+  ];
 
   selectCategory(category: string): void {
     this.categorySelected.emit(category);

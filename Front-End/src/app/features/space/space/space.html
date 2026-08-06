@@ -13,7 +13,7 @@
 
       <!-- Show Avatar fallback ONLY when video is actually OFF -->
       <div *ngIf="isVideoOff" class="avatar-placeholder">
-        <img [src]="localAvatarUrl || 'assets/default-avatar.png'" alt="You" />
+        <img [src]="localAvatarUrl || 'https://ui-avatars.com/api/?name=You&background=4f46e5&color=fff&size=200'" alt="You" />
         <span>You</span>
       </div>
 
@@ -33,7 +33,7 @@
 
       <!-- Show Avatar fallback when remote video is toggled OFF -->
       <div *ngIf="participant.value.isVideoOff" class="avatar-placeholder">
-        <img [src]="participant.value.avatarUrl || 'assets/default-avatar.png'" alt="User Avatar" />
+        <img [src]="participant.value.avatarUrl || 'https://ui-avatars.com/api/?name=User+' + participant.value.userId + '&background=4f46e5&color=fff&size=200'" alt="User Avatar" />
         <span>User {{ participant.value.userId }}</span>
       </div>
 

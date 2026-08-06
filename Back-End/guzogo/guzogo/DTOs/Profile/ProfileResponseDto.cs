@@ -25,5 +25,13 @@
 
 
         public string? Bio { get; set; }
+        public string? LinkedInUrl { get; set; }     
+        public string? GitHubUrl { get; set; }       
+        public string? PortfolioUrl { get; set; }
+        public int ExperienceLevel { get; set; }    
+        public decimal Rating { get; set; }         
+        public int TotalRatings { get; set; }      
+        public string? BadgeLevel { get; set; }  
+        public string ProfilePictureUrl { get; set; } = string.Empty;
     }
 }

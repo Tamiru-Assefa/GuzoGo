@@ -9,14 +9,22 @@ import { AuthService } from '../../../core/services/auth';
   template: `
     <header class="w-full bg-[#0d1322] border-b border-white/10 px-6 py-3 flex items-center justify-between sticky top-0 z-50">
       <!-- Center Navigation Links -->
+     <div>
+        <h1 class="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+          GuzoGo Peer
+        </h1>
+        <p class="text-slate-400 text-sm mt-0.5">
+          Talk Voice & Video With your Peers
+        </p>
+      </div>
       <nav class="flex items-center gap-8 mx-auto">
         
         <a
-          routerLink="/room"
+          routerLink="/spaces"
           routerLinkActive="text-cyan-400 border-b-2 border-cyan-400 font-semibold"
           class="text-slate-400 hover:text-white transition py-1 text-sm tracking-wide"
         >
-          Room
+          Spaces
         </a>
         <a
           routerLink="/dashboard"

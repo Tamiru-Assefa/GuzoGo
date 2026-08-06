@@ -9,6 +9,7 @@ import { SignalRService, SpaceStateUpdate } from '../../../../core/services/sign
 import { RtcService } from '../../../../core/services/rtc';
 import { Subscription } from 'rxjs';
 import { ViewChildren, QueryList, ElementRef, AfterViewInit } from '@angular/core';
+import { ProfileService } from '../../../../core/services/profile';
 
 interface Participant {
   userId: number;
@@ -68,7 +69,8 @@ export class RoomDetailComponent implements OnInit, OnDestroy {
     private signalRService: SignalRService,
     public rtcService: RtcService,
     private cdr: ChangeDetectorRef,   
-    private ngZone: NgZone   
+    private ngZone: NgZone,
+    private profileService: ProfileService   
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -146,23 +148,24 @@ export class RoomDetailComponent implements OnInit, OnDestroy {
 
     // Find or wait for current user in participants
     let me = this.participants.find(p => p.userId === this.currentUserId);
-    
-    if (!me) {
-      // Participant not loaded yet - add self manually
-      console.warn('⚠️ Current user not in participants, adding manually');
-      me = {
-        userId: this.currentUserId,
-        fullName: 'You',
-        profilePictureUrl: undefined,
-        isVideoOn: true,
-        isMuted: false,
-        isScreenSharing: false,
-        isHandRaised: false,
-        isSpeaking: false,
-        stream: stream
-      };
-      this.participants.unshift(me); // Add to beginning
-    } else {
+      if (!me) {
+  console.warn('⚠️ Current user not in participants, adding manually');
+  me = {
+    userId: this.currentUserId,
+    fullName: 'You',
+    profilePictureUrl: undefined,  // Will be filled by loadProfilePictures
+    isVideoOn: true,
+    isMuted: false,
+    isScreenSharing: false,
+    isHandRaised: false,
+    isSpeaking: false,
+    stream: stream
+  };
+  this.participants.push(me); // Add to END instead of unshift
+  // Fetch profile picture for self
+  this.loadProfilePictures();
+}
+     else {
       console.log('👤 Setting stream on participant:', me.fullName);
       me.stream = stream;
       me.isVideoOn = true;
@@ -372,16 +375,20 @@ private onRemoteStateUpdate(userId: number, mediaState: any): void {
 }
 
   /** Load room from API */
-  private async loadRoomData(): Promise<void> {
+ private async loadRoomData(): Promise<void> {
   return new Promise((resolve, reject) => {
     this.spacesService.getRoomById(this.roomId).subscribe({
       next: (data) => {
         this.ngZone.run(() => {
           this.room = data;
-          this.participants = (data.participants || []).map((p: any) => ({
-            ...p,
-            stream: this.participants.find(existing => existing.userId === p.userId)?.stream || null
-          }));
+          this.participants = (data.participants || []).map((p: any) => {
+            const existing = this.participants.find(existing => existing.userId === p.userId);
+            return {
+              ...p,
+              stream: existing?.stream || null,
+              profilePictureUrl: p.profilePictureUrl || existing?.profilePictureUrl || ''
+            };
+          });
           
           this.isHost = data.hostUserId === this.currentUserId;
           
@@ -392,6 +399,10 @@ private onRemoteStateUpdate(userId: number, mediaState: any): void {
             this.isScreenSharing = me.isScreenSharing;
             this.isHandRaised = me.isHandRaised;
           }
+          
+          // Fetch profile pictures for all participants
+          this.loadProfilePictures();
+          
           this.cdr.detectChanges();
           resolve();
         });
@@ -488,6 +499,31 @@ public toggleMute(): void {
       console.log('📤 Media state broadcasted:', payload);
     },
     error: (err) => console.error('Error syncing media state:', err)
+  });
+}
+
+private loadProfilePictures(): void {
+  console.log('🖼️ Fetching profile pictures for', this.participants.length, 'participants');
+  
+  this.participants.forEach(participant => {
+    const shouldFetchPicture = !participant.profilePictureUrl || participant.profilePictureUrl.includes('ui-avatars.com/api');
+    console.log('  Fetching profile for userId:', participant.userId, 'current picture:', participant.profilePictureUrl, 'shouldFetch:', shouldFetchPicture);
+    
+    if (shouldFetchPicture) {
+      this.profileService.getProfile(participant.userId).subscribe({
+        next: (profile) => {
+          console.log('  ✅ Got profile for', participant.userId, 'picture:', profile.profilePictureUrl?.substring(0, 50) + '...');
+          if (profile.profilePictureUrl && profile.profilePictureUrl !== participant.profilePictureUrl) {
+            participant.profilePictureUrl = profile.profilePictureUrl;
+            this.participants = [...this.participants];
+            this.cdr.detectChanges();
+          }
+        },
+        error: (err) => {
+          console.log('  ❌ Failed for userId:', participant.userId, err);
+        }
+      });
+    }
   });
 }
 

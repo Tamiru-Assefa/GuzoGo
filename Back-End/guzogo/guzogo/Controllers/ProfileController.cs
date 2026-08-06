@@ -141,7 +141,15 @@ namespace guzogo.Controllers
 
                 City = profile.City,
 
-                Bio = profile.Bio
+                Bio = profile.Bio,
+                LinkedInUrl = profile.LinkedInUrl,
+                GitHubUrl = profile.GitHubUrl,
+                PortfolioUrl = profile.PortfolioUrl,
+                ExperienceLevel = (int)profile.ExperienceLevel,
+                Rating = (decimal)profile.Rating,
+                TotalRatings = profile.TotalRatings,
+                BadgeLevel = profile.BadgeLevel,
+                ProfilePictureUrl = profile.ProfilePictureUrl
             };
 
 
@@ -242,7 +250,15 @@ namespace guzogo.Controllers
 
                 City = profile.City,
 
-                Bio = profile.Bio
+                Bio = profile.Bio,
+                LinkedInUrl = profile.LinkedInUrl,
+                GitHubUrl = profile.GitHubUrl,
+                PortfolioUrl = profile.PortfolioUrl,
+                ExperienceLevel = (int)profile.ExperienceLevel,
+                Rating = (decimal)profile.Rating,
+                TotalRatings = profile.TotalRatings,
+                BadgeLevel = profile.BadgeLevel,
+                ProfilePictureUrl = profile.ProfilePictureUrl
             };
 
 
