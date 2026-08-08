@@ -68,36 +68,34 @@ namespace guzogo.Services.Implementation
 
         public async Task<LoginResponseDto?> LoginAsync(LoginDto loginDto)
         {
-            // Find user by email
             var user = await _context.Users
                 .FirstOrDefaultAsync(u => u.Email == loginDto.Email);
 
-            // User not found
-            if (user == null)
+            if (user == null) return null;
+
+            var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginDto.Password);
+            if (result == PasswordVerificationResult.Failed) return null;
+
+            // Generate access token
+            var accessToken = _jwtTokenGenerator.GenerateToken(user);
+
+            // Generate refresh token
+            var refreshToken = Guid.NewGuid().ToString();
+            var refreshTokenEntity = new RefreshToken
             {
-                return null;
-            }
+                Token = refreshToken,
+                UserId = user.Id,
+                ExpiresAt = DateTime.UtcNow.AddDays(30), // refresh token lives 30 days
+                IsRevoked = false
+            };
 
-            // Verify password
-            var result = _passwordHasher.VerifyHashedPassword(
-                user,
-                user.PasswordHash,
-                loginDto.Password
-            );
+            _context.RefreshTokens.Add(refreshTokenEntity);
+            await _context.SaveChangesAsync();
 
-            // Invalid password
-            if (result == PasswordVerificationResult.Failed)
-            {
-                return null;
-            }
-
-            // Generate JWT Token
-            var token = _jwtTokenGenerator.GenerateToken(user);
-
-            // Return response
             return new LoginResponseDto
             {
-                Token = token,
+                Token = accessToken,
+                RefreshToken = refreshToken,
                 UserId = user.Id,
                 UserName = user.UserName,
                 Email = user.Email

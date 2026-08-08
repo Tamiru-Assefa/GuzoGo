@@ -4,6 +4,8 @@ import { Component, inject, OnInit, NgZone } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { ProfileService } from '../../../core/services/profile';
 import { AuthService } from '../../../core/services/auth';
+import { ChangeDetectorRef } from '@angular/core';
+
 
 @Component({
   selector: 'app-header',
@@ -117,6 +119,7 @@ export class HeaderComponent implements OnInit {
   private profileService = inject(ProfileService);
   private router = inject(Router);
   private ngZone = inject(NgZone);
+  private cdr = inject(ChangeDetectorRef);
 
   profilePictureUrl: string = '';
   userName: string = '';
@@ -138,11 +141,9 @@ export class HeaderComponent implements OnInit {
           this.ngZone.run(() => {
             this.profilePictureUrl = profile.profilePictureUrl || '';
             this.userName = `${profile.firstName} ${profile.lastName}`;
+            this.cdr.detectChanges();   // ← forces immediate update
           });
         },
-        error: () => {
-          // keep defaults
-        }
       });
     }
   }

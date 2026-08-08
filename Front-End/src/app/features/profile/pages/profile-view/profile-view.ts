@@ -2,6 +2,7 @@ import { Component, OnInit, NgZone, ChangeDetectorRef} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ProfileService, UserProfile } from '../../../../core/services/profile';
+import { Location } from '@angular/common';
 
 
 @Component({
@@ -21,7 +22,8 @@ export class ProfileViewComponent implements OnInit {
     private route: ActivatedRoute,
     private profileService: ProfileService,
     private cdr: ChangeDetectorRef,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private location: Location,
   ) {}
 
   ngOnInit(): void {
@@ -86,5 +88,9 @@ private loadProfile(userId: number): void {
   public onImageError(): void {
   this.imageLoadFailed = true;
   console.log('🖼️ Profile image failed to load, showing fallback');
+}
+
+goBack(): void {
+  this.location.back();
 }
 }

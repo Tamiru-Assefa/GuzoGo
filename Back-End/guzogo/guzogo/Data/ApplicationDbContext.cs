@@ -39,6 +39,7 @@ namespace guzogo.Data
         public DbSet<RoomParticipant> RoomParticipants { get; set; }
         public DbSet<RoomBannedUser> RoomBannedUsers { get; set; }
         public DbSet<RoomMessage> RoomMessages { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

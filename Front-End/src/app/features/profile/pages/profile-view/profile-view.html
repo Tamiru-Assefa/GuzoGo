@@ -21,12 +21,7 @@
   <div *ngIf="profile && !isLoading" class="max-w-4xl mx-auto px-6 py-8">
     
     <!-- Back Button -->
-    <a [routerLink]="['/spaces']" class="inline-flex items-center gap-2 text-slate-400 hover:text-white transition mb-6 cursor-pointer">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-      </svg>
-      Back to Spaces
-    </a>
+    <button (click)="goBack()" class="...">← Back</button> <br><br>
 
     <!-- Profile Header Card -->
     <div class="bg-[#0c1024] border border-[#1b2040] rounded-2xl p-8 mb-6 shadow-xl">
