@@ -180,6 +180,24 @@
   (categorySelected)="onCategorySelect($event)">
 </app-category-filter>
 
+<!-- Info text for My Spaces -->
+<p *ngIf="activeFilter === 'my-spaces'" class="text-xs text-slate-500 mb-4 flex items-center gap-1.5">
+  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+  </svg>
+  Spaces automatically close after 12 hours of inactivity.
+</p>
+
+<div *ngIf="filteredSpaces.length === 0" class="text-center py-16">
+  <div class="text-5xl mb-4">
+    {{ activeFilter === 'my-spaces' ? '🏠' : '🔍' }}
+  </div>
+  <h3 class="text-lg font-bold text-white mb-2">No spaces found</h3>
+  <p class="text-slate-400 text-sm">
+    {{ activeFilter === 'my-spaces' ? 'You haven\'t created any spaces yet.' : 'Try a different search or filter.' }}
+  </p>
+</div>
+
     <!-- Rooms Cards Grid (2 Columns) -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <app-space-card 

@@ -1,15 +1,57 @@
+<!-- Password Required Overlay -->
+<div *ngIf="needsPassword" class="min-h-screen bg-[#070913] flex items-center justify-center">
+  <div class="bg-[#0f132a] border border-[#2a305e] rounded-2xl p-8 w-full max-w-sm mx-4 shadow-2xl text-center">
+    
+    <div class="text-5xl mb-4">🔒</div>
+    <h2 class="text-xl font-bold text-white mb-2">Private Room</h2>
+    <p class="text-slate-400 text-sm mb-6">
+      This room is password protected.<br/>
+      Enter the password to join.
+    </p>
+    <!-- Don't show room.title here -->
 
+    <div class="mb-4">
+      <input
+        type="password"
+        [(ngModel)]="passwordInput"
+        (keydown)="onPasswordKeydown($event)"
+        placeholder="Enter room password"
+        autocomplete="new-password"
+        name="roomAccessPassword"
+        class="w-full bg-[#0b0e24] border border-[#1b2040] text-white text-sm px-4 py-3 rounded-xl focus:outline-none focus:border-indigo-500 placeholder-slate-500 transition text-center"
+        autofocus
+      />
+      <p *ngIf="passwordError" class="text-rose-400 text-xs mt-2">{{ passwordError }}</p>
+    </div>
 
-<div class="min-h-screen bg-[#070913] text-slate-100 flex flex-col justify-between font-sans overflow-hidden">
+    <div class="flex gap-3">
+      <button 
+        (click)="cancelPasswordPrompt()"
+        class="flex-1 px-4 py-2.5 rounded-xl text-sm font-medium text-slate-300 bg-slate-800/60 border border-slate-700 hover:bg-slate-700 transition cursor-pointer">
+        Back
+      </button>
+      <button 
+        (click)="submitRoomPassword()"
+        [disabled]="isVerifyingPassword"
+        class="flex-1 px-4 py-2.5 rounded-xl text-sm font-semibold text-white bg-amber-600 hover:bg-amber-500 transition shadow-md disabled:opacity-50 cursor-pointer">
+        <span *ngIf="!isVerifyingPassword">🔑 Join Room</span>
+        <span *ngIf="isVerifyingPassword">Verifying...</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Main Room Content -->
+<div *ngIf="!needsPassword" class="min-h-screen bg-[#070913] text-slate-100 flex flex-col justify-between font-sans overflow-hidden">
 
   <!-- TOP BAR / HEADER -->
   <header class="bg-[#0f132a] border-b border-[#1b2040] px-6 py-4 flex items-center justify-between shadow-md">
     <div class="flex items-center gap-3">
       <div class="bg-indigo-600/20 text-indigo-400 p-2 rounded-xl border border-indigo-500/30">
-  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
-  </svg>
-</div>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+      </div>
       <div>
         <h1 class="text-lg font-bold text-white tracking-wide">
           {{ room?.title || 'Loading Room...' }}
@@ -20,6 +62,15 @@
         </p>
       </div>
     </div>
+
+    <button 
+    (click)="openShareModal()"
+    class="bg-indigo-600/10 hover:bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 transition active:scale-95 cursor-pointer">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+    </svg>
+    Share
+  </button>
 
     <button 
       (click)="leaveRoom()" 
@@ -33,47 +84,40 @@
   <div class="flex-1 flex overflow-hidden p-4 gap-4">
 
     <main class="flex-1 grid gap-4 transition-all duration-300"
-  [ngClass]="{
-    'grid-cols-1 max-w-3xl mx-auto': participants.length === 1 && !isAnyoneScreenSharing(),
-    'grid-cols-1 md:grid-cols-2': participants.length >= 2 && !isAnyoneScreenSharing(),
-    'grid-cols-1': isAnyoneScreenSharing()
-  }">
+      [ngClass]="{
+        'grid-cols-1 max-w-3xl mx-auto': participants.length === 1 && !isAnyoneScreenSharing(),
+        'grid-cols-1 md:grid-cols-2': participants.length >= 2 && !isAnyoneScreenSharing(),
+        'grid-cols-1': isAnyoneScreenSharing()
+      }">
 
       <div 
-  *ngFor="let p of sortedParticipants; trackBy: trackByUserId" 
-  class="relative bg-[#0c1024] border rounded-2xl overflow-hidden flex flex-col justify-between shadow-xl transition-all duration-200"
-  [ngClass]="{
-    'min-h-[260px]': !p.isScreenSharing,
-    'min-h-[500px] md:col-span-full': p.isScreenSharing,
-    'border-amber-500 ring-2 ring-amber-500/30': p.isHandRaised,
-    'border-emerald-500 ring-2 ring-emerald-500/20': p.isScreenSharing && !p.isHandRaised,
-    'border-[#1c234b] hover:border-indigo-500/40': !p.isScreenSharing && !p.isHandRaised
-  }">
+        *ngFor="let p of sortedParticipants; trackBy: trackByUserId" 
+        class="relative bg-[#0c1024] border rounded-2xl overflow-hidden flex flex-col justify-between shadow-xl transition-all duration-200"
+        [ngClass]="{
+          'min-h-[260px]': !p.isScreenSharing,
+          'min-h-[500px] md:col-span-full': p.isScreenSharing,
+          'border-amber-500 ring-2 ring-amber-500/30': p.isHandRaised,
+          'border-emerald-500 ring-2 ring-emerald-500/20': p.isScreenSharing && !p.isHandRaised,
+          'border-[#1c234b] hover:border-indigo-500/40': !p.isScreenSharing && !p.isHandRaised
+        }">
 
-        <!-- ==================== HOST CONTROLS ==================== -->
-        <!-- Only show if current user is host AND this is not self -->
+        <!-- HOST CONTROLS -->
         <div *ngIf="isHost && p.userId !== currentUserId" class="absolute top-2 left-2 z-30 flex gap-1">
-          
-          <!-- Mute/Unmute Button -->
           <button 
-  (click)="muteUser(p.userId, !p.isMuted)"
-  class="p-1.5 rounded-lg text-xs transition backdrop-blur"
-  [ngClass]="p.isMuted ? 'bg-rose-500/80 text-white hover:bg-rose-600' : 'bg-slate-800/80 text-slate-300 hover:bg-slate-700'"
-  [title]="p.isMuted ? 'Unmute' : 'Mute'">
-  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <!-- When muted: show muted icon (microphone with X) -->
-    <ng-container *ngIf="p.isMuted">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>
-    </ng-container>
-    <!-- When unmuted: show normal microphone icon -->
-    <ng-container *ngIf="!p.isMuted">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
-    </ng-container>
-  </svg>
-</button>
-          
-          <!-- Kick Button -->
+            (click)="muteUser(p.userId, !p.isMuted)"
+            class="p-1.5 rounded-lg text-xs transition backdrop-blur"
+            [ngClass]="p.isMuted ? 'bg-rose-500/80 text-white hover:bg-rose-600' : 'bg-slate-800/80 text-slate-300 hover:bg-slate-700'"
+            [title]="p.isMuted ? 'Unmute' : 'Mute'">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <ng-container *ngIf="p.isMuted">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>
+              </ng-container>
+              <ng-container *ngIf="!p.isMuted">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+              </ng-container>
+            </svg>
+          </button>
           <button 
             (click)="kickUser(p.userId)"
             class="p-1.5 rounded-lg bg-red-500/80 text-white hover:bg-red-600 text-xs transition backdrop-blur"
@@ -95,45 +139,36 @@
         </span>
 
         <!-- SCREEN SHARE -->
-        <!-- SCREEN SHARE -->
-<ng-container *ngIf="p.isScreenSharing">
-  <div class="flex-1 flex items-center justify-center bg-black relative min-h-[400px]">
-    
-    <!-- YOUR OWN screen share: use rtcService.screenStream -->
-    <video 
-      *ngIf="p.userId === currentUserId && rtcService.screenStream; else remoteScreenShare"
-      [srcObject]="rtcService.screenStream"
-      autoplay playsinline muted
-      class="w-full h-full object-contain"
-    ></video>
-    
-    <!-- REMOTE user's screen share: use p.stream (WebRTC) -->
-    <ng-template #remoteScreenShare>
-      <video 
-        *ngIf="p.stream && p.stream.active && hasVideoTrack(p.stream); else screenShareLoading"
-        [srcObject]="p.stream"
-        autoplay playsinline
-        class="w-full h-full object-contain"
-      ></video>
-    </ng-template>
-    
-    <!-- Loading placeholder -->
-    <ng-template #screenShareLoading>
-      <div class="flex flex-col items-center justify-center p-8 bg-gradient-to-b from-[#0e1431] to-[#080b1a]">
-        <svg class="w-16 h-16 text-indigo-400 mb-3 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-        </svg>
-        <h4 class="text-base font-semibold text-indigo-200">{{ p.fullName }}'s Screen Share</h4>
-        <span class="text-xs text-slate-500 mt-1">Loading...</span>
-      </div>
-    </ng-template>
-    
-    <!-- Screen share badge -->
-    <span class="absolute top-3 right-3 z-20 bg-emerald-500/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg shadow-lg">
-      모 Screen Share
-    </span>
-  </div>
-</ng-container>
+        <ng-container *ngIf="p.isScreenSharing">
+          <div class="flex-1 flex items-center justify-center bg-black relative min-h-[400px]">
+            <video 
+              *ngIf="p.userId === currentUserId && rtcService.screenStream; else remoteScreenShare"
+              [srcObject]="rtcService.screenStream"
+              autoplay playsinline muted
+              class="w-full h-full object-contain"
+            ></video>
+            <ng-template #remoteScreenShare>
+              <video 
+                *ngIf="p.stream && p.stream.active && hasVideoTrack(p.stream); else screenShareLoading"
+                [srcObject]="p.stream"
+                autoplay playsinline
+                class="w-full h-full object-contain"
+              ></video>
+            </ng-template>
+            <ng-template #screenShareLoading>
+              <div class="flex flex-col items-center justify-center p-8 bg-gradient-to-b from-[#0e1431] to-[#080b1a]">
+                <svg class="w-16 h-16 text-indigo-400 mb-3 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                </svg>
+                <h4 class="text-base font-semibold text-indigo-200">{{ p.fullName }}'s Screen Share</h4>
+                <span class="text-xs text-slate-500 mt-1">Loading...</span>
+              </div>
+            </ng-template>
+            <span class="absolute top-3 right-3 z-20 bg-emerald-500/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg shadow-lg">
+              📺 Screen Share
+            </span>
+          </div>
+        </ng-container>
 
         <!-- CAMERA ACTIVE -->
         <ng-container *ngIf="p.isVideoOn && !p.isScreenSharing">
@@ -141,14 +176,12 @@
             <span class="absolute top-3 left-3 z-10 bg-emerald-950/80 border border-emerald-500/40 text-emerald-400 text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded">
               ● CAMERA ON
             </span>
-            
             <video 
               *ngIf="p.userId === currentUserId && localStream; else remoteVideo"
               [srcObject]="localStream"
               autoplay playsinline muted
               class="w-full h-full object-cover min-h-[200px]"
             ></video>
-            
             <ng-template #remoteVideo>
               <video 
                 *ngIf="p.stream; else avatarFallback"
@@ -157,14 +190,13 @@
                 class="w-full h-full object-cover min-h-[200px]"
               ></video>
             </ng-template>
-            
             <ng-template #avatarFallback>
-            <img 
-              [src]="p.profilePictureUrl || 'https://ui-avatars.com/api/?name=' + (p.fullName || 'User') + '&background=4f46e5&color=fff&size=200'" 
-              alt="Video placeholder" 
-              class="w-full h-full object-cover min-h-[200px]"
-            />
-          </ng-template>
+              <img 
+                [src]="p.profilePictureUrl || 'https://ui-avatars.com/api/?name=' + (p.fullName || 'User') + '&background=4f46e5&color=fff&size=200'" 
+                alt="Video placeholder" 
+                class="w-full h-full object-cover min-h-[200px]"
+              />
+            </ng-template>
           </div>
         </ng-container>
 
@@ -173,14 +205,14 @@
           <div class="flex-1 flex flex-col items-center justify-center py-10 bg-[#0d122b]">
             <div class="relative">
               <img 
-              [src]="p.profilePictureUrl || 'https://ui-avatars.com/api/?name=' + (p.fullName || 'User') + '&background=4f46e5&color=fff&size=200'" 
-              alt="Avatar" 
-              class="w-20 h-20 rounded-full ring-4 object-cover mb-3 shadow-lg"
-              [ngClass]="{
-                'ring-emerald-500 animate-pulse': p.isSpeaking && !p.isMuted,
-                'ring-[#1b2246]': !p.isSpeaking || p.isMuted
-              }"
-            />
+                [src]="p.profilePictureUrl || 'https://ui-avatars.com/api/?name=' + (p.fullName || 'User') + '&background=4f46e5&color=fff&size=200'" 
+                alt="Avatar" 
+                class="w-20 h-20 rounded-full ring-4 object-cover mb-3 shadow-lg"
+                [ngClass]="{
+                  'ring-emerald-500 animate-pulse': p.isSpeaking && !p.isMuted,
+                  'ring-[#1b2246]': !p.isSpeaking || p.isMuted
+                }"
+              />
               <span *ngIf="p.isSpeaking && !p.isMuted" class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-[#0d122b] animate-ping"></span>
             </div>
             <span class="text-sm font-semibold text-slate-200">{{ p.fullName }}</span>
@@ -263,75 +295,75 @@
       
       <!-- Microphone Toggle -->
       <button 
-      (click)="toggleMute()" 
-      [class.bg-red-600]="isMuted || isMutedByHost"
-      [class.hover:bg-red-700]="isMuted || isMutedByHost"
-      [class.bg-[#181f42]]="!isMuted && !isMutedByHost"
-      [class.hover:bg-slate-600]="!isMuted && !isMutedByHost"
-      class="p-3 rounded-full text-white transition-colors duration-200 focus:outline-none shadow-lg relative cursor-pointer"
-      [title]="isMutedByHost ? 'Muted by host' : (isMuted ? 'Unmute' : 'Mute')">
-      
-      @if (isMuted || isMutedByHost) {
-        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
-          <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-        </svg>
-      } @else {
-        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
-        </svg>
-      }
-      
-      <!-- Lock icon when muted by host -->
-      @if (isMutedByHost) {
-        <span class="absolute -top-1 -right-1 bg-amber-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">🔒</span>
-      }
-    </button>
+        (click)="toggleMute()" 
+        [class.bg-red-600]="isMuted || isMutedByHost"
+        [class.hover:bg-red-700]="isMuted || isMutedByHost"
+        [class.bg-[#181f42]]="!isMuted && !isMutedByHost"
+        [class.hover:bg-slate-600]="!isMuted && !isMutedByHost"
+        class="p-3 rounded-full text-white transition-colors duration-200 focus:outline-none shadow-lg relative cursor-pointer"
+        [title]="isMutedByHost ? 'Muted by host' : (isMuted ? 'Unmute' : 'Mute')">
+        @if (isMuted || isMutedByHost) {
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+            <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        } @else {
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+          </svg>
+        }
+        @if (isMutedByHost) {
+          <span class="absolute -top-1 -right-1 bg-amber-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">🔒</span>
+        }
+      </button>
 
       <!-- Video Toggle -->
       <button 
-      (click)="toggleVideo()" 
-      [class.bg-red-600]="!isVideoOn"
-      [class.hover:bg-red-700]="!isVideoOn"
-      [class.bg-[#181f42]]="isVideoOn"
-      [class.hover:bg-slate-600]="isVideoOn"
-      class="p-3 rounded-full text-white transition-colors duration-200 focus:outline-none shadow-lg cursor-pointer"
-      title="{{ isVideoOn ? 'Turn Off Camera' : 'Turn On Camera' }}">
-      
-      @if (!isVideoOn) {
-        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-          <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-        </svg>
-      } @else {
-        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-        </svg>
-      }
-    </button>
+        (click)="toggleVideo()" 
+        [class.bg-red-600]="!isVideoOn"
+        [class.hover:bg-red-700]="!isVideoOn"
+        [class.bg-[#181f42]]="isVideoOn"
+        [class.hover:bg-slate-600]="isVideoOn"
+        class="p-3 rounded-full text-white transition-colors duration-200 focus:outline-none shadow-lg cursor-pointer"
+        title="{{ isVideoOn ? 'Turn Off Camera' : 'Turn On Camera' }}">
+        @if (!isVideoOn) {
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        } @else {
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+          </svg>
+        }
+      </button>
 
       <!-- Screen Share -->
       <button 
-      (click)="toggleScreenShare()" 
-      [class.bg-emerald-600]="isScreenSharing"
-      [class.hover:bg-emerald-700]="isScreenSharing"
-      [class.bg-[#181f42]]="!isScreenSharing"
-      [class.hover:bg-slate-600]="!isScreenSharing"
-      class="p-3 rounded-full text-white transition-colors duration-200 focus:outline-none shadow-lg cursor-pointer"
-      title="{{ isScreenSharing ? 'Stop Sharing' : 'Share Screen' }}">
-      
-      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-      </svg>
-    </button>
+        (click)="toggleScreenShare()" 
+        [class.bg-emerald-600]="isScreenSharing"
+        [class.hover:bg-emerald-700]="isScreenSharing"
+        [class.bg-[#181f42]]="!isScreenSharing"
+        [class.hover:bg-slate-600]="!isScreenSharing"
+        class="p-3 rounded-full text-white transition-colors duration-200 focus:outline-none shadow-lg cursor-pointer"
+        title="{{ isScreenSharing ? 'Stop Sharing' : 'Share Screen' }}">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
+      </button>
 
       <!-- Raise Hand -->
       <button 
         (click)="toggleHandRaise()" 
-        [ngClass]="isHandRaised ? 'bg-amber-600 border-amber-500 text-white animate-pulse' : 'bg-[#181f42] border-[#2b356b] text-slate-200 hover:text-white'"
-        class="p-3 rounded-xl border transition active:scale-95 cursor-pointer" 
+        [class.bg-amber-500]="isHandRaised"
+        [class.hover:bg-amber-600]="isHandRaised"
+        [class.bg-[#181f42]]="!isHandRaised"
+        [class.hover:bg-slate-600]="!isHandRaised"
+        class="p-3 rounded-full text-white transition-colors duration-200 focus:outline-none shadow-lg cursor-pointer"
         title="{{ isHandRaised ? 'Lower Hand' : 'Raise Hand' }}">
-        ✋
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11" />
+        </svg>
       </button>
 
       <div class="h-6 w-px bg-slate-800 mx-1"></div>
@@ -339,14 +371,22 @@
       <!-- Chat -->
       <button 
         (click)="isChatOpen = !isChatOpen" 
-        [ngClass]="isChatOpen ? 'bg-indigo-600 text-white' : 'bg-[#181f42] text-slate-300'"
-        class="px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 border border-[#2b356b] transition active:scale-95 cursor-pointer">
-        💬 Chat
+        [class.bg-indigo-600]="isChatOpen"
+        [class.bg-[#181f42]]="!isChatOpen"
+        [class.hover:bg-slate-600]="!isChatOpen"
+        class="p-3 rounded-full text-white transition-colors duration-200 focus:outline-none shadow-lg cursor-pointer"
+        title="Chat">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+        </svg>
       </button>
 
       <!-- Members -->
-      <div class="px-4 py-2.5 bg-[#181f42] border border-[#2b356b] rounded-xl text-xs font-semibold text-slate-300 flex items-center gap-1.5">
-        👥 Members ({{ participants.length }})
+      <div class="px-4 py-2.5 bg-[#181f42] border border-[#2b356b] rounded-full text-xs font-semibold text-slate-300 flex items-center gap-1.5">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+        {{ participants.length }}
       </div>
 
     </div>
@@ -354,6 +394,117 @@
 
 </div>
 
+<!-- Share Room Slide-in Panel -->
+<div *ngIf="showShareModal" class="fixed inset-0 z-50 flex justify-end" (click)="closeShareModal()">
+  <!-- Backdrop -->
+  <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+  
+  <!-- Slide-in Panel -->
+  <div class="relative w-full max-w-md bg-[#0f132a] border-l border-[#2a305e] shadow-2xl h-full overflow-y-auto animate-slide-in" (click)="$event.stopPropagation()">
+    
+    <!-- Header -->
+    <div class="flex items-center justify-between p-6 border-b border-[#1b2040]">
+      <h3 class="text-lg font-bold text-white flex items-center gap-2">
+        <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+        </svg>
+        Share Space
+      </h3>
+      <button 
+        (click)="closeShareModal()"
+        class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition cursor-pointer">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Content -->
+    <div class="p-6 space-y-6">
+      
+      <!-- Room Info -->
+      <div class="bg-[#0c1024] border border-[#1b2040] rounded-2xl p-5">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 rounded-xl bg-indigo-600/20 flex items-center justify-center">
+            <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-white truncate max-w-[200px]">{{ room?.title || 'Room' }}</p>
+            <p class="text-xs text-slate-400">{{ room?.isPublic ? '🌐 Public' : '🔒 Private' }} • {{ participants.length }} members</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Link Section -->
+      <div>
+        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Invite Link</label>
+        <div class="bg-[#0b0e24] border border-[#1b2040] rounded-xl p-1 flex items-center gap-2">
+          <input 
+            type="text" 
+            [value]="shareLink" 
+            readonly
+            class="flex-1 bg-transparent text-white text-sm px-3 py-2 outline-none truncate"
+          />
+          <button 
+            (click)="copyRoomLink()"
+            class=" mr-4 copy-btn bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-xs font-semibold transition cursor-pointer whitespace-nowrap flex items-center gap-1.5 ">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+            </svg>
+            Copy
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Share Options -->
+      <div>
+        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Quick Share</label>
+        <div class="grid grid-cols-3 gap-3">
+          <!-- Copy Link -->
+          <button (click)="copyRoomLink()" class="flex flex-col items-center gap-2 p-4 bg-[#0c1024] border border-[#1b2040] rounded-2xl hover:border-indigo-500/50 transition cursor-pointer group">
+            <div class="w-10 h-10 rounded-full bg-indigo-600/20 flex items-center justify-center group-hover:bg-indigo-600/40 transition">
+              <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+              </svg>
+            </div>
+            <span class="text-xs text-slate-400 group-hover:text-white transition">Copy Link</span>
+          </button>
+
+          <!-- WhatsApp -->
+          <a [href]="'https://wa.me/?text=' + encodeValue('Join my space on GuzoGo: ' + shareLink)" target="_blank"
+             class="flex flex-col items-center gap-2 p-4 bg-[#0c1024] border border-[#1b2040] rounded-2xl hover:border-emerald-500/50 transition cursor-pointer group">
+            <div class="w-10 h-10 rounded-full bg-emerald-600/20 flex items-center justify-center group-hover:bg-emerald-600/40 transition">
+              <svg class="w-5 h-5 text-emerald-400" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+              </svg>
+            </div>
+            <span class="text-xs text-slate-400 group-hover:text-white transition">WhatsApp</span>
+          </a>
+
+          <!-- Telegram -->
+          <a [href]="'https://t.me/share/url?url=' + encodeValue(shareLink) + '&text=' + encodeValue('Join my space on GuzoGo!')" target="_blank"
+             class="flex flex-col items-center gap-2 p-4 bg-[#0c1024] border border-[#1b2040] rounded-2xl hover:border-sky-500/50 transition cursor-pointer group">
+            <div class="w-10 h-10 rounded-full bg-sky-600/20 flex items-center justify-center group-hover:bg-sky-600/40 transition">
+              <svg class="w-5 h-5 text-sky-400" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.359 8.627-.168.9-.5 1.201-.82 1.23-.697.064-1.226-.461-1.901-.903-1.056-.692-1.653-1.123-2.678-1.799-1.185-.781-.417-1.21.258-1.911.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.139-5.062 3.345-.479.329-.913.489-1.302.481-.428-.009-1.252-.242-1.865-.441-.752-.245-1.349-.374-1.297-.789.027-.216.324-.437.893-.663 3.498-1.524 5.831-2.529 6.998-3.015 3.333-1.386 4.025-1.627 4.477-1.635.099-.002.321.023.465.138.121.096.154.228.17.32.016.092.036.301.02.465z"/>
+              </svg>
+            </div>
+            <span class="text-xs text-slate-400 group-hover:text-white transition">Telegram</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Close Button -->
+      <button 
+        (click)="closeShareModal()"
+        class="w-full px-4 py-3 rounded-xl text-sm font-medium text-slate-300 bg-slate-800/60 border border-slate-700 hover:bg-slate-700 transition cursor-pointer">
+        Close
+      </button>
+    </div>
+  </div>
+</div>
 
 <!-- KICKED OVERLAY -->
 <div *ngIf="isKicked" class="fixed inset-0 bg-black/90 z-50 flex items-center justify-center">
@@ -369,7 +520,7 @@
   </div>
 </div>
 
-<!-- DEBUG: Show participants count and streams -->
+<!-- DEBUG -->
 <div class="fixed top-20 right-4 bg-black/80 text-green-400 text-xs p-2 rounded z-50">
   Participants: {{ participants.length }} | 
   CurrentUserId: {{ currentUserId }} |

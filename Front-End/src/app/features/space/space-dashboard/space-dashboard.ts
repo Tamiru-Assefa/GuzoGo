@@ -1,6 +1,6 @@
 // features/space/space-dashboard/space-dashboard.component.ts
 
-import { Component, OnInit, NgZone, ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit, NgZone, ChangeDetectorRef, OnDestroy} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -41,6 +41,7 @@ export class SpaceDashboardComponent implements OnInit {
   public currentUserId = Number(localStorage.getItem('userId') || '0');
 
   public spaces: Space[] = [];
+  private refreshInterval: any;
 
   // Category mapping: matches category-filter categories to room data
   // In SpaceDashboardComponent:
@@ -75,20 +76,34 @@ private categoryMap: { [key: number]: string } = {
   ngOnInit(): void {
     this.fetchSpaces();
     this.loadUserProfile();
+    this.startAutoRefresh();
   }
 
  public fetchSpaces(): void {
   this.spacesService.getSpaces().subscribe({
     next: (data) => {
-      this.ngZone.run(() => {           // <-- Wrap in NgZone
+      this.ngZone.run(() => {
         if (data && data.length > 0) {
           this.spaces = data;
-          this.cdr.detectChanges();     // <-- Force update
+          this.cdr.detectChanges();
         }
       });
     },
     error: (err) => console.error('Error fetching spaces', err)
   });
+}
+
+ngOnDestroy(): void {
+  if (this.refreshInterval) {
+    clearInterval(this.refreshInterval);
+  }
+}
+
+private startAutoRefresh(): void {
+  // Refresh spaces list every 10 seconds
+  this.refreshInterval = setInterval(() => {
+    this.fetchSpaces();
+  }, 10000); // 10 seconds
 }
 
   /**

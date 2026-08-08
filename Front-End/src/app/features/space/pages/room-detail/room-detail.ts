@@ -62,6 +62,14 @@ export class RoomDetailComponent implements OnInit, OnDestroy {
   public isKicked = false;
   public kickedMessage = '';
 
+  public needsPassword = false;
+  public passwordInput = '';
+  public passwordError = '';
+  public isVerifyingPassword = false;
+
+  public showShareModal = false;
+  public shareLink = '';
+
   constructor(
     private route: ActivatedRoute,
     public router: Router,
@@ -84,11 +92,11 @@ export class RoomDetailComponent implements OnInit, OnDestroy {
   await this.initRoom();
 }
 
-  private async initRoom(): Promise<void> {
+ private async initRoom(): Promise<void> {
   try {
     console.log('🚀 initRoom STARTED for room:', this.roomId);
     
-    // Reset state for fresh entry
+    // Reset state
     this.participants = [];
     this.messages = [];
     this.isMediaReady = false;
@@ -96,44 +104,101 @@ export class RoomDetailComponent implements OnInit, OnDestroy {
     this.isMuted = true;
     this.isScreenSharing = false;
     this.isHandRaised = false;
+    this.needsPassword = false; // Reset
     
-    // 1. Load room data from API
-    console.log('📡 Loading room data...');
+    // 1. Load room data
     await this.loadRoomData();
-    console.log('✅ Room data loaded, participants:', this.participants.length);
-
-    // 2. Connect SignalR & join group
-    console.log('🔌 Connecting SignalR...');
-    await this.initSignalR();
-    console.log('✅ SignalR connected');
-
-    // 3. Start local media AFTER room and SignalR are ready
-    console.log('🎥 Starting local media...');
-    await this.startLocalMedia();
-    console.log('✅ Local media started');
-
-    // 4. Setup WebRTC signaling listeners
-    console.log('🔗 Setting up WebRTC...');
-    this.initWebRTC();
-
-    // 5. Load chat history
-    this.loadChatMessages();
-
-    // 6. Create peer connections for existing participants
-    const others = this.participants.filter(p => p.userId !== this.currentUserId);
-    console.log(`👥 Creating peer connections for ${others.length} other participants`);
-    others.forEach(p => {
-      this.rtcService.createOffer(
-        this.roomId,
-        p.userId.toString(),
-        (userId, stream) => this.onRemoteStream(userId, stream)
+    
+    // 2. Check if room exists and is private
+    if (this.room && !this.room.isPublic) {
+      const isParticipant = this.room.participants?.some(
+        (p: any) => p.userId === this.currentUserId
       );
-    });
-
+      
+      if (!isParticipant) {
+        console.log('🔒 Room is private, showing password prompt');
+        // Clear room data to prevent leaking info
+        this.room = null;
+        this.participants = [];
+        this.needsPassword = true;
+        this.cdr.detectChanges();
+        return;
+      }
+    }
+    
+    // 3. Continue if public or already a participant
+    await this.continueInit();
+    
   } catch (error) {
     console.error('❌ FAILED to initialize room:', error);
   }
+  this.shareLink = `${window.location.origin}/spaces/${this.roomId}`;
 }
+
+  private async continueInit(): Promise<void> {
+  console.log('🔌 Connecting SignalR...');
+  await this.initSignalR();
+  
+  console.log('🎥 Starting local media...');
+  await this.startLocalMedia();
+  
+  console.log('🔗 Setting up WebRTC...');
+  this.initWebRTC();
+  
+  this.loadChatMessages();
+  
+  const others = this.participants.filter(p => p.userId !== this.currentUserId);
+  console.log(`👥 Creating peer connections for ${others.length} other participants`);
+  others.forEach(p => {
+    this.rtcService.createOffer(
+      this.roomId,
+      p.userId.toString(),
+      (userId, stream) => this.onRemoteStream(userId, stream)
+    );
+  });
+}
+
+  public submitRoomPassword(): void {
+  if (!this.passwordInput.trim()) {
+    this.passwordError = 'Please enter the room password.';
+    return;
+  }
+  
+  this.isVerifyingPassword = true;
+  this.passwordError = '';
+  
+  this.spacesService.joinRoom(this.roomId, this.passwordInput).subscribe({
+    next: (success) => {
+      this.isVerifyingPassword = false;
+      if (success) {
+        this.needsPassword = false;
+        this.passwordInput = '';
+        // Reload room data to get updated participants
+        this.loadRoomData().then(() => this.continueInit());
+      } else {
+        this.passwordError = 'Incorrect password or room is full.';
+      }
+    },
+    error: () => {
+      this.isVerifyingPassword = false;
+      this.passwordError = 'Failed to verify. Please try again.';
+    }
+  });
+}
+
+  public onPasswordKeydown(event: KeyboardEvent): void {
+    if (event.key === 'Enter') {
+      this.submitRoomPassword();
+    }
+  }
+
+  public cancelPasswordPrompt(): void {
+    this.router.navigate(['/spaces']);
+  }
+
+  public encodeValue(value: string): string {
+    return encodeURIComponent(value);
+  }
 
   /** Start camera & microphone */
   private async startLocalMedia(): Promise<void> {
@@ -381,27 +446,28 @@ private onRemoteStateUpdate(userId: number, mediaState: any): void {
       next: (data) => {
         this.ngZone.run(() => {
           this.room = data;
-          this.participants = (data.participants || []).map((p: any) => {
-            const existing = this.participants.find(existing => existing.userId === p.userId);
-            return {
-              ...p,
-              stream: existing?.stream || null,
-              profilePictureUrl: p.profilePictureUrl || existing?.profilePictureUrl || ''
-            };
-          });
           
-          this.isHost = data.hostUserId === this.currentUserId;
-          
-          const me = this.participants.find(p => p.userId === this.currentUserId);
-          if (me) {
-            this.isMuted = me.isMuted;
-            this.isVideoOn = me.isVideoOn;
-            this.isScreenSharing = me.isScreenSharing;
-            this.isHandRaised = me.isHandRaised;
+          // Only set up participants if not waiting for password
+          if (!this.needsPassword) {
+            this.participants = (data.participants || []).map((p: any) => {
+              const existing = this.participants.find(existing => existing.userId === p.userId);
+              return {
+                ...p,
+                stream: existing?.stream || null,
+                profilePictureUrl: p.profilePictureUrl || existing?.profilePictureUrl || ''
+              };
+            });
+            
+            this.isHost = data.hostUserId === this.currentUserId;
+            
+            const me = this.participants.find(p => p.userId === this.currentUserId);
+            if (me) {
+              this.isMuted = me.isMuted;
+              this.isVideoOn = me.isVideoOn;
+              this.isScreenSharing = me.isScreenSharing;
+              this.isHandRaised = me.isHandRaised;
+            }
           }
-          
-          // Fetch profile pictures for all participants
-          this.loadProfilePictures();
           
           this.cdr.detectChanges();
           resolve();
@@ -660,5 +726,18 @@ public get sortedParticipants(): Participant[] {
     if (!a.isScreenSharing && b.isScreenSharing) return 1;
     return 0;
   });
+}
+public copyRoomLink(): void {
+  navigator.clipboard.writeText(this.shareLink).then(() => {
+    // Temporary feedback
+  });
+}
+
+public openShareModal(): void {
+  this.showShareModal = true;
+}
+
+public closeShareModal(): void {
+  this.showShareModal = false;
 }
 }

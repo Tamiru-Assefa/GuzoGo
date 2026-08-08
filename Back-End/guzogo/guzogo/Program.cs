@@ -120,6 +120,7 @@ builder.Services.AddScoped<IMatchingService, MatchingService>();
 builder.Services.AddScoped<MatchScoreCalculator>();
 builder.Services.AddScoped<IMatchSessionService, MatchSessionService>();
 builder.Services.AddScoped<ISpacesService, SpacesService>();
+builder.Services.AddHostedService<RoomCleanupService>();
 
 
 // Allow cross-origin requests during development so Swagger UI can call the API
