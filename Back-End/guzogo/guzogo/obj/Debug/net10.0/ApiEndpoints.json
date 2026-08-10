@@ -175,6 +175,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "guzogo.Controllers.MatchPreferenceController",
+    "Method": "GetSearching",
+    "RelativePath": "api/MatchPreference/searching",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "guzogo.Controllers.MatchSessionController",
     "Method": "EndSession",
     "RelativePath": "api/MatchSession/end/{sessionId}",

@@ -10,7 +10,7 @@ export interface UserProfile {
   userId: number;
   firstName: string;
   lastName: string;
-  professionTitle: string;
+  profession: string; 
   professionCategory: string;
   company: string;
   country: string;
@@ -52,4 +52,8 @@ export class ProfileService {
       map(profile => profile.profilePictureUrl || '')
     );
   }
+  
+updateProfile(profileId: number, data: any): Observable<any> {
+  return this.http.put(`${this.apiUrl}/${profileId}`, data);
+}
 }

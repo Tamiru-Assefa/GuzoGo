@@ -15,7 +15,6 @@ export class RegisterComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  // Convert state variables to Signals for instant UI rendering
   isLoading = signal(false);
   successMessage = signal('');
   errorMessage = signal('');
@@ -25,16 +24,25 @@ export class RegisterComponent {
       '',
       [Validators.required, Validators.minLength(3), Validators.maxLength(50)],
     ],
-    email: ['', [Validators.required, Validators.email]],
+    email: [
+      '',
+      [Validators.required, Validators.email],
+    ],
     password: [
       '',
       [
         Validators.required,
         Validators.minLength(6),
         Validators.maxLength(100),
+        Validators.pattern(/^(?=.*[a-zA-Z])(?=.*[0-9])/),  // at least 1 letter + 1 number
       ],
     ],
   });
+
+  // Helper getters for template
+  get userName() { return this.registerForm.get('userName'); }
+  get email() { return this.registerForm.get('email'); }
+  get password() { return this.registerForm.get('password'); }
 
   onSubmit() {
     if (this.registerForm.invalid) {
@@ -42,7 +50,6 @@ export class RegisterComponent {
       return;
     }
 
-    // Update Signals using .set()
     this.isLoading.set(true);
     this.successMessage.set('');
     this.errorMessage.set('');
@@ -53,20 +60,14 @@ export class RegisterComponent {
         next: (response) => {
           this.isLoading.set(false);
           this.successMessage.set(response.message);
-
-          setTimeout(() => {
-            this.router.navigate(['/login']);
-          }, 1500);
+          setTimeout(() => this.router.navigate(['/login']), 1500);
         },
         error: (error) => {
           this.isLoading.set(false);
-
-          // Fallback checks for both custom JSON { message: ... } and default ASP.NET ProblemDetails
           const msg =
             error.error?.message ??
             error.error?.title ??
             'Email or username already exists.';
-
           this.errorMessage.set(msg);
           console.error('Registration error:', error);
         },

@@ -19,11 +19,10 @@ namespace guzogo.DTOs.Profile
         public string LastName { get; set; } = string.Empty;
 
 
-        [Required]
-        public int ProfessionTitleId { get; set; }
-
 
         public ExperienceLevel ExperienceLevel { get; set; }
+
+        public string? Profession { get; set; }
 
 
         [StringLength(100)]

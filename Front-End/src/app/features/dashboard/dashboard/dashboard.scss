@@ -125,3 +125,171 @@
     }
   }
 }
+
+
+
+/* =========================================================
+   GUZOGO MATCHMAKER – CONSOLIDATED ANIMATIONS
+   ========================================================= */
+
+/* Welcome text fade-in */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Slow pulse for highlighted text */
+@keyframes pulseSlow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Node float */
+@keyframes nodeFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* Node pulse */
+@keyframes nodePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.4); }
+  50% { box-shadow: 0 0 20px 4px rgba(34, 211, 238, 0.15); }
+}
+
+/* Connection pulse travelling between users */
+@keyframes connectionPulse {
+  0% {
+    left: 0;
+    opacity: 0;
+    transform: translateY(-50%) scale(0.7);
+  }
+  15% { opacity: 1; }
+  50% {
+    left: calc(50% - 3px);
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
+  85% { opacity: 1; }
+  100% {
+    left: calc(100% - 7px);
+    opacity: 0;
+    transform: translateY(-50%) scale(0.7);
+  }
+}
+
+/* Floating particles */
+@keyframes floatParticle1 {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.8; }
+  33% { transform: translate(8px, -12px) scale(1.2); opacity: 0.4; }
+  66% { transform: translate(-6px, 4px) scale(0.8); opacity: 0.6; }
+}
+
+@keyframes floatParticle2 {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
+  33% { transform: translate(-10px, -8px) scale(1.1); opacity: 0.3; }
+  66% { transform: translate(6px, 10px) scale(0.9); opacity: 0.7; }
+}
+
+@keyframes floatParticle3 {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.7; }
+  33% { transform: translate(12px, -4px) scale(1.3); opacity: 0.3; }
+  66% { transform: translate(-4px, -10px) scale(0.7); opacity: 0.5; }
+}
+
+@keyframes floatParticle4 {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+  33% { transform: translate(-8px, 10px) scale(1.2); opacity: 0.2; }
+  66% { transform: translate(10px, -6px) scale(0.8); opacity: 0.8; }
+}
+
+/* Utility classes */
+.animate-fade-in {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animate-pulse-slow {
+  animation: pulseSlow 2.5s ease-in-out infinite;
+}
+
+/* Connection particles */
+.connection-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(34, 211, 238, 0.7);
+  box-shadow: 0 0 8px rgba(34, 211, 238, 0.6);
+}
+
+.particle-one { animation: floatParticle1 3s ease-in-out infinite; top: 20%; left: 25%; }
+.particle-two { animation: floatParticle2 4s ease-in-out infinite; top: 40%; left: 45%; }
+.particle-three { animation: floatParticle3 3.5s ease-in-out infinite; top: 30%; left: 65%; }
+.particle-four { animation: floatParticle4 4.5s ease-in-out infinite; top: 50%; left: 35%; }
+
+/* Connection nodes */
+.connection-node {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: nodePulse 2.5s ease-in-out infinite;
+  backdrop-filter: blur(6px);
+}
+
+.node-left { left: 10%; top: 50%; transform: translateY(-50%); }
+.node-right { right: 10%; top: 50%; transform: translateY(-50%); }
+
+.node-inner {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(34, 211, 238, 0.08);
+  border: 1px solid rgba(34, 211, 238, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Connection line */
+.connection-line {
+  position: absolute;
+  top: 50%;
+  left: 15%;
+  right: 15%;
+  height: 2px;
+  background: rgba(34, 211, 238, 0.15);
+  transform: translateY(-50%);
+}
+
+.connection-pulse {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.5), transparent);
+  animation: connectionPulse 1.8s ease-in-out infinite;
+}
+
+/* Welcome text container */
+.welcome-text {
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .connection-node,
+  .connection-pulse,
+  .connection-particle,
+  .welcome-text {
+    animation: none;
+  }
+}

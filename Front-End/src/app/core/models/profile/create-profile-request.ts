@@ -2,7 +2,7 @@ export interface CreateProfileRequest {
   userId: number;
   firstName: string;
   lastName: string;
-  professionTitleId: number;
+  profession: string; 
   experienceLevel: number;
   company: string;
   country: string;

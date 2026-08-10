@@ -69,8 +69,19 @@ namespace guzogo.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AdditionalDescription")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("DesiredProfession")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DesiredSkills")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Goal")
                         .IsRequired()
@@ -80,7 +91,6 @@ namespace guzogo.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("MatchType")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("PreferredProfessionId")
@@ -259,7 +269,10 @@ namespace guzogo.Migrations
                     b.Property<string>("PortfolioUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProfessionTitleId")
+                    b.Property<string>("Profession")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ProfessionTitleId")
                         .HasColumnType("int");
 
                     b.Property<string>("ProfilePictureUrl")
@@ -704,9 +717,7 @@ namespace guzogo.Migrations
                 {
                     b.HasOne("guzogo.Entities.ProfessionTitle", "ProfessionTitle")
                         .WithMany("Profiles")
-                        .HasForeignKey("ProfessionTitleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProfessionTitleId");
 
                     b.HasOne("guzogo.Entities.User", "User")
                         .WithOne("Profile")

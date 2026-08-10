@@ -1,6 +1,7 @@
 ﻿using guzogo.Entities;
 using guzogo.Entities.Spaces;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace guzogo.Data
 {
@@ -130,6 +131,21 @@ namespace guzogo.Data
                 .WithMany(x => x.PreferenceSkills)
                 .HasForeignKey(x => x.MatchPreferenceId);
 
+            modelBuilder.Entity<MatchPreference>()
+                .Property(x => x.DesiredSkills)
+                .HasConversion(
+                    v => JsonSerializer.Serialize(
+                        v,
+                        (JsonSerializerOptions?)null
+                    ),
+
+                    v => string.IsNullOrWhiteSpace(v)
+                        ? new List<string>()
+                        : JsonSerializer.Deserialize<List<string>>(
+                            v,
+                            (JsonSerializerOptions?)null
+                        ) ?? new List<string>()
+                );
 
             modelBuilder.Entity<PreferenceSkill>()
                 .HasOne(x => x.Skill)

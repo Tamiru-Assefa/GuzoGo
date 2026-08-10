@@ -17,8 +17,7 @@ namespace guzogo.DTOs.Profile
         public string LastName { get; set; } = string.Empty;
 
 
-        public int ProfessionTitleId { get; set; }
-
+        public string? Profession { get; set; }
 
         public ExperienceLevel ExperienceLevel { get; set; }
 

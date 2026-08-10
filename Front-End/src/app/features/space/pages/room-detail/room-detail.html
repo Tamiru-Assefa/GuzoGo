@@ -221,21 +221,30 @@
         </ng-container>
 
         <!-- BOTTOM BAR -->
-        <div class="bg-[#090d20]/90 backdrop-blur border-t border-[#1a2042] px-4 py-2.5 flex items-center justify-between z-10">
-          <span class="text-xs font-medium text-slate-300">
-            {{ getUserLabel(p) }}
-          </span>
-          <div class="flex items-center">
-            <span *ngIf="p.isMuted" class="text-rose-400 bg-rose-500/10 p-1 rounded-md" title="Muted">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path></svg>
-            </span>
-            <span *ngIf="!p.isMuted && p.isSpeaking" class="flex items-end gap-0.5 h-4 px-1" title="Speaking">
-              <span class="w-1 h-3 bg-emerald-400 rounded-full animate-bounce"></span>
-              <span class="w-1 h-4 bg-emerald-400 rounded-full animate-bounce [animation-delay:0.2s]"></span>
-              <span class="w-1 h-2 bg-emerald-400 rounded-full animate-bounce [animation-delay:0.4s]"></span>
-            </span>
-          </div>
-        </div>
+        <!-- BOTTOM BAR -->
+<div class="bg-[#090d20]/90 backdrop-blur border-t border-[#1a2042] px-4 py-2.5 flex items-center justify-between z-10">
+  <span class="text-xs font-medium text-slate-300">
+    {{ getUserLabel(p) }}
+  </span>
+  <div class="flex items-center gap-2">
+    <!-- Audio Status Indicator -->
+    <span *ngIf="p.isMuted" class="text-rose-400 bg-rose-500/10 p-1 rounded-md" title="Muted">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path></svg>
+    </span>
+    <span *ngIf="!p.isMuted && p.isSpeaking" class="flex items-end gap-0.5 h-4 px-1" title="Speaking">
+      <span class="w-1 h-3 bg-emerald-400 rounded-full animate-bounce"></span>
+      <span class="w-1 h-4 bg-emerald-400 rounded-full animate-bounce [animation-delay:0.2s]"></span>
+      <span class="w-1 h-2 bg-emerald-400 rounded-full animate-bounce [animation-delay:0.4s]"></span>
+    </span>
+    <!-- View Profile Button -->
+    <button (click)="viewProfile(p.userId)" class="text-slate-500 hover:text-indigo-400 p-1 rounded-lg hover:bg-white/5 transition cursor-pointer" title="View Profile">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+      </svg>
+    </button>
+  </div>
+</div>
 
       </div>
 

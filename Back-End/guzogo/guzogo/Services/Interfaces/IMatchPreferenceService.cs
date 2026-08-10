@@ -13,5 +13,7 @@ namespace guzogo.Services.Interface
         Task<MatchPreferenceResponseDto?> GetAsync(
             int userId
         );
+
+        Task<List<MatchPreferenceResponseDto>> GetSearchingAsync();
     }
 }

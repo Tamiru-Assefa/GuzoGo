@@ -740,4 +740,10 @@ public openShareModal(): void {
 public closeShareModal(): void {
   this.showShareModal = false;
 }
+
+public viewProfile(userId: number): void {
+  if (userId) {
+    window.open(`/profile/${userId}`, '_blank');
+  }
+}
 }

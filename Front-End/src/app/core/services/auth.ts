@@ -51,6 +51,23 @@ export class AuthService {
     const userId = localStorage.getItem('userId');
     return userId ? Number(userId) : null;
   }
+  // Example getUserId in auth.service.ts
+
+  // core/services/auth.service.ts
+getUserIdFromToken(): number | null {
+  const token = localStorage.getItem('token');
+  if (!token) return null;
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const id = parseInt(
+      payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'],
+      10
+    );
+    return isNaN(id) ? null : id;
+  } catch {
+    return null;
+  }
+}
 
   // LOGOUT METHOD
   logout() {

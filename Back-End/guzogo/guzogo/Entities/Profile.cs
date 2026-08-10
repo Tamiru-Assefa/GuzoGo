@@ -28,10 +28,10 @@ namespace guzogo.Entities
 
         // ---------- Career ----------
 
-        public int ProfessionTitleId { get; set; }
+        public int? ProfessionTitleId { get; set; }
 
         [ForeignKey(nameof(ProfessionTitleId))]
-        public ProfessionTitle ProfessionTitle { get; set; } = null!;
+        public ProfessionTitle? ProfessionTitle { get; set; } = null!;
 
         public ExperienceLevel ExperienceLevel { get; set; }
 
@@ -66,6 +66,8 @@ namespace guzogo.Entities
         // ---------- Rating ----------
 
         public double Rating { get; set; } = 0;
+
+        public string? Profession { get; set; }
 
         public int TotalRatings { get; set; } = 0;
 

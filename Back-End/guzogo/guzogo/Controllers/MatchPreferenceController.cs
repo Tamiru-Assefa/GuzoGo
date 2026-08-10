@@ -39,5 +39,13 @@ namespace guzogo.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("searching")]
+        public async Task<IActionResult> GetSearching()
+        {
+            var preferences = await _matchPreferenceService.GetSearchingAsync();
+
+            return Ok(preferences);
+        }
     }
 }

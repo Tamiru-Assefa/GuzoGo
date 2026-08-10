@@ -64,10 +64,17 @@ export const routes: Routes = [
       import('./features/room/room/room').then((m) => m.RoomComponent),
   },
   {
-  path: 'profile/:id',
-  loadComponent: () => import('./features/profile/pages/profile-view/profile-view')
-    .then(m => m.ProfileViewComponent)
+  path: 'profile/edit',
+  loadComponent: () =>
+    import('./features/profile/pages/edit-profile/edit-profile')
+      .then(m => m.EditProfileComponent)
 },
+
+  {
+    path: 'profile/:id',
+    loadComponent: () => import('./features/profile/pages/profile-view/profile-view')
+      .then(m => m.ProfileViewComponent)
+  },
 
   // Wildcard fallback (keep at the bottom)
   { path: '**', redirectTo: 'register' },

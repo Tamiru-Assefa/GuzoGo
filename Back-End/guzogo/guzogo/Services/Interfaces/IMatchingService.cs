@@ -5,5 +5,6 @@ namespace guzogo.Services.Interface
     public interface IMatchingService
     {
         Task<MatchResultDto> FindBestMatchAsync(int userId);
+
     }
 }

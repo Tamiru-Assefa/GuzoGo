@@ -44,7 +44,7 @@ private loadProfile(userId: number): void {
           userId: data.userId,
           firstName: data.firstName || '',
           lastName: data.lastName || '',
-          professionTitle: data.professionTitle || '',
+          profession: data.professionTitle || '',
           professionCategory: data.professionCategory || '',
           company: data.company || '',
           country: data.country || '',

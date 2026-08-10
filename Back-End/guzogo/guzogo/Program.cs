@@ -148,6 +148,12 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddHttpClient("AIMatcher", client =>
+{
+    client.BaseAddress = new Uri("http://localhost:8000");
+    client.Timeout = TimeSpan.FromSeconds(30);
+});
+
 
 builder.Services.AddControllers();
 builder.Services.AddSignalR();

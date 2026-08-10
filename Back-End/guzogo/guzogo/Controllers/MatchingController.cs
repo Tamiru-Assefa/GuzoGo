@@ -19,14 +19,6 @@ namespace guzogo.Controllers
         {
             var result = await _matchingService.FindBestMatchAsync(userId);
 
-            if (!result.Matched)
-            {
-                return NotFound(new
-                {
-                    message = "No suitable match found."
-                });
-            }
-
             return Ok(result);
         }
     }

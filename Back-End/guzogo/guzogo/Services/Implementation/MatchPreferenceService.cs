@@ -28,13 +28,22 @@ namespace guzogo.Services.Implementation
                 preference = new MatchPreference
                 {
                     UserId = userId,
+
+                    // OLD SYSTEM
                     PreferredProfessionId = dto.PreferredProfessionId,
+
+                    // NEW AI SYSTEM
+                    DesiredProfession = dto.DesiredProfession,
+                    DesiredSkills = dto.DesiredSkills,
+                    AdditionalDescription = dto.AdditionalDescription,
+
                     Goal = dto.Goal,
                     MatchType = dto.MatchType,
-                    CreatedAt = DateTime.UtcNow,
                     IsSearching = dto.IsSearching,
+                    CreatedAt = DateTime.UtcNow,
 
                     PreferenceSkills = dto.PreferredSkillIds
+                        .Distinct()
                         .Select(skillId => new PreferenceSkill
                         {
                             SkillId = skillId
@@ -46,23 +55,51 @@ namespace guzogo.Services.Implementation
             }
             else
             {
-                // Update basic fields
-                preference.PreferredProfessionId = dto.PreferredProfessionId;
+                // ==========================================
+                // OLD SYSTEM
+                // ==========================================
+
+                preference.PreferredProfessionId =
+                    dto.PreferredProfessionId;
+
+                // ==========================================
+                // NEW AI SYSTEM
+                // ==========================================
+
+                preference.DesiredProfession =
+                    dto.DesiredProfession;
+
+                preference.DesiredSkills =
+                    dto.DesiredSkills;
+
+                preference.AdditionalDescription =
+                    dto.AdditionalDescription;
+
+                // ==========================================
+                // COMMON FIELDS
+                // ==========================================
+
                 preference.Goal = dto.Goal;
+
                 preference.MatchType = dto.MatchType;
+
                 preference.IsSearching = dto.IsSearching;
 
-                // Delete existing skills from the database
-                _context.PreferenceSkills.RemoveRange(preference.PreferenceSkills);
+                // ==========================================
+                // OLD PREFERRED SKILLS
+                // ==========================================
 
-                // Replace with the new list
-                preference.PreferenceSkills = dto.PreferredSkillIds
-                    .Distinct() // Prevent duplicate skill IDs from the frontend
-                    .Select(skillId => new PreferenceSkill
-                    {
-                        SkillId = skillId
-                    })
-                    .ToList();
+                _context.PreferenceSkills
+                    .RemoveRange(preference.PreferenceSkills);
+
+                preference.PreferenceSkills =
+                    dto.PreferredSkillIds
+                        .Distinct()
+                        .Select(skillId => new PreferenceSkill
+                        {
+                            SkillId = skillId
+                        })
+                        .ToList();
             }
 
             await _context.SaveChangesAsync();
@@ -70,17 +107,37 @@ namespace guzogo.Services.Implementation
             return new MatchPreferenceResponseDto
             {
                 UserId = preference.UserId,
-                PreferredProfessionId = preference.PreferredProfessionId,
-                PreferredSkillIds = preference.PreferenceSkills
-                    .Select(x => x.SkillId)
-                    .ToList(),
+
+                // OLD
+                PreferredProfessionId =
+                    preference.PreferredProfessionId,
+
+                PreferredSkillIds =
+                    preference.PreferenceSkills
+                        .Select(x => x.SkillId)
+                        .ToList(),
+
+                // NEW AI
+                DesiredProfession =
+                    preference.DesiredProfession,
+
+                DesiredSkills =
+                    preference.DesiredSkills,
+
+                AdditionalDescription =
+                    preference.AdditionalDescription,
+
+                // COMMON
                 Goal = preference.Goal,
-                MatchType = preference.MatchType
-               
+
+                MatchType = preference.MatchType,
+
+                IsSearching = preference.IsSearching
             };
         }
 
-        public async Task<MatchPreferenceResponseDto?> GetAsync(int userId)
+        public async Task<MatchPreferenceResponseDto?> GetAsync(
+            int userId)
         {
             var preference = await _context.MatchPreferences
                 .Include(x => x.PreferenceSkills)
@@ -92,13 +149,62 @@ namespace guzogo.Services.Implementation
             return new MatchPreferenceResponseDto
             {
                 UserId = preference.UserId,
-                PreferredProfessionId = preference.PreferredProfessionId,
-                PreferredSkillIds = preference.PreferenceSkills
-                    .Select(x => x.SkillId)
-                    .ToList(),
+
+                // OLD
+                PreferredProfessionId =
+                    preference.PreferredProfessionId,
+
+                PreferredSkillIds =
+                    preference.PreferenceSkills
+                        .Select(x => x.SkillId)
+                        .ToList(),
+
+                // NEW AI
+                DesiredProfession =
+                    preference.DesiredProfession,
+
+                DesiredSkills =
+                    preference.DesiredSkills,
+
+                AdditionalDescription =
+                    preference.AdditionalDescription,
+
+                // COMMON
                 Goal = preference.Goal,
-                MatchType = preference.MatchType
+
+                MatchType = preference.MatchType,
+
+                IsSearching = preference.IsSearching
             };
+        }
+
+        public async Task<List<MatchPreferenceResponseDto>> GetSearchingAsync()
+        {
+            var preferences = await _context.MatchPreferences
+                .Where(x => x.IsSearching)
+                .ToListAsync();
+
+            return preferences.Select(preference => new MatchPreferenceResponseDto
+            {
+                UserId = preference.UserId,
+
+                PreferredProfessionId = preference.PreferredProfessionId,
+
+                PreferredSkillIds = new List<int>(),
+
+                DesiredProfession = preference.DesiredProfession,
+
+                DesiredSkills = preference.DesiredSkills,
+
+                AdditionalDescription = preference.AdditionalDescription,
+
+
+                Goal = preference.Goal,
+
+                MatchType = preference.MatchType,
+
+                IsSearching = preference.IsSearching
+            }).ToList();
         }
     }
 }

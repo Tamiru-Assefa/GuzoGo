@@ -1,203 +1,295 @@
 <app-header></app-header>
 
-<main class="min-h-screen bg-[#070a11] text-slate-100 p-4 sm:p-8 space-y-10 relative overflow-hidden">
-  <!-- Ambient background glow -->
-  <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-cyan-500/10 blur-[120px] pointer-events-none rounded-full"></div>
+<!-- =========================================================
+     GUZOGO MATCHMAKER PAGE
+     ========================================================= -->
+<main class="min-h-screen bg-[#070a11] text-slate-100 relative overflow-hidden">
 
-  <!-- SignalR Peer Matchmaker Card -->
-  <div class="max-w-4xl mx-auto bg-slate-900/50 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl relative z-10 space-y-6">
-    
-    <div class="flex items-center justify-between border-b border-white/10 pb-4">
-      <h1 class="text-xl font-bold text-white tracking-wide flex items-center gap-2">
-        <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse"></span>
-        SignalR Peer Matchmaker
-      </h1>
-      <span class="text-xs text-slate-400 font-mono">GuzoGo Engine</span>
-    </div>
+  <!-- ========================================================
+       GLOBAL AMBIENT BACKGROUND
+       ======================================================== -->
+  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[420px] bg-cyan-500/[0.07] blur-[130px] rounded-full pointer-events-none"></div>
+  <div class="absolute top-[420px] right-[-180px] w-[420px] h-[420px] bg-indigo-500/[0.05] blur-[130px] rounded-full pointer-events-none"></div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      
-      <!-- Single-Select: Profession Title -->
-      <div class="space-y-2">
-        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">
-          Profession Title
-        </label>
-        
-        <div class="bg-slate-950/60 border border-white/10 rounded-xl p-2.5 min-h-[52px] flex items-center focus-within:border-cyan-400 transition">
-          <select
-            [(ngModel)]="selectedProfessionId"
-            class="bg-transparent text-xs text-slate-300 focus:outline-none w-full cursor-pointer py-1"
-          >
-            <option [ngValue]="null" disabled selected>Select a profession title...</option>
-            @for (title of allProfessionTitles; track title.id) {
-              <option [ngValue]="title.id" class="bg-slate-900 text-white">
-                {{ title.name }}
-              </option>
-            }
-          </select>
+  <!-- ========================================================
+       WELCOME / CONNECTION HERO
+       ======================================================== -->
+  <section class="relative z-10">
+    <!-- Soft bottom fade -->
+    <div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-[#070a11] pointer-events-none"></div>
+
+    <!-- Ambient glow behind connection -->
+    <div class="absolute left-1/2 top-4 -translate-x-1/2 w-[360px] h-[180px] bg-cyan-500/[0.08] blur-[90px] rounded-full pointer-events-none"></div>
+
+    <!-- Connection animation -->
+    <div class="relative h-28 flex items-center justify-center">
+      <!-- Floating particles -->
+      <span class="connection-particle particle-one"></span>
+      <span class="connection-particle particle-two"></span>
+      <span class="connection-particle particle-three"></span>
+      <span class="connection-particle particle-four"></span>
+
+      <!-- LEFT USER -->
+      <div class="connection-node node-left">
+        <div class="node-inner">
+          <svg class="w-5 h-5 text-cyan-300" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 8v6m3-3h-6"/>
+          </svg>
         </div>
       </div>
 
-      <!-- Multi-Select Combobox: Skills -->
-  <div class="space-y-2">
-    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">
-      Skills
-    </label>
-    
-    <div class="bg-slate-950/60 border border-white/10 rounded-xl p-2.5 min-h-[52px] flex flex-wrap gap-2 items-center focus-within:border-cyan-400 transition">
-      @for (skill of selectedSkills; track skill.id) {
-        <span class="bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 text-xs px-2.5 py-1 rounded-lg flex items-center gap-1.5 font-medium">
-          {{ skill.name }}
-          <button type="button" (click)="removeSkill(skill.id)" class="text-slate-400 hover:text-white font-bold ml-1">×</button>
-        </span>
-      }
+      <!-- CONNECTION LINE -->
+      <div class="connection-line">
+        <span class="connection-pulse"></span>
+      </div>
 
-      <select
-        (change)="onSelectSkill($event)"
-        class="bg-transparent text-xs text-slate-300 focus:outline-none flex-1 min-w-[120px] cursor-pointer py-1"
-      >
-        <option value="" disabled selected>+ Add skill...</option>
-        @for (skill of allSkills; track skill.id) {
-          <option value="{{ skill.id }}" class="bg-slate-900 text-white">
-            {{ skill.name }}
-          </option>
-        }
-      </select>
-    </div>
-  </div>
-      
-    </div>
-
-    <!-- Goal Radio Group -->
-    <div class="space-y-2">
-      <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">Goal</label>
-      <div class="grid grid-cols-3 gap-3">
-        <button
-          type="button"
-          (click)="selectedGoal = 'Networking'"
-          [class]="selectedGoal === 'Networking'
-            ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white border-cyan-400 font-semibold shadow-lg shadow-cyan-500/20'
-            : 'bg-slate-950/60 text-slate-400 border-white/10 hover:border-white/30'"
-          class="py-2.5 px-3 rounded-xl border text-xs sm:text-sm transition flex items-center justify-center"
-        >
-          Networking
-        </button>
-        <button
-          type="button"
-          (click)="selectedGoal = 'Hiring'"
-          [class]="selectedGoal === 'Hiring'
-            ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white border-cyan-400 font-semibold shadow-lg shadow-cyan-500/20'
-            : 'bg-slate-950/60 text-slate-400 border-white/10 hover:border-white/30'"
-          class="py-2.5 px-3 rounded-xl border text-xs sm:text-sm transition flex items-center justify-center"
-        >
-          Hiring
-        </button>
-        <button
-          type="button"
-          (click)="selectedGoal = 'Jobseeker'"
-          [class]="selectedGoal === 'Jobseeker'
-            ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white border-cyan-400 font-semibold shadow-lg shadow-cyan-500/20'
-            : 'bg-slate-950/60 text-slate-400 border-white/10 hover:border-white/30'"
-          class="py-2.5 px-3 rounded-xl border text-xs sm:text-sm transition flex items-center justify-center"
-        >
-          Jobseeker
-        </button>
+      <!-- RIGHT USER -->
+      <div class="connection-node node-right">
+        <div class="node-inner">
+          <svg class="w-5 h-5 text-indigo-300" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 11h4m-2-2v4"/>
+          </svg>
+        </div>
       </div>
     </div>
 
-    <!-- Searching State Overlay / Button -->
-@if (isSearchingMatch) {
-  <div class="flex flex-col items-center gap-3 p-4 bg-slate-900 border border-indigo-500/30 rounded-xl">
-    <div class="flex items-center gap-3">
-      <span class="relative flex h-3 w-3">
-        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-        <span class="relative inline-flex rounded-full h-3 w-3 bg-indigo-500"></span>
-      </span>
-      <p class="text-sm font-medium text-slate-200">
-        Looking for a match... ({{ searchTimeRemaining }}s)
+    <!-- =====================================================
+         WELCOME TEXT
+         ===================================================== -->
+    <div class="relative text-center space-y-2 px-4 pt-1 pb-12 welcome-text">
+      <!-- Small label -->
+      <div class="flex items-center justify-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.8)] animate-pulse"></span>
+        <span class="text-[11px] sm:text-xs uppercase tracking-[0.28em] text-cyan-400 font-semibold">GuzoGo Matchmaker</span>
+        <span class="w-2 h-2 rounded-full bg-indigo-400 shadow-[0_0_10px_rgba(129,140,248,0.8)] animate-pulse"></span>
+      </div>
+
+      <!-- Main heading -->
+      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-white drop-shadow-[0_0_20px_rgba(34,211,238,0.08)]">
+        Welcome to
+        <span class="bg-gradient-to-r from-cyan-300 via-blue-400 to-indigo-400 bg-clip-text text-transparent">GuzoGo</span>
+      </h1>
+
+      <!-- Main description -->
+      <p class="text-sm sm:text-base text-slate-300 max-w-md mx-auto leading-relaxed">
+        Meet someone worth talking to.
+      </p>
+
+      <!-- Supporting description -->
+      <p class="text-xs sm:text-sm text-slate-500 max-w-lg mx-auto leading-relaxed">
+        Tell us what you're looking for, and we'll find a peer who matches your interests.
       </p>
     </div>
-    <button (click)="cancelSearch()" type="button" class="text-xs text-red-400 hover:underline">
-      Cancel Search
-    </button>
-  </div>
-} @else {
-  <button 
-    (click)="findMatch()" 
-    type="button" 
-    class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition">
-    Find Match
-  </button>
-}
-  </div>
+  </section>
 
-  <!-- Recent 6 Matches Grid Section -->
-  <div class="max-w-6xl mx-auto space-y-4">
-    <h2 class="text-xs uppercase tracking-wider text-slate-400 font-semibold">
-      Recent Matches ({{ recentMatches.length }}/6)
-    </h2>
+  <!-- ========================================================
+       MATCHMAKER CONTENT
+       ======================================================== -->
+  <section class="relative z-10 px-4 sm:px-8 pb-12">
 
-    @if (recentMatches.length === 0) {
-      <div class="bg-slate-900/30 border border-white/5 rounded-2xl p-8 text-center text-slate-500 text-sm">
-        No recent matches yet. Click "Find Match" above to start connecting with peers!
-      </div>
-    } @else {
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        @for (match of recentMatches; track match.id) {
-          <div class="bg-slate-900/40 backdrop-blur-xl border border-white/10 rounded-2xl p-5 flex flex-col justify-between shadow-xl relative group hover:border-cyan-400/40 transition">
-            
-            <div class="space-y-3">
-              <!-- Avatar & Basic Details -->
-              <div class="flex items-start gap-3">
-                <div class="relative shrink-0">
-                  <div class="w-12 h-12 rounded-2xl bg-slate-950 border border-white/10 overflow-hidden flex items-center justify-center">
-                    @if (match.profilePictureUrl) {
-                      <img [src]="match.profilePictureUrl" [alt]="match.firstName" class="w-full h-full object-cover" />
-                    } @else {
-                      <svg class="w-6 h-6 text-slate-500" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                      </svg>
-                    }
-                  </div>
-                  <span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-emerald-500 border-2 border-[#070a11] rounded-full"></span>
-                </div>
+    <!-- =====================================================
+         MATCH CARD
+         ===================================================== -->
+    <div class="max-w-4xl mx-auto relative bg-slate-900/[0.58] backdrop-blur-2xl border border-white/[0.08] rounded-[28px] p-5 sm:p-8 shadow-[0_25px_80px_rgba(0,0,0,0.45)] ring-1 ring-white/[0.02] space-y-7 transition-all duration-500 hover:border-cyan-400/[0.15]">
 
-                <div class="min-w-0 flex-1">
-                  <h3 class="font-bold text-white text-base truncate">
-                    {{ match.firstName }} {{ match.lastName }}
-                  </h3>
-                  <p class="text-xs text-cyan-400 font-medium truncate">{{ match.professionTitle }}</p>
-                  <p class="text-[11px] text-slate-400">{{ match.city }}, {{ match.country }}</p>
-                </div>
-              </div>
+      <!-- Subtle card glow -->
+      <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-72 h-32 bg-cyan-400/[0.05] blur-[70px] rounded-full pointer-events-none"></div>
 
-              <!-- Dynamic Badge from professionCategory -->
-              <div>
-                <span class="inline-block bg-indigo-500/10 border border-indigo-400/30 text-indigo-300 text-[10px] font-semibold uppercase px-2 py-0.5 rounded-md">
-                  {{ match.professionCategory }}
-                </span>
-              </div>
-
-              <!-- Bio -->
-              <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed">
-                {{ match.bio }}
-              </p>
-            </div>
-
-            <!-- Bottom Actions: Only View Profile Button -->
-            <div class="mt-5 pt-3 border-t border-white/5">
-              <button
-                (click)="viewProfile(match.userId)"
-                class="w-full py-2.5 rounded-xl bg-slate-950/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-white/10 transition"
-              >
-                View Profile
-              </button>
-            </div>
-
+      <!-- ===================================================
+           CARD HEADER
+           =================================================== -->
+      <div class="relative flex items-center justify-between border-b border-white/[0.06] pb-5">
+        <div class="flex items-center gap-3">
+          <span class="relative flex items-center justify-center w-8 h-8 rounded-xl bg-cyan-400/[0.08] border border-cyan-400/[0.15]">
+            <span class="absolute w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_12px_rgba(34,211,238,0.8)]"></span>
+          </span>
+          <div>
+            <h1 class="text-lg sm:text-xl font-bold text-white tracking-wide">AI Matchmaker</h1>
+            <p class="text-[11px] text-slate-500 mt-0.5">Find your next meaningful connection</p>
           </div>
-        }
+        </div>
+        <span class="hidden sm:inline-flex text-[10px] text-slate-500 font-mono uppercase tracking-wider px-2.5 py-1 rounded-lg bg-slate-950/50 border border-white/[0.05]">GuzoGo Engine</span>
       </div>
-    }
-  </div>
-  
+
+      <!-- ===================================================
+           GOAL SELECTION
+           =================================================== -->
+      <div class="space-y-3">
+        <p class="text-sm font-medium text-slate-300">What brings you here today?</p>
+        <div class="grid grid-cols-3 gap-2.5 sm:gap-3">
+          @for (goal of goals; track goal.value) {
+            <button type="button"
+              (click)="selectedGoal = goal.value"
+              [class]="selectedGoal === goal.value
+                ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white border-cyan-300/60 font-semibold shadow-lg shadow-cyan-500/20'
+                : 'bg-slate-950/50 text-slate-400 border-white/[0.07] hover:bg-slate-800/60 hover:text-slate-200 hover:border-white/[0.16]'"
+              class="relative py-3 px-3 rounded-xl border text-xs sm:text-sm transition-all duration-300 flex items-center justify-center hover:-translate-y-0.5 active:translate-y-0">
+              {{ goal.label }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- ===================================================
+           PROFESSION INPUT
+           =================================================== -->
+      <div class="space-y-3">
+        <p class="text-sm font-medium text-slate-300">{{ goalQuestion }}</p>
+        <div class="relative group">
+          <!-- Focus glow -->
+          <div class="absolute -inset-[1px] rounded-xl bg-gradient-to-r from-cyan-400/0 via-cyan-400/20 to-indigo-400/0 opacity-0 group-focus-within:opacity-100 blur-sm transition-opacity duration-300 pointer-events-none"></div>
+          <input
+            type="text"
+            [(ngModel)]="desiredProfession"
+            [placeholder]="'e.g., Cloud Engineer, Startup Founder, UX Designer...'"
+            class="relative w-full bg-slate-950/60 border border-white/[0.08] rounded-xl px-4 py-3.5 text-white text-sm placeholder:text-slate-600 focus:border-cyan-400/50 focus:bg-slate-950/80 focus:outline-none transition-all duration-300"
+          />
+        </div>
+      </div>
+
+      <!-- ===================================================
+           SKILLS
+           =================================================== -->
+      <div class="space-y-3">
+        <label class="text-[11px] font-semibold uppercase tracking-[0.15em] text-slate-500">{{ skillLabel }}</label>
+        <div class="flex flex-wrap gap-2 bg-slate-950/50 border border-white/[0.08] rounded-xl p-3 min-h-[54px] items-center focus-within:border-cyan-400/40 focus-within:bg-slate-950/70 transition-all duration-300">
+          @for (skill of desiredSkills; track skill) {
+            <span class="bg-cyan-400/[0.08] border border-cyan-400/[0.18] text-cyan-300 text-xs px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 shadow-sm">
+              {{ skill }}
+              <button type="button" (click)="removeSkill(skill)" class="text-slate-500 hover:text-white hover:bg-white/10 rounded-md w-4 h-4 flex items-center justify-center transition">×</button>
+            </span>
+          }
+          <input
+            type="text"
+            [(ngModel)]="skillInput"
+            (keyup.enter)="addSkill()"
+            (keyup.escape)="skillInput = ''"
+            placeholder="Add skill..."
+            class="bg-transparent text-xs text-slate-300 placeholder:text-slate-600 focus:outline-none flex-1 min-w-[100px] py-1"
+          />
+        </div>
+        <p class="text-[10px] text-slate-600">Press Enter to add a skill</p>
+      </div>
+
+      <!-- ===================================================
+           OPTIONAL DESCRIPTION
+           =================================================== -->
+      <div class="space-y-3">
+        <div class="flex items-center justify-between">
+          <label class="text-[11px] font-semibold uppercase tracking-[0.15em] text-slate-500">Tell us more</label>
+          <span class="text-[10px] text-slate-600">Optional</span>
+        </div>
+        <textarea
+          [(ngModel)]="additionalDescription"
+          rows="3"
+          placeholder="e.g., I'm looking for someone experienced in scaling cloud apps using AWS..."
+          class="w-full bg-slate-950/50 border border-white/[0.08] rounded-xl px-4 py-3.5 text-white text-sm placeholder:text-slate-600 focus:border-cyan-400/50 focus:bg-slate-950/80 focus:outline-none transition-all duration-300 resize-none"
+        ></textarea>
+      </div>
+
+      <!-- ★ ERROR MESSAGE BANNER (replaces all alerts) -->
+      @if (errorMessage) {
+        <div class="rounded-xl bg-red-500/10 border border-red-500/30 p-4 text-red-400 text-sm font-medium text-center animate-fade-in">
+          {{ errorMessage }}
+        </div>
+      }
+
+      <!-- ===================================================
+           SEARCH STATE
+           =================================================== -->
+      @if (isSearchingMatch) {
+        <div class="flex flex-col items-center gap-3 p-5 bg-indigo-500/[0.05] border border-indigo-400/[0.18] rounded-2xl">
+          <div class="flex items-center gap-3">
+            <span class="relative flex h-3 w-3">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-60"></span>
+              <span class="relative inline-flex rounded-full h-3 w-3 bg-indigo-500 shadow-[0_0_12px_rgba(99,102,241,0.8)]"></span>
+            </span>
+            <p class="text-sm font-medium text-slate-200">
+              Searching... <span class="text-indigo-300 font-mono">{{ searchTimeRemaining }}s</span>
+            </p>
+          </div>
+          <button (click)="cancelSearch()" class="text-xs text-red-400/80 hover:text-red-300 hover:underline transition">
+            Cancel Search
+          </button>
+        </div>
+      } @else {
+        <!-- =================================================
+             FIND MATCH BUTTON
+             ================================================= -->
+        <button (click)="findMatch()"
+          class="group relative w-full py-3.5 bg-gradient-to-r from-indigo-600 via-blue-600 to-cyan-500 hover:from-indigo-500 hover:via-blue-500 hover:to-cyan-400 text-white font-semibold text-sm rounded-xl shadow-lg shadow-indigo-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-cyan-500/20 active:translate-y-0 overflow-hidden">
+          <!-- Shine animation -->
+          <span class="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-700"></span>
+          <span class="relative flex items-center justify-center gap-2">
+            Find My Match
+            <span class="text-base transition-transform duration-300 group-hover:translate-x-1">→</span>
+          </span>
+        </button>
+      }
+    </div>
+
+    <!-- =====================================================
+         RECENT MATCHES
+         ===================================================== -->
+    <div class="max-w-6xl mx-auto mt-10 space-y-4">
+      <div class="flex items-center justify-between">
+        <h2 class="text-xs uppercase tracking-[0.15em] text-slate-500 font-semibold">Recent Matches</h2>
+        <span class="text-[10px] text-slate-600 font-mono">{{ recentMatches.length }}/6</span>
+      </div>
+
+      @if (recentMatches.length === 0) {
+        <div class="bg-slate-900/30 backdrop-blur-xl border border-white/[0.06] rounded-2xl p-8 text-center text-slate-500 text-sm">
+          <div class="w-10 h-10 mx-auto mb-3 rounded-xl bg-slate-950/70 border border-white/[0.06] flex items-center justify-center">
+            <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a4 4 0 0 0-4-4h-1M9 20H4v-2a4 4 0 0 1 4-4h1m4-4a4 4 0 1 0-8 0 4 4 0 0 0 8 0Zm6 0a3 3 0 1 0-6 0" />
+            </svg>
+          </div>
+          No recent matches yet.
+          <br>
+          <span class="text-slate-600 text-xs">Click "Find My Match" to start connecting.</span>
+        </div>
+      } @else {
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          @for (match of recentMatches; track match.id) {
+            <div class="bg-slate-900/40 backdrop-blur-xl border border-white/[0.07] rounded-2xl p-5 flex flex-col justify-between shadow-xl relative group hover:border-cyan-400/30 hover:-translate-y-1 transition-all duration-300">
+              <div class="space-y-3">
+                <div class="flex items-start gap-3">
+                  <div class="relative shrink-0">
+                    <div class="w-12 h-12 rounded-2xl bg-slate-950 border border-white/[0.08] overflow-hidden flex items-center justify-center">
+                      @if (match.profilePictureUrl) {
+                        <img [src]="match.profilePictureUrl" [alt]="match.firstName" class="w-full h-full object-cover" />
+                      } @else {
+                        <svg class="w-6 h-6 text-slate-500" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                      }
+                    </div>
+                    <span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-emerald-500 border-2 border-[#070a11] rounded-full shadow-[0_0_8px_rgba(16,185,129,0.6)]"></span>
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <h3 class="font-bold text-white text-base truncate">{{ match.firstName }} {{ match.lastName }}</h3>
+                    <p class="text-xs text-cyan-400 font-medium truncate">{{ match.professionTitle }}</p>
+                    <p class="text-[11px] text-slate-500">{{ match.city }}, {{ match.country }}</p>
+                  </div>
+                </div>
+                <div>
+                  <span class="inline-block bg-indigo-500/[0.08] border border-indigo-400/[0.20] text-indigo-300 text-[10px] font-semibold uppercase px-2 py-1 rounded-md">{{ match.professionCategory }}</span>
+                </div>
+                <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed">{{ match.bio }}</p>
+              </div>
+              <div class="mt-5 pt-3 border-t border-white/[0.05]">
+                <button (click)="viewProfile(match.userId)" class="w-full py-2.5 rounded-xl bg-slate-950/70 hover:bg-slate-800/80 text-slate-200 text-xs font-semibold border border-white/[0.08] hover:border-cyan-400/20 transition-all duration-300">
+                  View Profile
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </section>
 </main>

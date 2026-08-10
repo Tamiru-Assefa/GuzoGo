@@ -5,53 +5,60 @@ namespace guzogo.Services.Matching
     public class MatchScoreCalculator
     {
         public int CalculateScore(
-            Profile currentUser,
-            MatchPreference currentPreference,
-            Profile candidate,
-            MatchPreference candidatePreference)
+            MatchPreference currentPref,
+            Profile candidateProfile,
+            MatchPreference candidatePref)
         {
             int score = 0;
 
+            // ===========================
             // Profession Match
-            if (currentPreference.PreferredProfessionId == candidate.ProfessionTitleId)
+            // ===========================
+            if (!string.IsNullOrWhiteSpace(currentPref.DesiredProfession) &&
+                !string.IsNullOrWhiteSpace(candidateProfile.ProfessionTitle?.Name))
             {
-                score += 40;
+                if (currentPref.DesiredProfession.Equals(
+                    candidateProfile.ProfessionTitle.Name,
+                    StringComparison.OrdinalIgnoreCase))
+                {
+                    score += 40;
+                }
             }
 
+            // ===========================
             // Goal Match
-            if (currentPreference.Goal == candidatePreference.Goal)
+            // ===========================
+            if (!string.IsNullOrWhiteSpace(currentPref.Goal) &&
+                !string.IsNullOrWhiteSpace(candidatePref.Goal))
             {
-                score += 20;
+                if (currentPref.Goal.Equals(
+                    candidatePref.Goal,
+                    StringComparison.OrdinalIgnoreCase))
+                {
+                    score += 20;
+                }
             }
 
-            
             // ===========================
-            // Preferred Skills Match
+            // Desired Skills Match
             // ===========================
+            var candidateSkillNames = candidateProfile.ProfileSkills
+                .Where(ps => ps.Skill != null)
+                .Select(ps => ps.Skill.Name)
+                .ToHashSet(StringComparer.OrdinalIgnoreCase);
 
-            var preferredSkillIds = currentPreference.PreferenceSkills
-                .Select(ps => ps.SkillId)
-                .ToHashSet();
+            int matchedSkills = currentPref.DesiredSkills
+                .Count(skill => candidateSkillNames.Contains(skill));
 
-
-            var candidateSkillIds = candidate.ProfileSkills
-                .Select(ps => ps.SkillId)
-                .ToHashSet();
-
-
-            int matchedSkills = preferredSkillIds
-                .Intersect(candidateSkillIds)
-                .Count();
-
-
+            // Maximum 30 points from skills
             score += Math.Min(matchedSkills * 15, 30);
 
-            // Random Bonus
+            // ===========================
+            // Small Random Bonus
+            // ===========================
             score += Random.Shared.Next(0, 5);
 
             return score;
         }
-       
-        
     }
 }

@@ -25,7 +25,7 @@ namespace guzogo.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> CreateProfile(CreateProfileDto dto)
         {
-
+        
             // Check if user already has profile
             var existingProfile = await _context.Profiles
                 .FirstOrDefaultAsync(p => p.UserId == dto.UserId);
@@ -40,17 +40,7 @@ namespace guzogo.Controllers
 
             // Check profession exists
             //var profession = await _context.ProfessionTitles
-            //    .FirstOrDefaultAsync(x => x.Id == dto.ProfessionTitleId);
-
-            var profession = await _context.ProfessionTitles
-    .Include(x => x.ProfessionCategory)
-    .FirstOrDefaultAsync(x => x.Id == dto.ProfessionTitleId);
-
-
-            if (profession == null)
-            {
-                return BadRequest("Profession does not exist.");
-            }
+            //    .FirstOrDefaultAsync(x => x.Id == dto.ProfessionTit
 
 
 
@@ -62,7 +52,8 @@ namespace guzogo.Controllers
 
                 LastName = dto.LastName,
 
-                ProfessionTitleId = dto.ProfessionTitleId,
+                //Profession = dto.Profession,
+                Profession = dto.Profession,
 
                 ExperienceLevel = dto.ExperienceLevel,
 
@@ -132,10 +123,10 @@ namespace guzogo.Controllers
                 FirstName = profile.FirstName,
 
                 LastName = profile.LastName,
+                Profession = profile.Profession,
 
-                ProfessionTitle = profession.Name,
-
-                ProfessionCategory = profession.ProfessionCategory.Name,
+                ProfessionTitle = profile.Profession ?? "",   
+                ProfessionCategory = "",
 
                 Country = profile.Country,
 
@@ -184,8 +175,7 @@ namespace guzogo.Controllers
 
             profile.LastName = dto.LastName;
 
-            profile.ProfessionTitleId = dto.ProfessionTitleId;
-
+            profile.Profession = dto.Profession;
             profile.ExperienceLevel = dto.ExperienceLevel;
 
             profile.Company = dto.Company;
@@ -212,7 +202,6 @@ namespace guzogo.Controllers
 
             return Ok(profile);
         }
-
         // GET PROFILE BY USER ID
         
         [HttpGet("user/{userId}")]
@@ -240,11 +229,9 @@ namespace guzogo.Controllers
 
                 LastName = profile.LastName,
 
-                ProfessionTitle = profile.ProfessionTitle.Name,
-
-                ProfessionCategory = profile.ProfessionTitle
-                                            .ProfessionCategory
-                                            .Name,
+                Profession = profile.Profession ?? profile.ProfessionTitle?.Name,
+                ProfessionTitle = profile.Profession ?? profile.ProfessionTitle?.Name ?? "",
+                ProfessionCategory = profile.ProfessionTitle?.ProfessionCategory?.Name ?? "",
 
                 Country = profile.Country,
 

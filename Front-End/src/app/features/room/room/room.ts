@@ -541,4 +541,10 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.cleanupCurrentCall();
     this.signalRService.stopConnection();
   }
+
+ viewProfile(userId: number) {
+  if (userId) {
+    window.open(`/profile/${userId}`, '_blank');
+  }
+}
 }

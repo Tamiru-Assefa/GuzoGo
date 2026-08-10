@@ -310,6 +310,18 @@
         }
       }
     },
+    "/api/MatchPreference/searching": {
+      "get": {
+        "tags": [
+          "MatchPreference"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/MatchSession/end/{sessionId}": {
       "post": {
         "tags": [
@@ -1125,6 +1137,21 @@
             },
             "nullable": true
           },
+          "desiredProfession": {
+            "type": "string",
+            "nullable": true
+          },
+          "desiredSkills": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "additionalDescription": {
+            "type": "string",
+            "nullable": true
+          },
           "goal": {
             "type": "string",
             "nullable": true
@@ -1143,7 +1170,6 @@
         "required": [
           "firstName",
           "lastName",
-          "professionTitleId",
           "userId"
         ],
         "type": "object",
@@ -1162,12 +1188,12 @@
             "minLength": 0,
             "type": "string"
           },
-          "professionTitleId": {
-            "type": "integer",
-            "format": "int32"
-          },
           "experienceLevel": {
             "$ref": "#/components/schemas/ExperienceLevel"
+          },
+          "profession": {
+            "type": "string",
+            "nullable": true
           },
           "company": {
             "maxLength": 100,
@@ -1379,9 +1405,9 @@
             "minLength": 0,
             "type": "string"
           },
-          "professionTitleId": {
-            "type": "integer",
-            "format": "int32"
+          "profession": {
+            "type": "string",
+            "nullable": true
           },
           "experienceLevel": {
             "$ref": "#/components/schemas/ExperienceLevel"
