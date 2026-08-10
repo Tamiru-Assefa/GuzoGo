@@ -161,4 +161,7 @@ C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\gu
 C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\obj\Debug\net10.0\guzogo.sourcelink.json
 C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\BCrypt-Net-Next.dll
+C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\BouncyCastle.Cryptography.dll
+C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\MailKit.dll
+C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\MimeKit.dll
 C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt

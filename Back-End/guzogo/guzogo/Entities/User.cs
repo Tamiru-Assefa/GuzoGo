@@ -24,6 +24,11 @@ namespace guzogo.Entities
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+        public string? EmailVerificationToken { get; set; }
+        public bool EmailVerified { get; set; } = false;
+        public string? PasswordResetToken { get; set; }
+        public DateTime? PasswordResetTokenExpiry { get; set; }
+
         public bool IsOnline { get; set; } = false;
 
         public DateTime? LastActive { get; set; }

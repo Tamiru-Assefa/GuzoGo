@@ -27,12 +27,41 @@ namespace guzogo.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
+        public async Task<IActionResult> Register([FromBody] RegisterDto dto)
         {
-            var success = await _authService.RegisterAsync(registerDto);
-            if (!success)
-                return BadRequest(new { message = "Registration failed. Email may already exist." });
-            return Ok(new { message = "Registration successful." });
+            var token = await _authService.RegisterAndSendVerificationAsync(dto);
+            if (token == null)
+                return BadRequest(new { message = "Email already exists." });
+
+            return Ok(new { message = "Registration successful. Please check your email to verify your account." });
+        }
+
+        [HttpPost("verify-email")]
+        public async Task<IActionResult> VerifyEmail([FromBody] VerifyEmailDto dto)
+        {
+            var result = await _authService.VerifyEmailAsync(dto.Token);
+            if (!result)
+                return BadRequest(new { message = "Invalid or expired verification token." });
+
+            return Ok(new { message = "Email verified successfully. You can now log in." });
+        }
+
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto dto)
+        {
+            await _authService.SendPasswordResetEmailAsync(dto.Email);
+            // Always return success even if email doesn't exist (security best practice)
+            return Ok(new { message = "If an account with that email exists, a password reset link has been sent." });
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
+        {
+            var result = await _authService.ResetPasswordAsync(dto.Token, dto.NewPassword);
+            if (!result)
+                return BadRequest(new { message = "Invalid or expired reset token." });
+
+            return Ok(new { message = "Password has been reset successfully." });
         }
 
         [HttpPost("login")]
@@ -80,6 +109,15 @@ namespace guzogo.Controllers
                 UserName = storedToken.User.UserName,
                 Email = storedToken.User.Email
             });
+        }
+
+        [HttpPost("resend-verification")]
+        public async Task<IActionResult> ResendVerification([FromBody] ResendVerificationDto dto)
+        {
+            var result = await _authService.ResendVerificationEmailAsync(dto.Email);
+            if (!result)
+                return BadRequest(new { message = "No unverified account found with that email." });
+            return Ok(new { message = "Verification email resent. Please check your inbox." });
         }
     }
 }

@@ -1,3 +1,4 @@
+import os
 from typing import List
 
 import httpx
@@ -6,6 +7,14 @@ from fastapi import FastAPI, HTTPException
 from models import MatchPreference
 from matcher import find_best_match
 
+from dotenv import load_dotenv
+
+# Load .env file (only works locally; in production, set real env vars)
+load_dotenv()
+
+DOTNET_API_URL = os.getenv("DOTNET_API_URL", "http://localhost:5011")
+
+
 
 app = FastAPI(
     title="GuzoGo AI Matching Service",
@@ -13,7 +22,7 @@ app = FastAPI(
 )
 
 
-DOTNET_API_URL = "http://localhost:5011"
+# DOTNET_API_URL = "http://localhost:5011"
 
 
 @app.get("/")

@@ -16,6 +16,9 @@ export class LoginComponent {
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
 
+  mobileNoticeDismissed = localStorage.getItem('mobileNoticeDismissed') === 'true';
+
+
   isLoading = false;
   errorMessage = '';
 
@@ -52,4 +55,9 @@ export class LoginComponent {
         },
       });
   }
+
+  dismissMobileNotice() {
+  this.mobileNoticeDismissed = true;
+  localStorage.setItem('mobileNoticeDismissed', 'true');
+}
 }

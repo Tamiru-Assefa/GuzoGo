@@ -121,6 +121,7 @@ builder.Services.AddScoped<MatchScoreCalculator>();
 builder.Services.AddScoped<IMatchSessionService, MatchSessionService>();
 builder.Services.AddScoped<ISpacesService, SpacesService>();
 builder.Services.AddHostedService<RoomCleanupService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 
 // Allow cross-origin requests during development so Swagger UI can call the API

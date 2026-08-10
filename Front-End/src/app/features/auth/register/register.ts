@@ -58,10 +58,9 @@ export class RegisterComponent {
       .register(this.registerForm.value as RegisterRequest)
       .subscribe({
         next: (response) => {
-          this.isLoading.set(false);
-          this.successMessage.set(response.message);
-          setTimeout(() => this.router.navigate(['/login']), 1500);
-        },
+  this.isLoading.set(false);
+this.successMessage.set('Account created! Check your email to verify. If you don’t see it, check spam or use the resend option on the verification page.');  // do NOT navigate to login – let the user read the message
+},
         error: (error) => {
           this.isLoading.set(false);
           const msg =
