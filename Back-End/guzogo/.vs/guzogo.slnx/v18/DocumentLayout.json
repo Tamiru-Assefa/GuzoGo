@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\services\\implementation\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\services\\implementation\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -29,10 +33,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\dtos\\auth\\verifyemaildto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\dtos\\auth\\verifyemaildto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|solutionrelative:guzogo\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7BD0F498-7D45-B190-4A42-F9DE0DD0306B}|guzogo\\guzogo.csproj|c:\\users\\dell\\documents\\importance\\startups\\guzogo\\guzogo_app\\back-end\\guzogo\\guzogo\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
@@ -322,48 +322,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "ResendVerificationDto.cs",
-              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Auth\\ResendVerificationDto.cs",
-              "RelativeDocumentMoniker": "guzogo\\DTOs\\Auth\\ResendVerificationDto.cs",
-              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Auth\\ResendVerificationDto.cs*",
-              "RelativeToolTip": "guzogo\\DTOs\\Auth\\ResendVerificationDto.cs*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-10T15:13:18.932Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "ForgotPasswordDto.cs",
-              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Auth\\ForgotPasswordDto.cs",
-              "RelativeDocumentMoniker": "guzogo\\DTOs\\Auth\\ForgotPasswordDto.cs",
-              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Auth\\ForgotPasswordDto.cs",
-              "RelativeToolTip": "guzogo\\DTOs\\Auth\\ForgotPasswordDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-10T12:53:51.269Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "VerifyEmailDto.cs",
-              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Auth\\VerifyEmailDto.cs",
-              "RelativeDocumentMoniker": "guzogo\\DTOs\\Auth\\VerifyEmailDto.cs",
-              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Auth\\VerifyEmailDto.cs",
-              "RelativeToolTip": "guzogo\\DTOs\\Auth\\VerifyEmailDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-10T12:53:22.591Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
               "Title": "IAuthService.cs",
               "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Interfaces\\IAuthService.cs",
               "RelativeDocumentMoniker": "guzogo\\Services\\Interfaces\\IAuthService.cs",
@@ -376,7 +339,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "ResetPasswordDto.cs",
               "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Auth\\ResetPasswordDto.cs",
               "RelativeDocumentMoniker": "guzogo\\DTOs\\Auth\\ResetPasswordDto.cs",
@@ -388,7 +351,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "AuthService.cs",
               "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Services\\Implementation\\AuthService.cs",
               "RelativeDocumentMoniker": "guzogo\\Services\\Implementation\\AuthService.cs",
@@ -401,7 +364,45 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
+              "Title": "ResendVerificationDto.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Auth\\ResendVerificationDto.cs",
+              "RelativeDocumentMoniker": "guzogo\\DTOs\\Auth\\ResendVerificationDto.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Auth\\ResendVerificationDto.cs",
+              "RelativeToolTip": "guzogo\\DTOs\\Auth\\ResendVerificationDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-10T15:13:18.932Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Program.cs",
+              "RelativeDocumentMoniker": "guzogo\\Program.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Program.cs",
+              "RelativeToolTip": "guzogo\\Program.cs",
+              "ViewState": "AgIAANUAAAAAAAAAAAAWwOAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-22T08:07:22.998Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "VerifyEmailDto.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Auth\\VerifyEmailDto.cs",
+              "RelativeDocumentMoniker": "guzogo\\DTOs\\Auth\\VerifyEmailDto.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Auth\\VerifyEmailDto.cs",
+              "RelativeToolTip": "guzogo\\DTOs\\Auth\\VerifyEmailDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-10T12:53:22.591Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "AuthController.cs",
               "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "guzogo\\Controllers\\AuthController.cs",
@@ -411,6 +412,18 @@
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-07-22T08:23:57.962Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ForgotPasswordDto.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Auth\\ForgotPasswordDto.cs",
+              "RelativeDocumentMoniker": "guzogo\\DTOs\\Auth\\ForgotPasswordDto.cs",
+              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\DTOs\\Auth\\ForgotPasswordDto.cs",
+              "RelativeToolTip": "guzogo\\DTOs\\Auth\\ForgotPasswordDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-10T12:53:51.269Z"
             },
             {
               "$type": "Document",
@@ -435,18 +448,6 @@
               "ViewState": "AgIAABMAAAAAAAAAAAAAACUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-08-10T12:27:36.425Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Program.cs",
-              "RelativeDocumentMoniker": "guzogo\\Program.cs",
-              "ToolTip": "C:\\Users\\dell\\Documents\\Importance\\StartUps\\GuzoGo\\GuzoGo_APP\\Back-End\\guzogo\\guzogo\\Program.cs",
-              "RelativeToolTip": "guzogo\\Program.cs",
-              "ViewState": "AgIAAGwAAAAAAAAAAAAqwHwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-22T08:07:22.998Z"
             },
             {
               "$type": "Document",
