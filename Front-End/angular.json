@@ -60,6 +60,13 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "allowedHosts": [
+              "localhost",
+              "deserve-oppressed-battle.ngrok-free.dev",
+              ".ngrok-free.dev"
+            ]
+          },
           "configurations": {
             "production": {
               "buildTarget": "Front-End:build:production"
