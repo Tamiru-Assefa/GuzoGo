@@ -142,7 +142,11 @@ builder.Services.AddCors(options =>
         policy.WithOrigins("http://localhost:4200",
             "http://192.168.1.4:4200",  // Local network Angular address
                 "http://192.168.1.4:5011",
-                "http://localhost:5011") // Explicitly define Angular dev origin
+                "http://localhost:5011",
+                "http://192.168.9.146:4200",
+                "http://192.168.9.146:5011"
+        )
+        // Explicitly define Angular dev origin
               .AllowAnyMethod()
               .AllowAnyHeader()
               .AllowCredentials(); // REQUIRED for SignalR authentication

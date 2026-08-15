@@ -88,7 +88,7 @@ export class SpaceComponent implements OnInit, AfterViewInit, OnDestroy {
       this.signalRService.remoteUserJoined$.subscribe(async (userId: number | string) => {
         const peerId = userId.toString();
         this.addParticipantIfNotExists(peerId);
-        await this.rtcService.createOffer(this.roomId, peerId, (remoteUserId, stream) => {
+        await this.rtcService.createOffer(this.roomId, peerId, (remoteUserId: string, stream: MediaStream) => {
           this.handleRemoteStream(remoteUserId, stream);
         });
       })
@@ -150,7 +150,7 @@ this.rtcService.toggleAudioTrack(!this.isMuted);
 this.rtcService.logLocalTracks();
 
     // Broadcast & Sync
-    this.signalRService.broadcastStateChange(this.numericRoomId, 'MediaStateChanged', { isMuted: this.isMuted });
+    void this.signalRService.toggleMediaState(this.numericRoomId, { isMuted: this.isMuted });
     this.spacesService.toggleMedia(this.numericRoomId, { isMuted: this.isMuted }).subscribe();
   }
 
@@ -183,7 +183,7 @@ this.rtcService.logLocalTracks();
   }
 
   // 3. Sync state via SignalR and HTTP POST API
-  this.signalRService.broadcastStateChange(this.numericRoomId, 'MediaStateChanged', { isVideoOn: !this.isVideoOff });
+  void this.signalRService.toggleMediaState(this.numericRoomId, { isVideoOn: !this.isVideoOff });
   this.spacesService.toggleMedia(this.numericRoomId, { isVideoOn: !this.isVideoOff }).subscribe();
 }
 
@@ -208,7 +208,7 @@ this.rtcService.logLocalTracks();
     }
 
     // Broadcast & Sync (Correctly inside toggleScreenShare)
-    this.signalRService.broadcastStateChange(this.numericRoomId, 'MediaStateChanged', { isScreenSharing: this.isScreenSharing });
+    void this.signalRService.toggleMediaState(this.numericRoomId, { isScreenSharing: this.isScreenSharing });
     this.spacesService.toggleMedia(this.numericRoomId, { isScreenSharing: this.isScreenSharing }).subscribe();
   }
 

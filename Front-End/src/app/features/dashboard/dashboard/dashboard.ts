@@ -6,22 +6,9 @@ import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 import { HeaderComponent } from '../../../shared/components/header/header';
-import { ProfileService } from '../../../core/services/profile';
+import { ProfileService, UserProfile } from '../../../core/services/profile';
 import { AuthService } from '../../../core/services/auth';
 import { environment } from '../../../../environments/environment';
-
-export interface UserProfileResponse {
-  id: number;
-  userId: number;
-  firstName: string;
-  lastName: string;
-  professionTitle: string;
-  professionCategory: string;
-  country: string;
-  city: string;
-  bio: string;
-  profilePictureUrl?: string;
-}
 
 export interface MatchPreferenceDto {
   desiredProfession: string;
@@ -94,7 +81,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  recentMatches: UserProfileResponse[] = [];
+  recentMatches: UserProfile[] = [];
 
   ngOnInit() {
     this.loadRecentMatches();
@@ -271,7 +258,7 @@ export class DashboardComponent implements OnInit {
       this.recentMatches = [];
       ids.forEach(uId => {
         this.profileService.getProfileByUserId(uId).subscribe({
-          next: (profile: UserProfileResponse) => {
+          next: (profile: UserProfile) => {
             this.recentMatches.push(profile);
             this.cdr.detectChanges();
           }

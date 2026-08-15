@@ -10,7 +10,7 @@ export interface UserProfile {
   userId: number;
   firstName: string;
   lastName: string;
-  profession: string; 
+  profession: string;
   professionCategory: string;
   company: string;
   country: string;
@@ -30,30 +30,71 @@ export interface UserProfile {
   providedIn: 'root',
 })
 export class ProfileService {
+
   private http = inject(HttpClient);
-  private readonly apiUrl = `${environment.apiUrl}/Profile`;
 
-  createProfile(data: CreateProfileRequest): Observable<any> {
-    return this.http.post(`${this.apiUrl}/create`, data);
-  }
+  private readonly apiUrl =
+    `${environment.apiUrl}/Profile`;
 
-  getProfileByUserId(userId: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/user/${userId}`);
-  }
 
-  // Direct endpoint: GET /api/Profile/{id}
-  getProfile(userId: number): Observable<UserProfile> {
-    return this.http.get<UserProfile>(`${this.apiUrl}/${userId}`);
-  }
+  createProfile(
+    data: CreateProfileRequest
+  ): Observable<any> {
 
-  // Get just the profile picture URL
-  getProfilePicture(userId: number): Observable<string> {
-    return this.getProfile(userId).pipe(
-      map(profile => profile.profilePictureUrl || '')
+    return this.http.post(
+      `${this.apiUrl}/create`,
+      data
     );
   }
-  
-updateProfile(profileId: number, data: any): Observable<any> {
-  return this.http.put(`${this.apiUrl}/${profileId}`, data);
-}
+
+
+  // GET /api/Profile/user/{userId}
+  getProfileByUserId(
+    userId: number
+  ): Observable<UserProfile> {
+
+    return this.http.get<UserProfile>(
+      `${this.apiUrl}/user/${userId}`
+    );
+  }
+
+
+  // Get profile using USER ID
+  //
+  // IMPORTANT:
+  // userId is NOT profileId.
+  //
+  getProfile(
+    userId: number
+  ): Observable<UserProfile> {
+
+    return this.http.get<UserProfile>(
+      `${this.apiUrl}/user/${userId}`
+    );
+  }
+
+
+  // Get just the profile picture URL
+  getProfilePicture(
+    userId: number
+  ): Observable<string> {
+
+    return this.getProfile(userId).pipe(
+      map(profile =>
+        profile.profilePictureUrl || ''
+      )
+    );
+  }
+
+
+  updateProfile(
+    profileId: number,
+    data: any
+  ): Observable<any> {
+
+    return this.http.put(
+      `${this.apiUrl}/${profileId}`,
+      data
+    );
+  }
 }

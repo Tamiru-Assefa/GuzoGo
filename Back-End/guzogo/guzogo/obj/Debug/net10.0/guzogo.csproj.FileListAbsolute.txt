@@ -1,11 +1,3 @@
-C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\obj\Debug\net10.0\guzogo.csproj.AssemblyReference.cache
-C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\obj\Debug\net10.0\rpswa.dswa.cache.json
-C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\obj\Debug\net10.0\guzogo.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\obj\Debug\net10.0\guzogo.AssemblyInfoInputs.cache
-C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\obj\Debug\net10.0\guzogo.AssemblyInfo.cs
-C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\obj\Debug\net10.0\guzogo.csproj.CoreCompileInputs.cache
-C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\obj\Debug\net10.0\guzogo.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\obj\Debug\net10.0\guzogo.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\appsettings.Development.json
 C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\appsettings.json
 C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\guzogo.staticwebassets.endpoints.json
@@ -16,7 +8,11 @@ C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\gu
 C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\guzogo.pdb
 C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\Azure.Core.dll
 C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\Azure.Identity.dll
+C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\BCrypt-Net-Next.dll
+C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\BouncyCastle.Cryptography.dll
 C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\Humanizer.dll
+C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\MailKit.dll
+C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\Microsoft.Bcl.Cryptography.dll
 C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\Microsoft.Build.Framework.dll
@@ -44,6 +40,7 @@ C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\gu
 C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\Microsoft.OpenApi.dll
 C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\Microsoft.SqlServer.Server.dll
 C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\Microsoft.VisualStudio.SolutionPersistence.dll
+C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\MimeKit.dll
 C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\Mono.TextTemplating.dll
 C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\Newtonsoft.Json.dll
 C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\Swashbuckle.AspNetCore.Swagger.dll
@@ -143,6 +140,15 @@ C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\gu
 C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\obj\Debug\net10.0\guzogo.csproj.AssemblyReference.cache
+C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\obj\Debug\net10.0\rpswa.dswa.cache.json
+C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\obj\Debug\net10.0\guzogo.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\obj\Debug\net10.0\guzogo.AssemblyInfoInputs.cache
+C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\obj\Debug\net10.0\guzogo.AssemblyInfo.cs
+C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\obj\Debug\net10.0\guzogo.csproj.CoreCompileInputs.cache
+C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\obj\Debug\net10.0\guzogo.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\obj\Debug\net10.0\guzogo.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\obj\Debug\net10.0\guzogo.sourcelink.json
 C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\obj\Debug\net10.0\rjimswa.dswa.cache.json
 C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\obj\Debug\net10.0\rjsmrazor.dswa.cache.json
 C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json
@@ -158,9 +164,3 @@ C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\gu
 C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\obj\Debug\net10.0\guzogo.pdb
 C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\obj\Debug\net10.0\guzogo.genruntimeconfig.cache
 C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\obj\Debug\net10.0\ref\guzogo.dll
-C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
-C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\obj\Debug\net10.0\guzogo.sourcelink.json
-C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\BCrypt-Net-Next.dll
-C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\BouncyCastle.Cryptography.dll
-C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\MailKit.dll
-C:\Users\dell\Documents\Importance\StartUps\GuzoGo\GuzoGo_APP\Back-End\guzogo\guzogo\bin\Debug\net10.0\MimeKit.dll

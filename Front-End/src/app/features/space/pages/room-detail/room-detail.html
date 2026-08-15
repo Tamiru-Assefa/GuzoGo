@@ -1,14 +1,12 @@
 <!-- Password Required Overlay -->
 <div *ngIf="needsPassword" class="min-h-screen bg-[#070913] flex items-center justify-center">
   <div class="bg-[#0f132a] border border-[#2a305e] rounded-2xl p-8 w-full max-w-sm mx-4 shadow-2xl text-center">
-    
     <div class="text-5xl mb-4">🔒</div>
     <h2 class="text-xl font-bold text-white mb-2">Private Room</h2>
     <p class="text-slate-400 text-sm mb-6">
       This room is password protected.<br/>
       Enter the password to join.
     </p>
-    <!-- Don't show room.title here -->
 
     <div class="mb-4">
       <input
@@ -63,21 +61,23 @@
       </div>
     </div>
 
-    <button 
-    (click)="openShareModal()"
-    class="bg-indigo-600/10 hover:bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 transition active:scale-95 cursor-pointer">
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
-    </svg>
-    Share
-  </button>
+    <div class="flex items-center gap-3">
+      <button 
+        (click)="openShareModal()"
+        class="bg-indigo-600/10 hover:bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 transition active:scale-95 cursor-pointer">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+        </svg>
+        Share
+      </button>
 
-    <button 
-      (click)="leaveRoom()" 
-      class="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 transition active:scale-95 cursor-pointer">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-      Leave Room
-    </button>
+      <button 
+        (click)="leaveRoom()" 
+        class="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 transition active:scale-95 cursor-pointer">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+        Leave Room
+      </button>
+    </div>
   </header>
 
   <!-- MAIN BODY -->
@@ -109,13 +109,8 @@
             [ngClass]="p.isMuted ? 'bg-rose-500/80 text-white hover:bg-rose-600' : 'bg-slate-800/80 text-slate-300 hover:bg-slate-700'"
             [title]="p.isMuted ? 'Unmute' : 'Mute'">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <ng-container *ngIf="p.isMuted">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>
-              </ng-container>
-              <ng-container *ngIf="!p.isMuted">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
-              </ng-container>
+              <path *ngIf="p.isMuted" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>
+              <path *ngIf="!p.isMuted" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
             </svg>
           </button>
           <button 
@@ -142,28 +137,10 @@
         <ng-container *ngIf="p.isScreenSharing">
           <div class="flex-1 flex items-center justify-center bg-black relative min-h-[400px]">
             <video 
-              *ngIf="p.userId === currentUserId && rtcService.screenStream; else remoteScreenShare"
-              [srcObject]="rtcService.screenStream"
-              autoplay playsinline muted
-              class="w-full h-full object-contain"
-            ></video>
-            <ng-template #remoteScreenShare>
-              <video 
-                *ngIf="p.stream && p.stream.active && hasVideoTrack(p.stream); else screenShareLoading"
-                [srcObject]="p.stream"
-                autoplay playsinline
-                class="w-full h-full object-contain"
-              ></video>
-            </ng-template>
-            <ng-template #screenShareLoading>
-              <div class="flex flex-col items-center justify-center p-8 bg-gradient-to-b from-[#0e1431] to-[#080b1a]">
-                <svg class="w-16 h-16 text-indigo-400 mb-3 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                </svg>
-                <h4 class="text-base font-semibold text-indigo-200">{{ p.fullName }}'s Screen Share</h4>
-                <span class="text-xs text-slate-500 mt-1">Loading...</span>
-              </div>
-            </ng-template>
+              [appVideoStream]="p.userId === currentUserId ? rtcService.screenStream : p.stream"
+              [isMuted]="p.userId === currentUserId"
+              class="w-full h-full object-contain">
+            </video>
             <span class="absolute top-3 right-3 z-20 bg-emerald-500/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg shadow-lg">
               📺 Screen Share
             </span>
@@ -172,31 +149,21 @@
 
         <!-- CAMERA ACTIVE -->
         <ng-container *ngIf="p.isVideoOn && !p.isScreenSharing">
-          <div class="relative flex-1 bg-black">
+          <div class="relative flex-1 bg-black flex items-center justify-center">
             <span class="absolute top-3 left-3 z-10 bg-emerald-950/80 border border-emerald-500/40 text-emerald-400 text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded">
               ● CAMERA ON
             </span>
-            <video 
-              *ngIf="p.userId === currentUserId && localStream; else remoteVideo"
-              [srcObject]="localStream"
-              autoplay playsinline muted
-              class="w-full h-full object-cover min-h-[200px]"
-            ></video>
-            <ng-template #remoteVideo>
-              <video 
-                *ngIf="p.stream; else avatarFallback"
-                [srcObject]="p.stream"
-                autoplay playsinline
-                class="w-full h-full object-cover min-h-[200px]"
-              ></video>
-            </ng-template>
-            <ng-template #avatarFallback>
-              <img 
-                [src]="p.profilePictureUrl || 'https://ui-avatars.com/api/?name=' + (p.fullName || 'User') + '&background=4f46e5&color=fff&size=200'" 
-                alt="Video placeholder" 
-                class="w-full h-full object-cover min-h-[200px]"
-              />
-            </ng-template>
+            <!-- 
+              IMPORTANT FOR AUDIO ECHO:
+              - [isMuted]="p.userId === currentUserId" guarantees local audio stream NEVER loops into speakers.
+              - Uses appVideoStream directive for bulletproof video rendering without black screens.
+            -->
+            <video
+              [appVideoStream]="p.userId === currentUserId ? rtcService.localStream : p.stream"
+              [isMuted]="p.userId === currentUserId"
+              class="w-full h-full object-cover"
+              [ngClass]="{ 'transform -scale-x-100': p.userId === currentUserId }">
+            </video>
           </div>
         </ng-container>
 
@@ -217,34 +184,41 @@
             </div>
             <span class="text-sm font-semibold text-slate-200">{{ p.fullName }}</span>
             <span *ngIf="p.isMuted" class="text-xs text-rose-400 mt-1">Muted</span>
+            
+            <!-- Hidden audio element so remote participant voice is still heard when camera is off -->
+            <audio 
+              *ngIf="p.userId !== currentUserId && p.stream" 
+              [appVideoStream]="p.stream"
+              [isMuted]="false"
+              class="hidden">
+            </audio>
           </div>
         </ng-container>
 
         <!-- BOTTOM BAR -->
-        <!-- BOTTOM BAR -->
-<div class="bg-[#090d20]/90 backdrop-blur border-t border-[#1a2042] px-4 py-2.5 flex items-center justify-between z-10">
-  <span class="text-xs font-medium text-slate-300">
-    {{ getUserLabel(p) }}
-  </span>
-  <div class="flex items-center gap-2">
-    <!-- Audio Status Indicator -->
-    <span *ngIf="p.isMuted" class="text-rose-400 bg-rose-500/10 p-1 rounded-md" title="Muted">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path></svg>
-    </span>
-    <span *ngIf="!p.isMuted && p.isSpeaking" class="flex items-end gap-0.5 h-4 px-1" title="Speaking">
-      <span class="w-1 h-3 bg-emerald-400 rounded-full animate-bounce"></span>
-      <span class="w-1 h-4 bg-emerald-400 rounded-full animate-bounce [animation-delay:0.2s]"></span>
-      <span class="w-1 h-2 bg-emerald-400 rounded-full animate-bounce [animation-delay:0.4s]"></span>
-    </span>
-    <!-- View Profile Button -->
-    <button (click)="viewProfile(p.userId)" class="text-slate-500 hover:text-indigo-400 p-1 rounded-lg hover:bg-white/5 transition cursor-pointer" title="View Profile">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-      </svg>
-    </button>
-  </div>
-</div>
+        <div class="bg-[#090d20]/90 backdrop-blur border-t border-[#1a2042] px-4 py-2.5 flex items-center justify-between z-10">
+          <span class="text-xs font-medium text-slate-300">
+            {{ getUserLabel(p) }}
+          </span>
+          <div class="flex items-center gap-2">
+            <!-- Audio Status Indicator -->
+            <span *ngIf="p.isMuted" class="text-rose-400 bg-rose-500/10 p-1 rounded-md" title="Muted">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path></svg>
+            </span>
+            <span *ngIf="!p.isMuted && p.isSpeaking" class="flex items-end gap-0.5 h-4 px-1" title="Speaking">
+              <span class="w-1 h-3 bg-emerald-400 rounded-full animate-bounce"></span>
+              <span class="w-1 h-4 bg-emerald-400 rounded-full animate-bounce [animation-delay:0.2s]"></span>
+              <span class="w-1 h-2 bg-emerald-400 rounded-full animate-bounce [animation-delay:0.4s]"></span>
+            </span>
+            <!-- View Profile Button -->
+            <button (click)="viewProfile(p.userId)" class="text-slate-500 hover:text-indigo-400 p-1 rounded-lg hover:bg-white/5 transition cursor-pointer" title="View Profile">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
 
       </div>
 
@@ -311,19 +285,14 @@
         [class.hover:bg-slate-600]="!isMuted && !isMutedByHost"
         class="p-3 rounded-full text-white transition-colors duration-200 focus:outline-none shadow-lg relative cursor-pointer"
         [title]="isMutedByHost ? 'Muted by host' : (isMuted ? 'Unmute' : 'Mute')">
-        @if (isMuted || isMutedByHost) {
-          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
-            <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-          </svg>
-        } @else {
-          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
-          </svg>
-        }
-        @if (isMutedByHost) {
-          <span class="absolute -top-1 -right-1 bg-amber-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">🔒</span>
-        }
+        <svg *ngIf="isMuted || isMutedByHost" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+          <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+        <svg *ngIf="!isMuted && !isMutedByHost" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+        </svg>
+        <span *ngIf="isMutedByHost" class="absolute -top-1 -right-1 bg-amber-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">🔒</span>
       </button>
 
       <!-- Video Toggle -->
@@ -334,17 +303,14 @@
         [class.bg-[#181f42]]="isVideoOn"
         [class.hover:bg-slate-600]="isVideoOn"
         class="p-3 rounded-full text-white transition-colors duration-200 focus:outline-none shadow-lg cursor-pointer"
-        title="{{ isVideoOn ? 'Turn Off Camera' : 'Turn On Camera' }}">
-        @if (!isVideoOn) {
-          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-            <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-          </svg>
-        } @else {
-          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-          </svg>
-        }
+        [title]="isVideoOn ? 'Turn Off Camera' : 'Turn On Camera'">
+        <svg *ngIf="!isVideoOn" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+          <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+        <svg *ngIf="isVideoOn" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+        </svg>
       </button>
 
       <!-- Screen Share -->
@@ -355,7 +321,7 @@
         [class.bg-[#181f42]]="!isScreenSharing"
         [class.hover:bg-slate-600]="!isScreenSharing"
         class="p-3 rounded-full text-white transition-colors duration-200 focus:outline-none shadow-lg cursor-pointer"
-        title="{{ isScreenSharing ? 'Stop Sharing' : 'Share Screen' }}">
+        [title]="isScreenSharing ? 'Stop Sharing' : 'Share Screen'">
         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
         </svg>
@@ -369,7 +335,7 @@
         [class.bg-[#181f42]]="!isHandRaised"
         [class.hover:bg-slate-600]="!isHandRaised"
         class="p-3 rounded-full text-white transition-colors duration-200 focus:outline-none shadow-lg cursor-pointer"
-        title="{{ isHandRaised ? 'Lower Hand' : 'Raise Hand' }}">
+        [title]="isHandRaised ? 'Lower Hand' : 'Raise Hand'">
         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11" />
         </svg>
@@ -377,7 +343,7 @@
 
       <div class="h-6 w-px bg-slate-800 mx-1"></div>
 
-      <!-- Chat -->
+      <!-- Chat Toggle -->
       <button 
         (click)="isChatOpen = !isChatOpen" 
         [class.bg-indigo-600]="isChatOpen"
@@ -390,7 +356,7 @@
         </svg>
       </button>
 
-      <!-- Members -->
+      <!-- Members Count -->
       <div class="px-4 py-2.5 bg-[#181f42] border border-[#2b356b] rounded-full text-xs font-semibold text-slate-300 flex items-center gap-1.5">
         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -405,13 +371,10 @@
 
 <!-- Share Room Slide-in Panel -->
 <div *ngIf="showShareModal" class="fixed inset-0 z-50 flex justify-end" (click)="closeShareModal()">
-  <!-- Backdrop -->
   <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
   
-  <!-- Slide-in Panel -->
-  <div class="relative w-full max-w-md bg-[#0f132a] border-l border-[#2a305e] shadow-2xl h-full overflow-y-auto animate-slide-in" (click)="$event.stopPropagation()">
+  <div class="relative w-full max-w-md bg-[#0f132a] border-l border-[#2a305e] shadow-2xl h-full overflow-y-auto" (click)="$event.stopPropagation()">
     
-    <!-- Header -->
     <div class="flex items-center justify-between p-6 border-b border-[#1b2040]">
       <h3 class="text-lg font-bold text-white flex items-center gap-2">
         <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -428,10 +391,8 @@
       </button>
     </div>
 
-    <!-- Content -->
     <div class="p-6 space-y-6">
       
-      <!-- Room Info -->
       <div class="bg-[#0c1024] border border-[#1b2040] rounded-2xl p-5">
         <div class="flex items-center gap-3 mb-3">
           <div class="w-10 h-10 rounded-xl bg-indigo-600/20 flex items-center justify-center">
@@ -446,7 +407,6 @@
         </div>
       </div>
 
-      <!-- Link Section -->
       <div>
         <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Invite Link</label>
         <div class="bg-[#0b0e24] border border-[#1b2040] rounded-xl p-1 flex items-center gap-2">
@@ -458,7 +418,7 @@
           />
           <button 
             (click)="copyRoomLink()"
-            class=" mr-4 copy-btn bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-xs font-semibold transition cursor-pointer whitespace-nowrap flex items-center gap-1.5 ">
+            class="mr-2 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-xs font-semibold transition cursor-pointer whitespace-nowrap flex items-center gap-1.5">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
             </svg>
@@ -467,11 +427,9 @@
         </div>
       </div>
 
-      <!-- Quick Share Options -->
       <div>
         <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Quick Share</label>
         <div class="grid grid-cols-3 gap-3">
-          <!-- Copy Link -->
           <button (click)="copyRoomLink()" class="flex flex-col items-center gap-2 p-4 bg-[#0c1024] border border-[#1b2040] rounded-2xl hover:border-indigo-500/50 transition cursor-pointer group">
             <div class="w-10 h-10 rounded-full bg-indigo-600/20 flex items-center justify-center group-hover:bg-indigo-600/40 transition">
               <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -481,7 +439,6 @@
             <span class="text-xs text-slate-400 group-hover:text-white transition">Copy Link</span>
           </button>
 
-          <!-- WhatsApp -->
           <a [href]="'https://wa.me/?text=' + encodeValue('Join my space on GuzoGo: ' + shareLink)" target="_blank"
              class="flex flex-col items-center gap-2 p-4 bg-[#0c1024] border border-[#1b2040] rounded-2xl hover:border-emerald-500/50 transition cursor-pointer group">
             <div class="w-10 h-10 rounded-full bg-emerald-600/20 flex items-center justify-center group-hover:bg-emerald-600/40 transition">
@@ -492,7 +449,6 @@
             <span class="text-xs text-slate-400 group-hover:text-white transition">WhatsApp</span>
           </a>
 
-          <!-- Telegram -->
           <a [href]="'https://t.me/share/url?url=' + encodeValue(shareLink) + '&text=' + encodeValue('Join my space on GuzoGo!')" target="_blank"
              class="flex flex-col items-center gap-2 p-4 bg-[#0c1024] border border-[#1b2040] rounded-2xl hover:border-sky-500/50 transition cursor-pointer group">
             <div class="w-10 h-10 rounded-full bg-sky-600/20 flex items-center justify-center group-hover:bg-sky-600/40 transition">
@@ -505,7 +461,6 @@
         </div>
       </div>
 
-      <!-- Close Button -->
       <button 
         (click)="closeShareModal()"
         class="w-full px-4 py-3 rounded-xl text-sm font-medium text-slate-300 bg-slate-800/60 border border-slate-700 hover:bg-slate-700 transition cursor-pointer">
@@ -515,7 +470,7 @@
   </div>
 </div>
 
-<!-- KICKED OVERLAY -->
+<!-- Kicked Modal -->
 <div *ngIf="isKicked" class="fixed inset-0 bg-black/90 z-50 flex items-center justify-center">
   <div class="bg-[#0f132a] border border-rose-500/30 rounded-2xl p-8 text-center max-w-md mx-4 shadow-2xl">
     <div class="text-6xl mb-4">🚫</div>
@@ -526,16 +481,5 @@
       class="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-2.5 rounded-xl font-semibold transition cursor-pointer">
       Back to Spaces
     </button>
-  </div>
-</div>
-
-<!-- DEBUG -->
-<div class="fixed top-20 right-4 bg-black/80 text-green-400 text-xs p-2 rounded z-50">
-  Participants: {{ participants.length }} | 
-  CurrentUserId: {{ currentUserId }} |
-  MediaReady: {{ isMediaReady }} |
-  isHost: {{ isHost }}
-  <div *ngFor="let p of sortedParticipants">
-    User{{ p.userId }}: stream={{ !!p.stream }}, video={{ p.isVideoOn }}, muted={{ p.isMuted }}
   </div>
 </div>
