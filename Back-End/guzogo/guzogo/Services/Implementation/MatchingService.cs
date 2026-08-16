@@ -1,5 +1,11 @@
-﻿using System.Net.Http.Json;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 using guzogo.Data;
 using guzogo.DTOs.Matching;
 using guzogo.Entities;
@@ -23,43 +29,50 @@ namespace guzogo.Services.Implementations
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<MatchResultDto> FindBestMatchAsync(int userId)
+        public async Task<MatchResultDto> FindBestMatchAsync(int userId, int? excludeUserId = null)
         {
-            // 1. Already in an active session?
+            // 1. If user is in an active session, check if this is a Next Match request
             var existingSession = await GetActiveSessionForUserAsync(userId);
             if (existingSession != null)
-                return await BuildMatchResultAsync(existingSession, userId);
+            {
+                if (excludeUserId.HasValue && (existingSession.User1Id == excludeUserId.Value || existingSession.User2Id == excludeUserId.Value))
+                {
+                    existingSession.Status = MatchSessionStatus.Ended;
+                    existingSession.EndedAt = DateTime.UtcNow;
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    return await BuildMatchResultAsync(existingSession, userId);
+                }
+            }
 
             await _matchingLock.WaitAsync();
             try
             {
                 existingSession = await GetActiveSessionForUserAsync(userId);
                 if (existingSession != null)
+                {
                     return await BuildMatchResultAsync(existingSession, userId);
+                }
 
-                // 2. Load current user's preference
+                // 2. Load current user's match preference
                 var currentPreference = await _context.MatchPreferences
                     .FirstOrDefaultAsync(p => p.UserId == userId && p.IsSearching);
                 if (currentPreference == null)
+                {
                     return new MatchResultDto { Matched = false };
+                }
 
-                // 3. Call the AI matching service
+                // 3. Query the Python AI Matching microservice
                 try
                 {
                     var client = _httpClientFactory.CreateClient("AIMatcher");
-                    Console.WriteLine($"Calling AI matcher for user {userId}...");
-
                     var response = await client.PostAsync($"/match/{userId}", null);
                     var responseContent = await response.Content.ReadAsStringAsync();
 
-                    Console.WriteLine("========== AI MATCHER RESPONSE ==========");
-                    Console.WriteLine($"Status: {(int)response.StatusCode}");
-                    Console.WriteLine(responseContent);
-                    Console.WriteLine("==========================================");
-
                     if (!response.IsSuccessStatusCode)
                     {
-                        Console.WriteLine("AI MATCHER RETURNED ERROR.");
                         return new MatchResultDto { Matched = false };
                     }
 
@@ -67,19 +80,35 @@ namespace guzogo.Services.Implementations
                         responseContent,
                         new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-                    if (aiResponse == null || aiResponse.Results == null || aiResponse.Results.Count == 0)
+                    if (aiResponse?.Results == null || aiResponse.Results.Count == 0)
                     {
-                        Console.WriteLine("AI RESPONSE EMPTY OR NO CANDIDATES.");
                         return new MatchResultDto { Matched = false };
                     }
 
-                    // 4. Apply repeat‑match penalty and pick best candidate
+                    // 4. Select best candidate applying repeat penalties and Next Match exclusion
                     double bestAdjustedScore = -1;
                     AIMatchResult? bestCandidate = null;
 
                     foreach (var candidate in aiResponse.Results)
                     {
                         if (candidate.CandidateUserId == userId) continue;
+
+                        // ★ KEY FIX: Skip previous partner during 'Next Match'
+                        if (excludeUserId.HasValue && candidate.CandidateUserId == excludeUserId.Value)
+                        {
+                            continue;
+                        }
+
+                        // Verify candidate is not already inside an active session
+                        bool isCandidateBusy = await _context.MatchSessions
+                            .AnyAsync(s =>
+                                (s.User1Id == candidate.CandidateUserId || s.User2Id == candidate.CandidateUserId) &&
+                                s.Status == MatchSessionStatus.Active);
+
+                        if (isCandidateBusy)
+                        {
+                            continue;
+                        }
 
                         int previousMatches = await GetPreviousMatchCountAsync(userId, candidate.CandidateUserId);
                         int penalty = previousMatches switch
@@ -91,10 +120,7 @@ namespace guzogo.Services.Implementations
                         };
 
                         double adjustedScore = candidate.Score - penalty;
-                        if (adjustedScore < 0.01) adjustedScore = 0.01; // floor, never zero or negative
-
-                        Console.WriteLine($"Candidate {candidate.CandidateUserId}: AI={candidate.Score}, " +
-                                          $"Previous={previousMatches}, Penalty={penalty}, Adjusted={adjustedScore}");
+                        if (adjustedScore < 0.01) adjustedScore = 0.01;
 
                         if (adjustedScore > bestAdjustedScore)
                         {
@@ -105,26 +131,12 @@ namespace guzogo.Services.Implementations
 
                     if (bestCandidate == null)
                     {
-                        Console.WriteLine("No suitable candidate after penalty.");
                         return new MatchResultDto { Matched = false };
                     }
 
                     int bestCandidateId = bestCandidate.CandidateUserId;
-                    Console.WriteLine($"Best candidate: {bestCandidateId} (adjusted score: {bestAdjustedScore})");
 
-                    // 5. Ensure candidate not already in active session
-                    bool candidateActive = await _context.MatchSessions
-                        .AnyAsync(s =>
-                            (s.User1Id == bestCandidateId || s.User2Id == bestCandidateId) &&
-                            s.Status == MatchSessionStatus.Active);
-
-                    if (candidateActive)
-                    {
-                        Console.WriteLine($"Candidate {bestCandidateId} already in active session.");
-                        return new MatchResultDto { Matched = false };
-                    }
-
-                    // 6. Create MatchSession
+                    // 5. Create new active MatchSession
                     var session = new MatchSession
                     {
                         User1Id = userId,
@@ -135,7 +147,7 @@ namespace guzogo.Services.Implementations
                     };
                     _context.MatchSessions.Add(session);
 
-                    // 7. Stop both users from searching
+                    // 6. Stop both users from searching
                     currentPreference.IsSearching = false;
                     var candidatePref = await _context.MatchPreferences
                         .FirstOrDefaultAsync(p => p.UserId == bestCandidateId);
@@ -143,11 +155,9 @@ namespace guzogo.Services.Implementations
 
                     await _context.SaveChangesAsync();
 
-                    Console.WriteLine($"MatchSession created: {session.Id}, RoomId: {session.RoomId}");
-
-                    // 8. Build and return result
+                    // 7. Build and return result
                     var matchedUser = await BuildMatchedUserDto(bestCandidateId);
-                    var result = new MatchResultDto
+                    return new MatchResultDto
                     {
                         Matched = true,
                         SessionId = session.Id,
@@ -155,18 +165,10 @@ namespace guzogo.Services.Implementations
                         MatchScore = (int)bestAdjustedScore,
                         User = matchedUser
                     };
-
-                    Console.WriteLine("========== .NET MATCH RESULT ==========");
-                    Console.WriteLine(JsonSerializer.Serialize(result));
-                    Console.WriteLine("=======================================");
-
-                    return result;
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("========== MATCHING ERROR ==========");
-                    Console.WriteLine(ex.ToString());
-                    Console.WriteLine("====================================");
+                    Console.WriteLine($"[MatchingService Error]: {ex.Message}");
                     throw;
                 }
             }
@@ -176,7 +178,17 @@ namespace guzogo.Services.Implementations
             }
         }
 
-        // ---------- Helper methods ----------
+        public async Task<bool> EndSessionAsync(int sessionId)
+        {
+            var session = await _context.MatchSessions.FindAsync(sessionId);
+            if (session == null) return false;
+
+            session.Status = MatchSessionStatus.Ended;
+            session.EndedAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         private async Task<MatchSession?> GetActiveSessionForUserAsync(int userId)
         {
             return await _context.MatchSessions
@@ -187,27 +199,15 @@ namespace guzogo.Services.Implementations
 
         private async Task<MatchResultDto> BuildMatchResultAsync(MatchSession session, int currentUserId)
         {
-            int matchedUserId = session.User1Id == currentUserId
-                ? session.User2Id : session.User1Id;
-
-            var matchedProfile = await _context.Profiles
-                .Include(p => p.ProfessionTitle)
-                .Include(p => p.ProfileSkills).ThenInclude(ps => ps.Skill)
-                .FirstOrDefaultAsync(p => p.UserId == matchedUserId);
+            int matchedUserId = session.User1Id == currentUserId ? session.User2Id : session.User1Id;
+            var matchedProfile = await BuildMatchedUserDto(matchedUserId);
 
             return new MatchResultDto
             {
                 Matched = true,
                 SessionId = session.Id,
                 RoomId = session.RoomId,
-                User = matchedProfile == null ? null : new MatchedUserDto
-                {
-                    UserId = matchedProfile.UserId,
-                    FullName = $"{matchedProfile.FirstName} {matchedProfile.LastName}",
-                    Profession = matchedProfile.ProfessionTitle?.Name ?? "",
-                    ProfilePictureUrl = matchedProfile.ProfilePictureUrl,
-                    Skills = matchedProfile.ProfileSkills.Select(ps => ps.Skill.Name).ToList()
-                }
+                User = matchedProfile
             };
         }
 
@@ -217,14 +217,16 @@ namespace guzogo.Services.Implementations
                 .Include(p => p.ProfessionTitle)
                 .Include(p => p.ProfileSkills).ThenInclude(ps => ps.Skill)
                 .FirstOrDefaultAsync(p => p.UserId == userId);
+
             if (profile == null) return null;
 
             return new MatchedUserDto
             {
                 UserId = profile.UserId,
                 FullName = $"{profile.FirstName} {profile.LastName}",
-                Profession = profile.ProfessionTitle?.Name ?? "",
+                Profession = profile.ProfessionTitle?.Name ?? "Professional",
                 ProfilePictureUrl = profile.ProfilePictureUrl,
+                Country = profile.Country ?? "Global",
                 Skills = profile.ProfileSkills.Select(ps => ps.Skill.Name).ToList()
             };
         }
@@ -236,20 +238,6 @@ namespace guzogo.Services.Implementations
                     (s.User1Id == userId && s.User2Id == candidateUserId) ||
                     (s.User1Id == candidateUserId && s.User2Id == userId));
         }
-    }
-
-    // ---- DTOs for AI response ----
-    public class AIMatchResponse
-    {
-        public bool Matched { get; set; }
-        public AIMatchResult? BestMatch { get; set; }
-        public List<AIMatchResult> Results { get; set; } = new();
-    }
-
-    public class AIMatchResult
-    {
-        public int CandidateUserId { get; set; }
-        public double Score { get; set; }
     }
 }
 

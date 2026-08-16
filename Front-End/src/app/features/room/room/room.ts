@@ -1,9 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, OnInit, OnDestroy, ViewChild, inject, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  AfterViewInit,
+  OnDestroy,
+  ViewChild,
+  inject,
+  ChangeDetectorRef
+} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { SignalRService } from '../../../core/services/signalr';
+import { PeerMatchSignalRService } from '../../../core/services/peer-match-signalr';
+import { PeerMatchRtcService } from '../../../core/services/peer-match-rtc';
 import { AuthService } from '../../../core/services/auth';
 import { environment } from '../../../../environments/environment';
 
@@ -22,80 +32,89 @@ export interface MatchPreferenceDto {
   templateUrl: './room.html',
   styleUrls: ['./room.scss'],
 })
-export class RoomComponent implements OnInit, OnDestroy {
+export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('localVideo') localVideo!: ElementRef<HTMLVideoElement>;
   @ViewChild('remoteVideo') remoteVideo!: ElementRef<HTMLVideoElement>;
 
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private authService = inject(AuthService);
-  private signalRService = inject(SignalRService);
+  private signalRService = inject(PeerMatchSignalRService);
+  private rtcService = inject(PeerMatchRtcService);
   private cdr = inject(ChangeDetectorRef);
   private http = inject(HttpClient);
 
-  // Profile data objects
   public localProfile: any = null;
   public remoteProfile: any = null;
-
-  // Track active video state for template UI fallbacks
   public isLocalVideoActive = true;
   public isRemoteVideoActive = true;
+  public isProfileModalOpen = false;
 
   private readonly apiUrl = environment.apiUrl;
-
-  private peerConnection!: RTCPeerConnection;
-  private localStream!: MediaStream;
-  private remoteStream!: MediaStream;
   private signalRSubscriptions: Subscription = new Subscription();
 
   public roomId: string = '';
   public sessionId: number | null = null;
-  public currentUserId!: any;
+  public currentUserId!: number;
 
-  // Stored User Preference Payload
   private userPreference!: MatchPreferenceDto;
+  private excludeUserId: number | null = null;
 
-  // UI State Flags
   public isMuted = false;
   public isVideoOff = false;
-
-  // Next Match Search & Polling States
   public isSearchingNextMatch = false;
   public searchTimeRemaining = 60;
   private searchTimer: any;
   private countdownTimer: any;
 
-  private rtcConfig: RTCConfiguration = {
-    iceServers: [
-      { urls: 'stun:stun.l.google.com:19302' },
-      { urls: 'stun:stun1.l.google.com:19302' },
-    ],
-  };
-
   async ngOnInit() {
-    this.currentUserId = this.authService.getUserId();
+    this.currentUserId = Number(this.authService.getUserId());
     this.roomId = this.route.snapshot.queryParamMap.get('roomId') || '';
+    this.rtcService.setCurrentUser(this.currentUserId);
+    this.rtcService.setRoomId(this.roomId);
 
     const sessIdParam = this.route.snapshot.queryParamMap.get('sessionId');
-    if (sessIdParam) {
-      this.sessionId = Number(sessIdParam);
-    }
+    if (sessIdParam) this.sessionId = Number(sessIdParam);
 
-    // Load local user profile for "You" preview tag if needed
     if (this.currentUserId) {
       this.fetchLocalUserProfile(this.currentUserId);
     }
 
     this.loadUserMatchPreference();
+    await this.initLocalStream();
 
-    await this.initLocalMedia();
     await this.signalRService.startConnection();
-
     if (this.roomId) {
       await this.signalRService.joinRoom(this.roomId);
     }
 
     this.listenToSignalREvents();
+  }
+
+  ngAfterViewInit() {
+    if (this.rtcService.localStream && this.localVideo?.nativeElement) {
+      this.localVideo.nativeElement.srcObject = this.rtcService.localStream;
+      this.localVideo.nativeElement.muted = true;
+      this.localVideo.nativeElement.play().catch(() => {});
+    }
+
+    if (this.rtcService.remoteStream && this.remoteVideo?.nativeElement) {
+      this.remoteVideo.nativeElement.srcObject = this.rtcService.remoteStream;
+      this.playVideo(this.remoteVideo.nativeElement);
+    }
+  }
+
+  private async initLocalStream() {
+    try {
+      const stream = await this.rtcService.getLocalStream();
+      if (this.localVideo?.nativeElement) {
+        this.localVideo.nativeElement.srcObject = stream;
+        this.localVideo.nativeElement.muted = true;
+        this.localVideo.nativeElement.play().catch(() => {});
+      }
+    } catch (e) {
+      console.warn('Camera access denied or unattached:', e);
+    }
   }
 
   private fetchLocalUserProfile(userId: number) {
@@ -110,69 +129,38 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   public fetchRemoteUserProfile(remoteUserId: number) {
     if (!remoteUserId) return;
-
     this.http.get<any>(`${this.apiUrl}/Profile/user/${remoteUserId}`).subscribe({
       next: (data) => {
         this.remoteProfile = data;
+        this.rtcService.setRemoteUserId(String(remoteUserId));
         this.cdr.detectChanges();
       },
-      error: (err) => {
-        console.error('Could not fetch remote user profile:', err);
+      error: () => {
         this.remoteProfile = {
+          userId: remoteUserId,
           firstName: 'Peer',
-          lastName: '',
-          professionTitle: 'Member',
+          lastName: 'User',
+          professionTitle: 'Community Member',
           country: 'Online',
+          skills: ['Networking']
         };
+        this.rtcService.setRemoteUserId(String(remoteUserId));
         this.cdr.detectChanges();
       },
     });
   }
 
-  private loadUserMatchPreference() {
-    const navState = this.router.getCurrentNavigation()?.extras.state as { matchPreference: MatchPreferenceDto };
+  // ============================================================
+  // NEXT MATCH (EXCLUDE PREVIOUS USER)
+  // ============================================================
 
-    if (navState?.matchPreference) {
-      this.userPreference = navState.matchPreference;
-    } else {
-      const stored = localStorage.getItem('userMatchPreference');
-      if (stored) {
-        try {
-          this.userPreference = JSON.parse(stored);
-        } catch {
-          this.userPreference = this.getDefaultPreference();
-        }
-      } else {
-        this.userPreference = this.getDefaultPreference();
-      }
-    }
-
-    if (!this.userPreference.preferredProfessionId || this.userPreference.preferredProfessionId === 0) {
-      this.userPreference.preferredProfessionId = 1;
-    }
-  }
-
-  private getDefaultPreference(): MatchPreferenceDto {
-    return {
-      preferredProfessionId: 1,
-      preferredSkillIds: [1],
-      goal: 'Networking',
-      matchType: 'random',
-      isSearching: false,
-    };
-  }
-
-  findNextMatch() {
-    const currentUserId = this.authService.getUserId();
-    if (!currentUserId) {
-      this.router.navigate(['/login']);
-      return;
-    }
-
+  findNextMatch(): void {
     if (this.isSearchingNextMatch) return;
 
+    this.excludeUserId = this.remoteProfile?.userId || this.remoteProfile?.id || null;
+
     if (this.sessionId) {
-      this.http.post(`${this.apiUrl}/MatchSession/end/${this.sessionId}`, {}).subscribe({
+      this.http.post(`${this.apiUrl}/Matching/end/${this.sessionId}`, {}).subscribe({
         error: (err) => console.error('Failed to end previous session:', err),
       });
       this.sessionId = null;
@@ -180,6 +168,7 @@ export class RoomComponent implements OnInit, OnDestroy {
 
     this.isSearchingNextMatch = true;
     this.searchTimeRemaining = 60;
+    this.isProfileModalOpen = false;
 
     this.cleanupCurrentCall();
 
@@ -190,64 +179,60 @@ export class RoomComponent implements OnInit, OnDestroy {
       isSearching: true,
     };
 
-    this.http.post(`${this.apiUrl}/MatchPreference/${currentUserId}`, searchPayload).subscribe({
-      next: () => {
-        this.pollForNextMatch(currentUserId);
-      },
+    this.http.post(`${this.apiUrl}/MatchPreference/${this.currentUserId}`, searchPayload).subscribe({
+      next: () => this.pollForNextMatch(this.currentUserId),
       error: (err) => {
         this.isSearchingNextMatch = false;
         console.error('Failed to start next match search:', err);
-        alert('Failed to initiate search for next match.');
       },
     });
   }
 
   private pollForNextMatch(currentUserId: number) {
-    const pollInterval = 5000;
-    const maxAttempts = 12;
+    const pollInterval = 3000;
+    const maxAttempts = 20;
     let attemptCount = 0;
 
     this.stopNextMatchSearch();
 
     this.countdownTimer = setInterval(() => {
       this.searchTimeRemaining--;
+      if (this.searchTimeRemaining <= 0) {
+        this.cancelNextMatchSearch();
+      }
       this.cdr.detectChanges();
     }, 1000);
 
     this.searchTimer = setInterval(() => {
       attemptCount++;
 
-      this.http.post(`${this.apiUrl}/Matching/find/${currentUserId}`, {}).subscribe({
-        next: (matchResponse: any) => {
-          const newRoomId = matchResponse?.roomId || matchResponse?.matchedUserId || matchResponse?.id;
-          const newSessionId = matchResponse?.sessionId;
-          const matchedUserId = matchResponse?.matchedUserId;
+      const body: any = {};
+      if (this.excludeUserId) {
+        body.excludeUserId = this.excludeUserId;
+      }
 
-          if (newRoomId && newRoomId !== this.roomId) {
+      this.http.post(`${this.apiUrl}/Matching/find/${currentUserId}`, body).subscribe({
+        next: (matchResponse: any) => {
+          const newRoomId = matchResponse?.roomId || matchResponse?.id;
+          const newSessionId = matchResponse?.sessionId;
+          const matchedUser = matchResponse?.user;
+
+          if (matchResponse?.matched && newRoomId && newRoomId !== this.roomId) {
             this.stopNextMatchSearch();
 
-            if (newSessionId) {
-              this.sessionId = newSessionId;
-            }
-
-            // If the matching endpoint directly returns matchedUserId, fetch immediately!
-            if (matchedUserId) {
-              this.fetchRemoteUserProfile(matchedUserId);
+            if (newSessionId) this.sessionId = newSessionId;
+            if (matchedUser) {
+              this.remoteProfile = matchedUser;
+              this.rtcService.setRemoteUserId(String(matchedUser.userId));
             }
 
             this.updateSearchingStatus(currentUserId, false);
-
             this.isSearchingNextMatch = false;
             this.roomId = newRoomId;
 
-            const queryParams: any = { roomId: newRoomId };
-            if (this.sessionId) {
-              queryParams.sessionId = this.sessionId;
-            }
-
             this.router.navigate([], {
               relativeTo: this.route,
-              queryParams: queryParams,
+              queryParams: { roomId: newRoomId, sessionId: this.sessionId },
               queryParamsHandling: 'merge',
             });
 
@@ -255,18 +240,8 @@ export class RoomComponent implements OnInit, OnDestroy {
           }
         },
         error: (err) => {
-          if (err.status === 404 && attemptCount < maxAttempts) {
-            console.log(`Searching for next match... (${attemptCount}/${maxAttempts})`);
-          } else if (attemptCount >= maxAttempts || err.status !== 404) {
-            this.stopNextMatchSearch();
-            this.isSearchingNextMatch = false;
-
-            this.updateSearchingStatus(currentUserId, false);
-
-            if (err.status === 404) {
-              alert('No other online matches found right now.');
-            }
-            this.leaveCall();
+          if (err.status !== 404 || attemptCount >= maxAttempts) {
+            this.cancelNextMatchSearch();
           }
         },
       });
@@ -274,27 +249,16 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   private updateSearchingStatus(userId: number, isSearching: boolean) {
-    const payload: MatchPreferenceDto = {
-      ...this.userPreference,
-      preferredProfessionId: this.userPreference.preferredProfessionId || 1,
-      preferredSkillIds: this.userPreference.preferredSkillIds?.length ? this.userPreference.preferredSkillIds : [1],
-      isSearching: isSearching,
-    };
-
+    const payload: MatchPreferenceDto = { ...this.userPreference, isSearching };
     this.userPreference = payload;
     localStorage.setItem('userMatchPreference', JSON.stringify(payload));
-
-    this.http.post(`${this.apiUrl}/MatchPreference/${userId}`, payload).subscribe({
-      error: (err) => console.error('Failed to update searching status:', err),
-    });
+    this.http.post(`${this.apiUrl}/MatchPreference/${userId}`, payload).subscribe();
   }
 
-  cancelNextMatchSearch() {
+  public cancelNextMatchSearch() {
     this.stopNextMatchSearch();
     this.isSearchingNextMatch = false;
-    if (this.currentUserId) {
-      this.updateSearchingStatus(this.currentUserId, false);
-    }
+    if (this.currentUserId) this.updateSearchingStatus(this.currentUserId, false);
   }
 
   private stopNextMatchSearch() {
@@ -304,7 +268,13 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   private async rejoinNewRoom(newRoomId: string) {
     this.cleanupCurrentCall();
-    await this.initLocalMedia();
+    this.rtcService.setRoomId(newRoomId);
+
+    if (this.localVideo?.nativeElement && this.rtcService.localStream) {
+      this.localVideo.nativeElement.srcObject = this.rtcService.localStream;
+      this.localVideo.nativeElement.muted = true;
+      this.localVideo.nativeElement.play().catch(() => {});
+    }
 
     if (this.signalRService.isConnected()) {
       await this.signalRService.joinRoom(newRoomId);
@@ -312,239 +282,160 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   private cleanupCurrentCall() {
-    this.remoteProfile = null; // Clear old peer profile on call cleanup
-
-    if (this.roomId) {
-      this.signalRService.leaveRoom(this.roomId);
-    }
-
-    if (this.peerConnection) {
-      this.peerConnection.close();
-    }
-
-    if (this.localStream) {
-      this.localStream.getTracks().forEach((track) => track.stop());
-    }
-
-    if (this.remoteStream) {
-      this.remoteStream.getTracks().forEach((track) => track.stop());
-    }
-  }
-
-  toggleAudio() {
-    if (!this.localStream) return;
-    const audioTracks = this.localStream.getAudioTracks();
-    if (audioTracks.length > 0) {
-      this.isMuted = !this.isMuted;
-      audioTracks.forEach((track) => (track.enabled = !this.isMuted));
-      this.cdr.detectChanges();
-    }
-  }
-
-  toggleVideo() {
-    if (!this.localStream) return;
-    const videoTracks = this.localStream.getVideoTracks();
-    if (videoTracks.length > 0) {
-      this.isVideoOff = !this.isVideoOff;
-      videoTracks.forEach((track) => (track.enabled = !this.isVideoOff));
-      this.isLocalVideoActive = !this.isVideoOff;
-      this.cdr.detectChanges();
-    }
-  }
-
-  leaveCall() {
-    this.stopNextMatchSearch();
-
-    if (this.sessionId) {
-      this.http.post(`${this.apiUrl}/MatchSession/end/${this.sessionId}`, {}).subscribe({
-        error: (err) => console.error('Failed to end match session on leave:', err),
-      });
-      this.sessionId = null;
-    }
-
-    if (this.currentUserId) {
-      this.updateSearchingStatus(this.currentUserId, false);
-    }
-
-    this.cleanupCurrentCall();
-    this.router.navigate(['/dashboard']);
-  }
-
-  private async initLocalMedia() {
-    if (this.localStream) {
-      this.localStream.getTracks().forEach((track) => track.stop());
-    }
-
-    try {
-      this.localStream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: true,
-      });
-    } catch (err) {
-      console.warn('Camera/mic access unavailable on this instance:', err);
-      this.localStream = new MediaStream();
-    }
-
-    if (this.localVideo?.nativeElement) {
-      this.localVideo.nativeElement.srcObject = this.localStream;
-    }
-    this.cdr.detectChanges();
-  }
-
-  private createPeerConnection() {
-    this.peerConnection = new RTCPeerConnection(this.rtcConfig);
-    this.remoteStream = new MediaStream();
-
+    this.remoteProfile = null;
     if (this.remoteVideo?.nativeElement) {
-      this.remoteVideo.nativeElement.srcObject = this.remoteStream;
+      this.remoteVideo.nativeElement.srcObject = null;
     }
-
-    const activeVideoTracks = this.localStream
-      ? this.localStream.getVideoTracks().filter((t) => t.readyState === 'live')
-      : [];
-    const activeAudioTracks = this.localStream
-      ? this.localStream.getAudioTracks().filter((t) => t.readyState === 'live')
-      : [];
-
-    if (activeVideoTracks.length > 0) {
-      this.peerConnection.addTrack(activeVideoTracks[0], this.localStream);
-    } else {
-      this.peerConnection.addTransceiver('video', { direction: 'recvonly' });
-    }
-
-    if (activeAudioTracks.length > 0) {
-      this.peerConnection.addTrack(activeAudioTracks[0], this.localStream);
-    } else {
-      this.peerConnection.addTransceiver('audio', { direction: 'recvonly' });
-    }
-
-    this.peerConnection.ontrack = (event) => {
-      if (event.streams && event.streams[0]) {
-        this.remoteStream = event.streams[0];
-      } else if (event.track) {
-        this.remoteStream.addTrack(event.track);
-      }
-
-      if (this.remoteVideo?.nativeElement) {
-        this.remoteVideo.nativeElement.srcObject = this.remoteStream;
-      }
-
-      const videoTrack = this.remoteStream.getVideoTracks()[0];
-      if (videoTrack) {
-        this.isRemoteVideoActive = videoTrack.enabled && videoTrack.readyState === 'live';
-
-        videoTrack.onmute = () => {
-          this.isRemoteVideoActive = false;
-          this.cdr.detectChanges();
-        };
-        videoTrack.onunmute = () => {
-          this.isRemoteVideoActive = true;
-          this.cdr.detectChanges();
-        };
-      } else {
-        this.isRemoteVideoActive = false;
-      }
-
-      this.cdr.detectChanges();
-    };
-
-    this.peerConnection.onicecandidate = (event) => {
-      if (event.candidate) {
-        const targetId = this.remoteProfile?.userId?.toString() || '';
-        this.signalRService.sendSignal(
-          this.roomId,
-          targetId,
-          { type: 'ice-candidate', candidate: event.candidate, senderId: this.currentUserId }
-        );
-      }
-    };
+    if (this.roomId) this.signalRService.leaveRoom(this.roomId);
+    this.rtcService.closeConnection();
   }
+
+  // ============================================================
+  // SIGNALR LISTENERS
+  // ============================================================
 
   private listenToSignalREvents() {
-  this.signalRSubscriptions.unsubscribe();
-  this.signalRSubscriptions = new Subscription();
+    this.signalRSubscriptions.unsubscribe();
+    this.signalRSubscriptions = new Subscription();
 
-  // Event 1: When a remote user joins the SignalR room
-  this.signalRSubscriptions.add(
-    this.signalRService.remoteUserJoined$.subscribe(async (userId) => {
-      if (userId) {
+    this.signalRSubscriptions.add(
+      this.signalRService.remoteUserJoined$.subscribe(async (userId) => {
         const remoteId = Number(userId);
         if (remoteId && remoteId !== this.currentUserId) {
           this.fetchRemoteUserProfile(remoteId);
+          this.rtcService.setRemoteUserId(String(remoteId));
+          await this.initLocalStream();
+          this.rtcService.initiateOfferToUser(String(remoteId));
         }
+      })
+    );
 
-        this.createPeerConnection();
-        const offer = await this.peerConnection.createOffer();
-        await this.peerConnection.setLocalDescription(offer);
-
-        const signalPayload = {
-          type: 'offer',
-          sdp: offer,
-          senderId: this.currentUserId,
-        };
-        await this.signalRService.sendSignal(this.roomId, userId.toString(), signalPayload);
-      }
-    })
-  );
-
-  // Event 2: Receiving WebRTC signals
     this.signalRSubscriptions.add(
-    this.signalRService.receiveSignal$.subscribe(async (signal: any) => {
-      if (!signal?.signalData) return;
+      this.signalRService.remoteUserLeft$.subscribe(() => {
+        this.remoteProfile = null;
+        if (this.remoteVideo?.nativeElement) {
+          this.remoteVideo.nativeElement.srcObject = null;
+        }
+        this.rtcService.closeConnection();
+        this.cdr.detectChanges();
+      })
+    );
 
-      let parsedData: any;
-      try {
-        parsedData = typeof signal.signalData === 'string' ? JSON.parse(signal.signalData) : signal.signalData;
-      } catch {
-        parsedData = signal.signalData;
+    this.signalRSubscriptions.add(
+      this.signalRService.receiveSignal$.subscribe(async ({ fromUserId, signalData }) => {
+        if (Number(fromUserId) !== this.currentUserId) {
+          if (!this.remoteProfile) {
+            this.fetchRemoteUserProfile(Number(fromUserId));
+          }
+          this.rtcService.setRemoteUserId(fromUserId);
+          await this.rtcService.handleSignal(signalData, fromUserId);
+        }
+      })
+    );
+
+    this.signalRSubscriptions.add(
+      this.rtcService.remoteStream$.subscribe((stream) => {
+        if (this.remoteVideo?.nativeElement) {
+          this.remoteVideo.nativeElement.srcObject = stream;
+          this.playVideo(this.remoteVideo.nativeElement);
+        }
+        this.isRemoteVideoActive = true;
+        this.cdr.detectChanges();
+      })
+    );
+  }
+
+  public toggleAudio() {
+    this.isMuted = !this.isMuted;
+    this.rtcService.toggleAudio(!this.isMuted);
+    this.cdr.detectChanges();
+  }
+
+  public toggleVideo() {
+    this.isVideoOff = !this.isVideoOff;
+    this.rtcService.toggleVideo(!this.isVideoOff);
+    this.isLocalVideoActive = !this.isVideoOff;
+    this.cdr.detectChanges();
+  }
+
+  public playVideo(el: HTMLVideoElement | null) {
+    if (!el) return;
+    const playPromise = el.play();
+    if (playPromise !== undefined) {
+      playPromise.catch((err) => {
+        el.muted = true;
+        el.play().then(() => {
+          setTimeout(() => { el.muted = false; }, 300);
+        }).catch(() => {
+          const onUserClick = () => {
+            el.play().catch(() => {});
+            document.removeEventListener('click', onUserClick);
+          };
+          document.addEventListener('click', onUserClick, { once: true });
+        });
+      });
+    }
+  }
+
+  public openRemoteProfileModal() {
+    if (this.remoteProfile) this.isProfileModalOpen = true;
+  }
+
+  public closeRemoteProfileModal() {
+    this.isProfileModalOpen = false;
+  }
+
+  public viewProfileInNewTab(userId?: number) {
+    const id = userId || this.remoteProfile?.userId || this.remoteProfile?.id;
+    if (id) window.open(`/profile/${id}`, '_blank');
+  }
+
+  public leaveCall() {
+    this.stopNextMatchSearch();
+    if (this.sessionId) {
+      this.http.post(`${this.apiUrl}/Matching/end/${this.sessionId}`, {}).subscribe();
+      this.sessionId = null;
+    }
+    if (this.currentUserId) {
+      this.updateSearchingStatus(this.currentUserId, false);
+    }
+    this.cleanupCurrentCall();
+    this.rtcService.closeAll();
+    this.router.navigate(['/dashboard']);
+  }
+
+  private loadUserMatchPreference() {
+    const navState = this.router.getCurrentNavigation()?.extras.state as { matchPreference: MatchPreferenceDto };
+    if (navState?.matchPreference) {
+      this.userPreference = navState.matchPreference;
+    } else {
+      const stored = localStorage.getItem('userMatchPreference');
+      if (stored) {
+        try { this.userPreference = JSON.parse(stored); } catch { this.userPreference = this.getDefaultPreference(); }
+      } else {
+        this.userPreference = this.getDefaultPreference();
       }
+    }
+  }
 
-      const senderId = parsedData?.senderId || signal.fromUserId;
-      if (senderId && Number(senderId) !== Number(this.currentUserId)) {
-        this.fetchRemoteUserProfile(Number(senderId));
-      }
-
-      const sdp = parsedData?.sdp || parsedData;
-
-      switch (parsedData?.type) {
-        case 'offer':
-          this.createPeerConnection();
-          await this.peerConnection.setRemoteDescription(new RTCSessionDescription(sdp));
-          const answer = await this.peerConnection.createAnswer();
-          await this.peerConnection.setLocalDescription(answer);
-
-          const answerPayload = { type: 'answer', sdp: answer, senderId: this.currentUserId };
-          await this.signalRService.sendSignal(this.roomId, senderId.toString(), answerPayload);
-          break;
-
-        case 'answer':
-          await this.peerConnection.setRemoteDescription(new RTCSessionDescription(sdp));
-          break;
-
-        case 'ice-candidate':
-          const candidateObj = parsedData?.candidate || parsedData;
-          await this.peerConnection.addIceCandidate(new RTCIceCandidate(candidateObj));
-          break;
-      }
-    })
-  );
-}
+  private getDefaultPreference(): MatchPreferenceDto {
+    return {
+      preferredProfessionId: 1,
+      preferredSkillIds: [1],
+      goal: 'Networking',
+      matchType: 'random',
+      isSearching: false
+    };
+  }
 
   ngOnDestroy() {
     this.stopNextMatchSearch();
     this.signalRSubscriptions.unsubscribe();
-
     if (this.sessionId) {
-      this.http.post(`${this.apiUrl}/MatchSession/end/${this.sessionId}`, {}).subscribe();
+      this.http.post(`${this.apiUrl}/Matching/end/${this.sessionId}`, {}).subscribe();
     }
-
     this.cleanupCurrentCall();
+    this.rtcService.closeAll();
     this.signalRService.stopConnection();
   }
-
- viewProfile(userId: number) {
-  if (userId) {
-    window.open(`/profile/${userId}`, '_blank');
-  }
-}
 }

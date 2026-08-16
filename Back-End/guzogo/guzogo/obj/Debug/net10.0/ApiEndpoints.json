@@ -197,6 +197,11 @@
         "Name": "userId",
         "Type": "System.Int32",
         "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "guzogo.DTOs.Matching.FindMatchRequest",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []

@@ -5,6 +5,7 @@
         public int UserId { get; set; }
 
         public string FullName { get; set; } = string.Empty;
+        public string? Country { get; set; }
 
         public string Profession { get; set; } = string.Empty;
 

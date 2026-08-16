@@ -223,7 +223,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapHub<GuzoHub>("/guzohub");
+
+app.MapHub<GuzoHub>("/hubs/guzo"); 
 app.MapHub<SpacesHub>("/hubs/spaces");
 
 app.Run();

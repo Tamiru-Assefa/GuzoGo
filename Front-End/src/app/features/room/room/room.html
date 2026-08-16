@@ -1,181 +1,229 @@
-<div class="h-screen w-full bg-slate-950 text-white flex flex-col p-4">
-  
+<div class="h-screen w-full bg-slate-950 text-white flex flex-col p-4 relative overflow-hidden font-sans">
+
   <!-- Top Bar -->
-  <header class="flex items-center justify-between px-4 py-3 bg-slate-900 rounded-xl border border-white/10 mb-4 shadow-md">
-    <div class="flex items-center gap-2">
-      <span class="h-3 w-3 rounded-full bg-emerald-500 animate-pulse"></span>
-      <h1 class="text-sm font-semibold tracking-wide">Live Session</h1>
-      <span class="text-xs text-slate-400 font-mono ml-2">ID: {{ roomId }}</span>
+  <header class="flex items-center justify-between px-4 py-3 bg-slate-900/90 backdrop-blur-md rounded-2xl border border-white/10 mb-4 shadow-xl z-20">
+    <div class="flex items-center gap-3">
+      <span class="relative flex h-3 w-3">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+      </span>
+      <div class="flex flex-col">
+        <h1 class="text-sm font-bold tracking-wide text-white">Live Peer Session</h1>
+        <span class="text-[11px] text-slate-400 font-mono">Room: {{ roomId || 'Connecting...' }}</span>
+      </div>
     </div>
-    <button 
-      (click)="leaveCall()" 
-      class="bg-red-600 hover:bg-red-700 text-white text-xs px-4 py-2 rounded-lg font-medium transition active:scale-95 cursor-pointer">
-      End Call
-    </button>
+
+    <div class="flex items-center gap-3">
+      <!-- Quick Remote Profile Button on Header -->
+      <button
+        *ngIf="remoteProfile"
+        (click)="openRemoteProfileModal()"
+        type="button"
+        class="hidden sm:flex items-center gap-1.5 bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 text-xs px-3.5 py-1.5 rounded-xl font-medium transition active:scale-95 cursor-pointer">
+        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
+        <span>View Other Profile</span>
+      </button>
+
+      <button
+        (click)="leaveCall()"
+        type="button"
+        class="bg-rose-600/90 hover:bg-rose-600 text-white text-xs px-4 py-2 rounded-xl font-semibold transition active:scale-95 shadow-md shadow-rose-600/20 cursor-pointer">
+        End Call
+      </button>
+    </div>
   </header>
 
-  <!-- Main Video Grid -->
-  <div class="relative flex-1 bg-black rounded-xl overflow-hidden mb-4 shadow-2xl border border-white/5">
-    
-    <!-- REMOTE VIDEO (Full Background Container) -->
-    <div class="absolute inset-0">
+  <!-- Main Video Container -->
+  <div class="relative flex-1 bg-slate-900 rounded-2xl overflow-hidden mb-4 shadow-2xl border border-white/10">
+
+    <!-- 1. REMOTE VIDEO (Full Background Container) -->
+    <div class="absolute inset-0 w-full h-full bg-slate-950 flex items-center justify-center">
       <video
         #remoteVideo
         autoplay
         playsinline
-        [class.hidden]="!isRemoteVideoActive"
-        class="w-full h-full object-cover"
+        (canplay)="playVideo(remoteVideo)"
+        class="w-full h-full object-cover transition-opacity duration-300"
+        [ngClass]="{ 'opacity-0 pointer-events-none': !remoteProfile, 'opacity-100': remoteProfile }"
       ></video>
 
-      <!-- Remote Avatar Fallback -->
-      <div *ngIf="!isRemoteVideoActive" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-900/90 backdrop-blur-sm">
-        <div class="w-20 h-20 rounded-full bg-slate-800 border-2 border-indigo-500/30 flex items-center justify-center mb-3 shadow-xl">
-          <span *ngIf="remoteProfile?.firstName; else defaultIcon" class="text-2xl font-bold text-indigo-300">
-            {{ remoteProfile?.firstName | slice:0:1 }}{{ remoteProfile?.lastName | slice:0:1 }}
-          </span>
-          <ng-template #defaultIcon>
-            <svg class="w-10 h-10 text-slate-500" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-            </svg>
-          </ng-template>
+      <!-- Remote Video Top-Right Action: Direct "View Other Profile" Button -->
+      <div *ngIf="remoteProfile" class="absolute top-4 right-4 z-30">
+        <button
+          (click)="openRemoteProfileModal()"
+          type="button"
+          class="flex items-center gap-2 bg-slate-900/85 hover:bg-indigo-900/90 text-white text-xs font-semibold px-4 py-2 rounded-full border border-white/15 backdrop-blur-md shadow-2xl transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer group">
+          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+          <span>View Other Profile</span>
+          <svg class="w-3.5 h-3.5 text-indigo-300 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Remote Avatar Fallback if camera is off or peer hasn't connected -->
+      <div *ngIf="!remoteProfile" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-900/95 backdrop-blur-sm p-6 text-center z-10">
+        <div class="w-20 h-20 rounded-full bg-indigo-950/80 border border-indigo-500/30 flex items-center justify-center mb-3">
+          <svg class="w-10 h-10 text-indigo-400 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
         </div>
-        <p class="text-sm font-medium text-slate-400">Camera is turned off</p>
+        <p class="text-sm font-semibold text-slate-200">Waiting for peer to connect...</p>
+        <p class="text-xs text-slate-400 mt-1">WebRTC video connection will start automatically</p>
       </div>
     </div>
 
-    <!-- REMOTE USER INFO BADGE (Bottom-Left Glassmorphism Card) -->
-    <div *ngIf="remoteProfile" class="absolute bottom-4 left-4 z-30 flex items-center gap-4 bg-slate-900/80 backdrop-blur-md border border-white/10 rounded-2xl p-3 shadow-2xl max-w-sm">
+    <!-- 2. REMOTE USER INFO CARD (Bottom-Left Glass Card) -->
+    <div *ngIf="remoteProfile" class="absolute bottom-4 left-4 z-30 flex items-center gap-3 bg-slate-900/85 backdrop-blur-md border border-white/15 rounded-2xl p-3 shadow-2xl max-w-sm">
+      <div class="w-10 h-10 rounded-xl bg-indigo-600/30 border border-indigo-500/40 flex items-center justify-center font-bold text-indigo-300 text-sm">
+        {{ remoteProfile.firstName?.slice(0, 1) || 'P' }}
+      </div>
       <div class="flex-1 min-w-0">
         <div class="text-white text-sm font-bold truncate">
-          {{ remoteProfile?.firstName ? (remoteProfile?.firstName + ' ' + (remoteProfile?.lastName || '')) : 'Peer' }}
+          {{ remoteProfile.firstName }} {{ remoteProfile.lastName }}
         </div>
-        <div class="text-xs text-slate-400 truncate mt-0.5">
-          {{ remoteProfile?.professionTitle || 'Professional' }} • {{ remoteProfile?.country || 'Global' }}
+        <div class="text-xs text-slate-300 truncate">
+          {{ remoteProfile.professionTitle || 'Professional' }} • {{ remoteProfile.country || 'Online' }}
         </div>
       </div>
-
-      <!-- View Profile Action Button -->
       <button
-        *ngIf="remoteProfile?.userId || remoteProfile?.id"
-        (click)="viewProfile(remoteProfile.userId || remoteProfile.id)"
-        class="bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-300 border border-indigo-500/40 text-xs font-semibold px-3 py-1.5 rounded-xl transition active:scale-95 whitespace-nowrap cursor-pointer flex items-center gap-1">
-        <span>Profile</span>
-        <span class="text-[10px]">↗</span>
+        (click)="openRemoteProfileModal()"
+        type="button"
+        class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-3 py-1.5 rounded-xl transition active:scale-95 whitespace-nowrap cursor-pointer shadow-md shadow-indigo-600/30">
+        View Profile
       </button>
     </div>
 
-    <!-- LOCAL VIDEO (PIP – Bottom-Right Corner) -->
-    <div class="absolute bottom-4 right-4 w-28 h-40 sm:w-36 sm:h-48 rounded-2xl overflow-hidden border-2 border-white/20 shadow-2xl z-20 bg-slate-900">
+    <!-- 3. LOCAL VIDEO (PIP – Bottom-Right Corner) -->
+    <div class="absolute bottom-4 right-4 w-32 h-44 sm:w-40 sm:h-52 rounded-2xl overflow-hidden border-2 border-white/20 shadow-2xl z-30 bg-slate-950">
       <video
         #localVideo
         autoplay
         playsinline
         muted
-        [class.hidden]="!isLocalVideoActive"
         class="w-full h-full object-cover -scale-x-100"
+        [class.hidden]="!isLocalVideoActive"
       ></video>
 
-      <!-- Local Avatar Fallback -->
-      <div *ngIf="!isLocalVideoActive" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-800/90">
-        <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-300 mb-1 border border-white/10">
+      <div *ngIf="!isLocalVideoActive" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-900">
+        <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-xs font-bold text-indigo-300 mb-1">
           You
         </div>
         <span class="text-[10px] text-slate-400">Cam Off</span>
       </div>
 
-      <!-- You Badge -->
-      <div class="absolute bottom-1.5 left-2 bg-black/60 backdrop-blur-xs px-2 py-0.5 rounded-md text-[10px] text-slate-300 font-medium">
-        You
+      <div class="absolute bottom-2 left-2 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded-md text-[10px] text-slate-300 font-semibold border border-white/10">
+        You {{ isMuted ? '(Muted)' : '' }}
       </div>
     </div>
 
   </div>
 
-  <!-- Searching Next Match Overlay -->
-  @if (isSearchingNextMatch) {
-    <div class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-slate-950/95 backdrop-blur-lg">
-      <div class="flex items-center gap-3 mb-4">
-        <span class="relative flex h-4 w-4">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-4 w-4 bg-indigo-500"></span>
-        </span>
-        <h2 class="text-xl font-bold text-white tracking-wide">Finding Next Match...</h2>
-      </div>
-      <p class="text-slate-400 text-sm mb-6 font-mono">Time remaining: {{ searchTimeRemaining }}s</p>
-      
-      <button
-        (click)="leaveCall()"
-        type="button"
-        class="px-5 py-2.5 text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl transition font-medium border border-white/10 cursor-pointer">
-        Cancel & Return to Dashboard
-      </button>
-    </div>
-  }
-
-  <!-- Room Bottom Control Bar -->
-  <div class="flex items-center justify-center gap-4 py-2">
-    <!-- Microphone Toggle -->
+  <!-- Control Bar -->
+  <div class="flex items-center justify-center gap-4 py-2 z-20">
+    <!-- Mic Toggle -->
     <button
       (click)="toggleAudio()"
       type="button"
       [class.bg-rose-600]="isMuted"
-      [class.hover:bg-rose-700]="isMuted"
       [class.bg-slate-800]="!isMuted"
-      [class.hover:bg-slate-700]="!isMuted"
-      class="p-4 rounded-full text-white transition active:scale-95 focus:outline-none shadow-xl border border-white/10 cursor-pointer">
-      
-      @if (isMuted) {
-        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
-          <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-        </svg>
-      } @else {
-        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
-        </svg>
-      }
+      class="p-4 rounded-full text-white transition hover:scale-105 active:scale-95 shadow-xl border border-white/10 cursor-pointer">
+      <svg *ngIf="!isMuted" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+      </svg>
+      <svg *ngIf="isMuted" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+      </svg>
     </button>
 
-    <!-- Camera Toggle -->
+    <!-- Video Toggle -->
     <button
       (click)="toggleVideo()"
       type="button"
       [class.bg-rose-600]="isVideoOff"
-      [class.hover:bg-rose-700]="isVideoOff"
       [class.bg-slate-800]="!isVideoOff"
-      [class.hover:bg-slate-700]="!isVideoOff"
-      class="p-4 rounded-full text-white transition active:scale-95 focus:outline-none shadow-xl border border-white/10 cursor-pointer">
-      
-      @if (isVideoOff) {
-        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-          <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-        </svg>
-      } @else {
-        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-        </svg>
-      }
+      class="p-4 rounded-full text-white transition hover:scale-105 active:scale-95 shadow-xl border border-white/10 cursor-pointer">
+      <svg *ngIf="!isVideoOff" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+      </svg>
+      <svg *ngIf="isVideoOff" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+      </svg>
     </button>
 
-    <!-- Find Next Match -->
+    <!-- Next Match Button -->
     <button
       (click)="findNextMatch()"
       type="button"
-      class="px-6 py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-full transition active:scale-95 shadow-lg shadow-indigo-600/30 flex items-center gap-2 cursor-pointer text-sm">
-      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+      [disabled]="isSearchingNextMatch"
+      class="px-7 py-3.5 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white font-semibold rounded-full transition hover:scale-105 active:scale-95 shadow-xl shadow-indigo-600/30 flex items-center gap-2 cursor-pointer text-sm disabled:opacity-50">
+      <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+        <path d="M5.055 7.06C3.805 6.347 2.25 7.25 2.25 8.69v6.62c0 1.44 1.555 2.343 2.805 1.628L12 12.86v3.76c0 1.44 1.555 2.343 2.805 1.628l7.108-4.06c1.26-.72 1.26-2.536 0-3.256L14.805 6.87C13.555 6.157 12 7.06 12 8.5v3.76L5.055 7.06z" />
       </svg>
-      Next Match
+      <span>Next Match</span>
     </button>
 
-    <!-- End Call -->
+    <!-- End Call Button -->
     <button
       (click)="leaveCall()"
       type="button"
-      class="px-6 py-3.5 bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 border border-rose-500/30 font-semibold rounded-full transition active:scale-95 shadow-lg cursor-pointer text-sm">
+      class="px-6 py-3.5 bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 border border-rose-500/30 font-semibold rounded-full transition hover:scale-105 active:scale-95 shadow-lg cursor-pointer text-sm">
       End Call
     </button>
+  </div>
+
+  <!-- Remote Profile Modal -->
+  <div *ngIf="isProfileModalOpen && remoteProfile" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-fadeIn">
+    <div class="bg-slate-900 border border-white/20 rounded-3xl p-6 w-full max-w-md shadow-2xl text-white relative">
+      <button
+        (click)="closeRemoteProfileModal()"
+        type="button"
+        class="absolute top-4 right-4 p-2 text-slate-400 hover:text-white rounded-full bg-slate-800 hover:bg-slate-700 cursor-pointer transition">
+        ✕
+      </button>
+
+      <div class="flex items-center gap-4 mb-5">
+        <div class="w-16 h-16 rounded-2xl bg-indigo-600/30 border border-indigo-500/40 flex items-center justify-center text-2xl font-bold text-indigo-300">
+          {{ remoteProfile.firstName?.slice(0, 1) || 'P' }}
+        </div>
+        <div>
+          <h2 class="text-xl font-bold text-white">{{ remoteProfile.firstName }} {{ remoteProfile.lastName }}</h2>
+          <p class="text-xs text-indigo-400 font-medium">{{ remoteProfile.professionTitle || 'Professional' }}</p>
+          <p class="text-xs text-slate-400">{{ remoteProfile.country || 'Global' }}</p>
+        </div>
+      </div>
+
+      <div *ngIf="remoteProfile.bio" class="bg-slate-950/60 p-3.5 rounded-2xl border border-white/5 mb-4 text-xs text-slate-300">
+        {{ remoteProfile.bio }}
+      </div>
+
+      <div *ngIf="remoteProfile.skills?.length" class="mb-5">
+        <h3 class="text-xs font-semibold text-slate-400 mb-2">Skills & Expertise</h3>
+        <div class="flex flex-wrap gap-1.5">
+          <span *ngFor="let s of remoteProfile.skills" class="px-2.5 py-1 bg-indigo-950/80 border border-indigo-500/30 text-indigo-300 rounded-lg text-xs">
+            {{ s }}
+          </span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 mt-6">
+        <button
+          (click)="viewProfileInNewTab()"
+          type="button"
+          class="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-medium rounded-xl text-xs transition cursor-pointer">
+          Open Full Page
+        </button>
+        <button
+          (click)="closeRemoteProfileModal()"
+          type="button"
+          class="py-2.5 px-4 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs transition cursor-pointer">
+          Back to Call
+        </button>
+      </div>
+    </div>
   </div>
 
 </div>
