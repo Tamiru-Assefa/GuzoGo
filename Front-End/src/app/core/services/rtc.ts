@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SignalRService } from './signalr';
 import { Subject } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface RemoteStreamEvent {
   userId: string;
@@ -28,30 +29,7 @@ export class RtcService {
   private currentUserId: string = '';
 
   private readonly rtcConfig: RTCConfiguration = {
-    iceServers: [
-      { urls: 'stun:stun.relay.metered.ca:80' },
-      { urls: 'stun:stun1.l.google.com:19302' },
-      {
-        urls: 'turn:global.relay.metered.ca:80',
-        username: '02390c91f5732650459073e6',
-        credential: '3QacNDMVJ4J5DqX2'
-      },
-      {
-        urls: 'turn:global.relay.metered.ca:80?transport=tcp',
-        username: '02390c91f5732650459073e6',
-        credential: '3QacNDMVJ4J5DqX2'
-      },
-      {
-        urls: 'turn:global.relay.metered.ca:443',
-        username: '02390c91f5732650459073e6',
-        credential: '3QacNDMVJ4J5DqX2'
-      },
-      {
-        urls: 'turns:global.relay.metered.ca:443?transport=tcp',
-        username: '02390c91f5732650459073e6',
-        credential: '3QacNDMVJ4J5DqX2'
-      }
-    ],
+    iceServers: environment.iceServers,
     iceCandidatePoolSize: 10
   };
 
