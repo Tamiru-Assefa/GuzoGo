@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("guzogo")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+548be9139554fab285ed2e393e81f506d67a257a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a59747e0c48adcc540d6da0c42eb808e013d6904")]
 [assembly: System.Reflection.AssemblyProductAttribute("guzogo")]
 [assembly: System.Reflection.AssemblyTitleAttribute("guzogo")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
